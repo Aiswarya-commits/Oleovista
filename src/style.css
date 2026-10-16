@@ -2979,3 +2979,51 @@ body.loaded .loader-overlay {
 .about-corporate-box { background: linear-gradient(135deg, rgba(4, 52, 38, 0.86), rgba(4, 28, 20, 0.95)); }
 .corp-email-card { background: rgba(2, 32, 23, 0.65); }
 .about-footer-links a:hover { color: #34d399; }
+
+/* ==========================================================================
+   MOBILE SMOOTH SCROLL - ALL PAGES (phones only)
+   .m-strip / .m-strip-on are added by MobileSmoothScroll.js only on phones
+   ========================================================================== */
+body.m-strip-on #content-container {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 60px, #000 125px, #000 100%);
+          mask-image: linear-gradient(180deg, transparent 0, transparent 60px, #000 125px, #000 100%);
+}
+.view-layer.m-strip {
+  bottom: auto;
+  height: auto;
+  will-change: transform;
+}
+.view-layer.m-strip > .story-section {
+  position: relative;
+  inset: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+  pointer-events: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.2rem;
+}
+/* first section (hero) fills the screen */
+.view-layer.m-strip > .story-section:first-of-type {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: 5rem;
+}
+.view-layer.m-strip > .story-section:last-of-type {
+  padding-bottom: 7rem;
+}
+/* Careers job list: no inner scroll box, the page itself scrolls */
+.view-layer.m-strip .car-jobs {
+  max-height: none;
+  overflow: visible;
+}
+/* blur behind many glass cards at once is heavy on phones - removing it keeps scrolling smooth */
+.view-layer.m-strip * {
+  -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+}

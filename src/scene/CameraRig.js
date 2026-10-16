@@ -20,6 +20,7 @@ export class CameraRig {
     this.targetProgress = 0.0;
     this.scrollVelocity = 0.0;
     this.scrollSpeed = 0.0006;
+    this.touchScale = 1; // About page on phones changes this so content follows the finger 1:1
 
     // Mouse parallax look-around
     this.mouse = new THREE.Vector2(0, 0);
@@ -78,7 +79,7 @@ export class CameraRig {
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
       touchStartY = touchY;
-      this.targetProgress += deltaY * (this.scrollSpeed * 1.5);
+      this.targetProgress += deltaY * (this.scrollSpeed * 1.5) * this.touchScale;
       this.targetProgress = Math.max(0, Math.min(1.0, this.targetProgress));
     }, { passive: true });
 

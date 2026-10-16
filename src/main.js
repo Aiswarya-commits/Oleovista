@@ -12,7 +12,7 @@ import { ServicesHolo } from './scene/Servicesholo.js';
 import { CareersGlobe } from './scene/Careersglobe.js';
 import { TeamMeadow } from './scene/Teammeadow.js';
 import { ContactNetwork } from './scene/Contactnetwork.js';
-
+import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
@@ -86,6 +86,7 @@ class App {
     this.terrain = new Terrain(this.scene, loadingManager);
     this.tradingObjects = new TradingObjects(this.scene, loadingManager);
     this.uiManager = new UIManager(this.cameraRig, this.soundManager, this.atmosphere, this.terrain, this.water, this.tradingObjects);
+    this.mobileSmoothScroll = new MobileSmoothScroll(this.cameraRig);
         // Default look: Dawn (applied instantly, so there is no fade from Greenery on load)
     this.atmosphere.setPreset('day');
     this.atmosphere.update(1, 0);
@@ -172,6 +173,7 @@ class App {
 
     // Update subsystems
     this.cameraRig?.update(dt);
+    this.mobileSmoothScroll?.update(dt);   // smooth continuous scroll on phones (all pages)   // About Us continuous scroll on phones only
     this.terrain?.update(dt, elapsed, this.hoverPos, this.hoverStrength);
     this.forest?.update(dt, elapsed);
     this.atmosphere?.update(dt, elapsed);
