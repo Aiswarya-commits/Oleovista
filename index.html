@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oleovista Solutions Private Limited</title>
+  <link rel="icon" type="image/png" href="/assets/OleoLogo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    /* LIGHT dropdown: 10 themes shown in two columns so the list stays short */
+    #dropdown-light .header-dropdown-menu { display: grid; grid-template-columns: 1fr 1fr; min-width: 260px; }
+  </style>
+</head>
+<body class="loading">
+
+  <!-- Interactive Luxury Cursor -->
+  <div id="cursor" class="custom-cursor">
+    <div class="cursor-inner">
+      <div class="cursor-circle"></div>
+      <div class="cursor-dot"></div>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loader" class="loader-overlay">
+    <div class="loader-content">
+      <div class="loader-logo">
+          <img src="/assets/OleoLogo.png" alt="Oleovista Logo" class="loader-logo-img" />
+
+      </div>
+      <div class="loader-title">Oleovista Solutions</div>
+      <div class="loader-bar-bg">
+        <div id="loader-bar" class="loader-bar-fill"></div>
+      </div>
+      <div id="loader-text" class="loader-status">Sculpting 3D Swiss Alpine Terrain...</div>
+    </div>
+  </div>
+
+  <!-- Fullscreen WebGL Canvas Wrapper -->
+  <div id="canvas-wrapper">
+    <canvas id="webgl-canvas"></canvas>
+  </div>
+
+  <!-- Top Header Navigation -->
+  <header id="header" class="site-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <a href="#" class="brand-logo" id="brand-logo-btn" title="Oleovista Solutions - Initial Landing View">
+          <!-- <svg class="emblem" width="28" height="24" viewBox="0 0 100 80" fill="none">
+            <path d="M50 8 L85 68 L15 68 Z" stroke="#ffffff" stroke-width="6" fill="rgba(45,98,140,0.3)"/>
+            <path d="M50 24 L72 68 L28 68 Z" stroke="#7ab4db" stroke-width="4" fill="none"/>
+          </svg> -->
+          <img src="/assets/Logoole.png" alt="Oleovista Logo" class="brand-img" />
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <ul>
+          <li><a href="#" class="nav-item active" id="nav-home">Home</a></li>
+          <li><a href="#" class="nav-item" id="nav-about">About Us</a></li>
+          <li><a href="#" class="nav-item" id="nav-services">Services</a></li>
+          <li><a href="#" class="nav-item" id="nav-careers">Careers</a></li>
+          <li><a href="#" class="nav-item" id="nav-team">Team</a></li>
+          <li><a href="#" class="nav-item" id="nav-contact">Contact Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <!-- Light Dropdown (in place of News) -->
+        <div class="header-dropdown" id="dropdown-light">
+          <button class="header-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Mountain & Atmosphere Lighting">
+            <span class="dropdown-title"><img src="/assets/sunl.svg" alt=""></span>
+            <span class="dropdown-active-pill" id="light-current">🌅 Dawn</span>
+            <svg class="dropdown-chevron" width="9" height="6" viewBox="0 0 9 6" fill="none">
+              <path d="M1 1.25L4.5 4.75L8 1.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="header-dropdown-menu">
+            <button class="dropdown-item" data-time="greenery">
+              <span class="dropdown-icon">🌱</span>
+              <span class="dropdown-item-label">Greenery</span>
+            </button>
+            <button class="dropdown-item active" data-time="day">
+              <span class="dropdown-icon">🌅</span>
+              <span class="dropdown-item-label">Dawn</span>
+            </button>
+            <button class="dropdown-item" data-time="sunset">
+              <span class="dropdown-icon">🌇</span>
+              <span class="dropdown-item-label">Sunset</span>
+            </button>
+            <button class="dropdown-item" data-time="night">
+              <span class="dropdown-icon">🌌</span>
+              <span class="dropdown-item-label">Night</span>
+            </button>
+            <button class="dropdown-item" data-time="jade">
+              <span class="dropdown-icon">🌿</span>
+              <span class="dropdown-item-label">Jade</span>
+            </button>
+            <button class="dropdown-item" data-time="aurora">
+              <span class="dropdown-icon">🟢</span>
+              <span class="dropdown-item-label">Aurora</span>
+            </button>
+            <button class="dropdown-item" data-time="mint">
+              <span class="dropdown-icon">🍃</span>
+              <span class="dropdown-item-label">Mint</span>
+            </button>
+            <button class="dropdown-item" data-time="pine">
+              <span class="dropdown-icon">🌲</span>
+              <span class="dropdown-item-label">Pine</span>
+            </button>
+            <button class="dropdown-item" data-time="olive">
+              <span class="dropdown-icon">🫒</span>
+              <span class="dropdown-item-label">Olive</span>
+            </button>
+            <button class="dropdown-item" data-time="sage">
+              <span class="dropdown-icon">🌾</span>
+              <span class="dropdown-item-label">Sage</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Dropdown (in place of Menu) -->
+        <div class="header-dropdown" id="dropdown-mode">
+          <button class="header-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Camera Navigation Mode">
+            <span class="dropdown-title"><img src="/assets/anim.svg" alt=""></span>
+            <span class="dropdown-active-pill" id="mode-current">🏔️ Scroll</span>
+            <svg class="dropdown-chevron" width="9" height="6" viewBox="0 0 9 6" fill="none">
+              <path d="M1 1.25L4.5 4.75L8 1.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="header-dropdown-menu">
+            <button class="dropdown-item active" data-mode="scroll">
+              <span class="dropdown-icon">🏔️</span>
+              <span class="dropdown-item-label">Scroll</span>
+            </button>
+            <button class="dropdown-item" data-mode="orbit">
+              <span class="dropdown-icon">🛸</span>
+              <span class="dropdown-item-label">Free 3D</span>
+            </button>
+            <button class="dropdown-item" data-mode="auto">
+              <span class="dropdown-icon">🎬</span>
+              <span class="dropdown-item-label">Cruise</span>
+            </button>
+          </div>
+        </div>
+        <!-- Mobile Menu Toggle Button -->
+        <button id="menu-btn" class="header-menu-btn" aria-label="Toggle navigation menu" title="Navigation Menu">
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Bottom-Right Actions Stack -->
+  <div class="bottom-actions">
+    <button id="scroll-top-btn" class="circle-btn" title="Return to Peak" aria-label="Scroll to top">
+      <svg width="12" height="14" viewBox="0 0 10 12" fill="none">
+        <path d="M.87 3.982 4.464.386a.757.757 0 0 1 1.07 0L9.13 3.982a.757.757 0 1 1-1.07 1.07L5.757 2.748v8.331a.757.757 0 1 1-1.514 0V2.748L1.94 5.052a.757.757 0 1 1-1.07-1.07" fill="currentColor"/>
+      </svg>
+    </button>
+    
+    <button id="sound-btn" class="circle-btn sound-btn" title="Toggle Alpine Ambience" aria-label="Sound Toggle">
+      <canvas id="sound-canvas" width="24" height="24"></canvas>
+    </button>
+
+    <!-- Floating Direct WhatsApp Button -->
+    <a id="whatsapp-float-btn" 
+       class="whatsapp-float-btn" 
+       href="https://wa.me/919539494809?text=Hello%20Oleovista%20Solutions%2C%20I%20would%20like%20to%20connect." 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       aria-label="Direct WhatsApp Chat" 
+       title="Chat on WhatsApp (+91 95394 94809)">
+      <span class="wa-ripple-ring"></span>
+      <span class="wa-ripple-ring wa-ring-delay"></span>
+      <div class="wa-icon-box">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.32c-.82-1.3-1.26-2.82-1.26-4.38 0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42 1.56 1.56 2.41 3.63 2.41 5.83 0 4.54-3.7 8.24-8.24 8.24zm4.52-6.17c-.25-.12-1.46-.72-1.69-.8-.22-.08-.39-.12-.55.12-.17.25-.64.8-.78.96-.15.17-.29.19-.54.07-.24-.13-1.03-.39-1.96-1.22-.72-.65-1.21-1.45-1.35-1.7-.15-.24-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.24.25-.41.08-.17.04-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.43-.14 0-.3 0-.47 0-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.13.16 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.51.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/>
+        </svg>
+      </div>
+      <span class="wa-tooltip">Direct WhatsApp</span>
+    </a>
+  </div>
+
+  <!-- Left Chapter Progress Navigation -->
+  <!-- <aside class="chapters-nav"> -->
+    <!-- Home Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-home">
+      <div class="progress-track">
+        <div id="progress-bar-fill" class="progress-fill"></div>
+      </div>
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 HERO</span>
+      </div>
+      <div class="chapter-item" data-progress="0.18">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 STRATEGY</span>
+      </div>
+      <div class="chapter-item" data-progress="0.42">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 OIL</span>
+      </div>
+      <div class="chapter-item" data-progress="0.68">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 METALS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.92">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">05 GLOBAL</span>
+      </div>
+    </div>
+
+    <!-- About Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-about" style="display: none;">
+      <!-- <div class="progress-track">
+        <div id="progress-bar-fill-about" class="progress-fill"></div>
+      </div> -->
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 ABOUT US</span>
+      </div>
+      <div class="chapter-item" data-progress="0.18">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 OVERVIEW</span>
+      </div>
+      <div class="chapter-item" data-progress="0.42">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 MISSION</span>
+      </div>
+      <div class="chapter-item" data-progress="0.68">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 VISION</span>
+      </div>
+      <div class="chapter-item" data-progress="0.92">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">05 REACH</span>
+      </div>
+    </div>
+
+    <!-- Services Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-services" style="display: none;">
+      <div class="progress-track">
+        <div id="progress-bar-fill-services" class="progress-fill"></div>
+      </div>
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 SERVICES</span>
+      </div>
+      <div class="chapter-item" data-progress="0.24">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 ACERS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.48">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 RISK</span>
+      </div>
+      <div class="chapter-item" data-progress="0.74">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 WORKFLOW</span>
+      </div>
+      <div class="chapter-item" data-progress="0.93">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">05 CONTACT</span>
+      </div>
+    </div>
+    <!-- Careers Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-careers" style="display: none;">
+      <div class="progress-track">
+        <div id="progress-bar-fill-careers" class="progress-fill"></div>
+      </div>
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 CAREERS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.24">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 WHY US</span>
+      </div>
+      <div class="chapter-item" data-progress="0.5">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 OPENINGS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.77">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 PROCESS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.94">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">05 APPLY</span>
+      </div>
+    </div>
+    <!-- Team Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-team" style="display: none;">
+      <div class="progress-track">
+        <div id="progress-bar-fill-team" class="progress-fill"></div>
+      </div>
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 OUR TEAM</span>
+      </div>
+      <div class="chapter-item" data-progress="0.2" data-team-anchor="lead">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 LEADERSHIP</span>
+      </div>
+      <div class="chapter-item" data-progress="0.45" data-team-anchor="grid">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 EXPERTS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.95" data-team-anchor="join">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 JOIN US</span>
+      </div>
+    </div>
+
+    <!-- Contact Mode Chapters Track -->
+    <div class="chapters-container" id="chapters-contact" style="display: none;">
+      <div class="progress-track">
+        <div id="progress-bar-fill-contact" class="progress-fill"></div>
+      </div>
+      <div class="chapter-item active" data-progress="0.0">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">01 LET'S TALK</span>
+      </div>
+      <div class="chapter-item" data-progress="0.22" data-contact-anchor="reach">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">02 REACH US</span>
+      </div>
+      <div class="chapter-item" data-progress="0.4" data-contact-anchor="brief">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">03 PROJECT BRIEF</span>
+      </div>
+      <div class="chapter-item" data-progress="0.6" data-contact-anchor="chat">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">04 CHAT</span>
+      </div>
+      <div class="chapter-item" data-progress="0.78" data-contact-anchor="faq">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">05 FAQS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.92" data-contact-anchor="map">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">06 LOCATION</span>
+      </div>
+    </div>
+  <!-- </aside> -->
+
+  <!-- Scrollable UI Experience Chapters Overlay -->
+  <main id="content-container">
+    
+    <!-- HOME EXPERIENCE VIEW LAYER -->
+    <div id="home-view" class="view-layer active">
+
+      <!-- CHAPTER 1: HERO -->
+      <section class="story-section section-hero" id="sec-hero">
+      <div class="hero-center">
+        <div class="hero-badge"></div>
+        <h1 class="hero-title">Oleovista Solutions</h1>
+        <p class="hero-subtitle">Operating Efficiently, Leading with Innovation.</p>
+        
+        <div class="scroll-cta">
+          <div class="mouse-icon">
+            <div class="wheel-dot"></div>
+          </div>
+          <span class="cta-text">Scroll or drag to navigate 3D landscape</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 2: STRATEGY & OVERVIEW -->
+    <section class="story-section section-strategy" id="sec-strategy">
+      <div class="content-card glass-panel">
+        <div class="card-eyebrow">About Oleovista Solutions</div>
+        <h2 class="card-title">Diverse Global Portfolio, Safe & Responsible Execution</h2>
+        <div class="card-text">
+          <p>
+            Oleovista Trading manages a diverse portfolio of products and services, safely and responsibly, all over the world. With extensive expertise and knowledge in various fields, we ensure top-quality service and delivery in every market we serve.
+          </p>
+          <p>
+            Our responsive decision-making approach, combined with our deep understanding of the connection between risk, reward, and sustainable growth, has made us one of the fastest-growing global commodity trading and asset investment companies in the energy sector.
+          </p>
+        </div>
+        <div class="card-stats">
+          <div class="stat-box">
+            <span class="stat-num">+1M</span>
+            <span class="stat-label">Metric Tons Delivered</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">#3</span>
+            <span class="stat-label">Bunkering Hub Fujairah</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">360°</span>
+            <span class="stat-label">Integrated Value Chain</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 3: OIL DIVISION -->
+    <section class="story-section section-oil" id="sec-oil">
+      <div class="division-header">
+        <!-- <div class="division-pill">ENERGY SECTOR</div>
+        <h2 class="division-title">OIL & REFINED PRODUCTS</h2>
+        <p class="division-desc">Leveraging extensive logistics hubs, blending terminals, and global bunkering networks.</p> -->
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card glass-panel" data-prod="crude">
+          <div class="prod-num">01</div>
+          <h3 class="prod-title">Crude Oil</h3>
+          <p class="prod-snippet">Ensuring seamless and efficient movement of crude oil from producing countries to international refiners and our proprietary refinery network.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="marine">
+          <div class="prod-num">02</div>
+          <h3 class="prod-title">Marine Fuels</h3>
+          <p class="prod-snippet">Bunkering operations in Fujairah, UAE—the third largest bunkering market globally—delivering high-grade fuel directly to vessels with green transition protocols.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="gasoline">
+          <div class="prod-num">03</div>
+          <h3 class="prod-title">Gasoline</h3>
+          <p class="prod-snippet">Comprehensive range of gasoline and blending components supported by our Fujairah storage facilities and relationships with international majors.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="lpg">
+          <div class="prod-num">04</div>
+          <h3 class="prod-title">LPG (Liquefied Gas)</h3>
+          <p class="prod-snippet">Global trade via Very Large Gas Carriers (VLGCs) from the US and Arabian Gulf to Asia, plus pressurized LPG cargoes for regional infrastructure.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="gas-power">
+          <div class="prod-num">05</div>
+          <h3 class="prod-title">Gas & Power</h3>
+          <p class="prod-snippet">Power and gas trading licenses in Turkey and European interconnected grids, enabling active participation in evolving regional energy dynamics.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="fuel-oil">
+          <div class="prod-num">06</div>
+          <h3 class="prod-title">Fuel Oil</h3>
+          <p class="prod-snippet">Specialized blending operations for marine fuel and utility-grade power generation, producing low-sulfur and high-sulfur compliant fuels.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="distillates">
+          <div class="prod-num">07</div>
+          <h3 class="prod-title">Distillates</h3>
+          <p class="prod-snippet">Efficient value chain connecting East & Southern Africa with vessel and overland pipeline/truck supply routes exceeding 1M+ metric tons.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+
+        <div class="product-card glass-panel" data-prod="naphtha">
+          <div class="prod-num">08</div>
+          <h3 class="prod-title">Naphtha & Low Carbon</h3>
+          <p class="prod-snippet">Petrochemical cracker feedstocks and emerging renewable biofuels, driving lower carbon intensity across global logistics.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 4: METALS DIVISION -->
+    <section class="story-section section-metals" id="sec-metals">
+      <div class="division-header">
+        <div class="division-pill">MINERALS & RAW COMMODITIES</div>
+        <h2 class="division-title">METALS & DRY BULK</h2>
+        <p class="division-desc">Transportation, storage, and supply of ferrous, non-ferrous, and industrial minerals from mine to smelter.</p>
+      </div>
+
+      <div class="metals-grid">
+        <div class="metal-card glass-panel">
+          <div class="card-icon"></div>
+          <h3>Ferro Alloys</h3>
+          <p>Vital alloys for precision steelmaking: ferromolybdenum, ferroniobium, ferrotungsten, ferromanganese, and ferrosilicon upholding rigid metallurgical standards.</p>
+        </div>
+
+        <div class="metal-card glass-panel">
+          <div class="card-icon"></div>
+          <h3>Dry Bulk</h3>
+          <p>Petroleum coke, bauxite, alumina, and industrial raw materials handled via chartered bulk carrier vessels connecting major industrial corridors.</p>
+        </div>
+
+        <div class="metal-card glass-panel">
+          <div class="card-icon"></div>
+          <h3>Base Metals</h3>
+          <p>Copper, aluminum, nickel, zinc, lead, and tin. Essential conductive and structural elements powering electrification and modern infrastructure.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 5: GLOBAL HUBS & FOOTPRINT -->
+    <!-- <section class="story-section section-global" id="sec-global">
+      <div class="global-header">
+        <div class="division-pill">GLOBAL TRADING HUBS</div>
+        <h2 class="division-title">STRATEGIC REACH</h2>
+      </div>
+
+      <div class="hubs-grid">
+        <div class="hub-card glass-panel">
+          <div class="hub-city">Infopark, Kochi</div>
+          <div class="hub-address">
+            Carnival Infopark Phase I<br>
+            Kakkanad, Kochi, Ernakulam,<br>
+            Kerala, India, 682042 <br>
+            Phone: +91 95394 94809
+          </div>
+          <div class="hub-badge">European Headquarters</div>
+        </div>
+
+        <div class="hub-card glass-panel">
+          <div class="hub-city">DUBAI, UAE</div>
+          <div class="hub-address">
+            1104 ICD Brookfield Place<br>
+            DIFC, Dubai, UAE<br>
+            Phone: +971 4 591 4032
+          </div>
+          <div class="hub-badge">Middle East Hub</div>
+        </div>
+
+        <div class="hub-card glass-panel">
+          <div class="hub-city">SINGAPORE</div>
+          <div class="hub-address">
+            0804 Marina One East Tower<br>
+            7 Straits View, Singapore<br>
+            Phone: +65 3105 1583
+          </div>
+          <div class="hub-badge">Asia-Pacific Hub</div>
+        </div>
+      </div>
+
+      <footer class="experience-footer">
+        <div class="footer-top">
+          <div class="footer-links">
+            <a href="#">Oleovista Group</a>
+            <a href="#">Trading</a>
+            <a href="#">Capital</a>
+            <a href="#">Maritime</a>
+            <a href="#">Fort Energy</a>
+          </div>
+          <div class="footer-legals">
+            <a href="#">Contact</a>
+            <a href="#">ESG Sustainability</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Oleovista Group. All rights reserved. 3D WebGL Alpine Experience.</p>
+        </div>
+      </footer>
+    </section> -->
+    </div><!-- End #home-view -->
+
+    <!-- ABOUT EXPERIENCE VIEW LAYER -->
+    <div id="about-view" class="view-layer">
+
+      <!-- ABOUT CHAPTER 1: HERO & VALUES -->
+      <section class="story-section section-about-hero" id="sec-about-hero">
+        <div class="hero-center about-hero-center">
+          <!-- <div class="about-breadcrumb-badge">
+            <span class="bc-home">Home</span>
+            <span class="bc-sep">—</span>
+            <span class="bc-current">About us</span>
+          </div> -->
+          <div class="hero-badge about-badge"></div>
+          <h1 class="hero-title about-title">ABOUT US</h1>
+          <p class="hero-subtitle about-subtitle">
+            Pioneering digital ETRM & ERP systems, transforming commodity trading operations and enterprise risk management across global markets.
+          </p>
+          
+          <div class="about-hero-card glass-panel">
+            <div class="about-hero-card-inner">
+              <div class="about-hero-brand">OLEOVISTA SOLUTIONS</div>
+              <p class="about-hero-desc">
+                We design and develop scalable enterprise platforms that streamline the flow of data, automate critical processes, and provide real-time insights into trading positions and risk exposure.
+              </p>
+            </div>
+          </div>
+
+          <div class="scroll-cta">
+            <div class="mouse-icon">
+              <div class="wheel-dot"></div>
+            </div>
+            <span class="cta-text">Scroll or drag to navigate 3D landscape</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT CHAPTER 2: WHO WE ARE & CORE EXPERTISE -->
+      <section class="story-section section-about-who" id="sec-about-who">
+        <div class="about-split-grid">
+          <div >
+            <div class="card-eyebrow">WHO WE ARE</div>
+            <h2 class="card-title">Technology-Driven Software Solutions</h2>
+            <div class="card-text">
+              <p>
+                We are a technology-driven organisation specialising in the design, development, and implementation of advanced software solutions tailored for the global commodity and energy markets. With a strong foundation in innovation and automation, our company is committed to transforming how businesses manage trading operations, market exposure, and enterprise-wide risk.
+              </p>
+              <p>
+                Our expertise lies in building high-performance, scalable, and secure systems that integrate seamlessly into the complex workflows of commodity and energy trading firms. We empower organisations to operate with greater efficiency, transparency, and accuracy through modern technology and intelligent automation.
+              </p>
+            </div>
+            <div class="about-pill-tags">
+              <span class="about-pill">High-Performance Systems</span>
+              <span class="about-pill">Enterprise Risk Control</span>
+              <span class="about-pill">Intelligent Automation</span>
+            </div>
+          </div>
+
+          <div >
+            <div class="about-media-wrapper">
+              <img src="/assets/about/finance.png" alt="Strategic Partnership" class="about-media-img" loading="lazy" decoding="async" />
+              <div class="media-overlay-badge">
+                <span class="mob-dot"></span>
+                <span>Trusted Strategic Partnership</span>
+              </div>
+            </div>
+            <div class="about-media-caption">
+              <h3>Empowering Global Trading Firms</h3>
+              <p>Seamlessly integrating modern technologies with high-performance execution workflows across worldwide energy markets.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT CHAPTER 3: OUR MISSION -->
+      <section class="story-section section-about-mission" id="sec-about-mission">
+        <div class="about-feature-grid">
+          <div >
+            <div class="about-media-wrapper">
+              <img src="/assets/about/commodity.jpg" alt="Our Mission - Intelligent Risk Management" class="about-media-img" loading="lazy" decoding="async" />
+              <div class="media-glow-accent"></div>
+            </div>
+            <div class="about-card-stat-pill">
+              <span class="pill-glow-dot"></span>
+              <span>Real-Time Intelligence & Execution</span>
+            </div>
+          </div>
+
+          <div >
+            <div class="card-eyebrow">STRATEGIC PURPOSE</div>
+            <h2 class="card-title">OUR MISSION</h2>
+            <div class="card-text mission-quote">
+              <p class="mission-lead">
+                "To deliver intelligent, automated risk management solutions that simplify complex commodity trading operations and empower organisations with real-time insights and operational excellence."
+              </p>
+            </div>
+            <div class="mission-pillars">
+              <div class="pillar-item">
+                <div class="pillar-icon"></div>
+                <div class="pillar-content">
+                  <h4>Intelligent Automation</h4>
+                  <p>Eliminate manual operational friction with automated hedging, position tracking, and straight-through trade processing.</p>
+                </div>
+              </div>
+              <div class="pillar-item">
+                <div class="pillar-icon"></div>
+                <div class="pillar-content">
+                  <h4>Real-Time Insights</h4>
+                  <p>Equip trading desks with instantaneous visibility into exposure, VaR metrics, and market volatilities.</p>
+                </div>
+              </div>
+              <div class="pillar-item">
+                <div class="pillar-icon"></div>
+                <div class="pillar-content">
+                  <h4>Operational Excellence</h4>
+                  <p>Resilient institutional standards engineered to perform during unprecedented commodity market volatility.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT CHAPTER 4: OUR VISION -->
+      <section class="story-section section-about-vision" id="sec-about-vision">
+        <div class="about-feature-grid reverse">
+          <div >
+            <div class="card-eyebrow">FUTURE HORIZON</div>
+            <h2 class="card-title">OUR VISION</h2>
+            <div class="card-text vision-quote">
+              <p class="vision-lead">
+                "To become the leading global provider of digital ETRM and ERP systems by continually innovating, integrating modern technologies, and building solutions that redefine efficiency, transparency, and risk control in the commodity and energy sectors."
+              </p>
+            </div>
+            <div class="vision-benchmarks">
+              <div class="benchmark-box">
+                <span class="benchmark-num">01</span>
+                <span class="benchmark-title">ETRM & ERP Leadership</span>
+                <span class="benchmark-desc">Setting the global benchmark for enterprise energy and commodity platforms.</span>
+              </div>
+              <div class="benchmark-box">
+                <span class="benchmark-num">02</span>
+                <span class="benchmark-title">Continuous Innovation</span>
+                <span class="benchmark-desc">Harnessing advanced analytics, AI models, and cloud-native scalability.</span>
+              </div>
+              <div class="benchmark-box">
+                <span class="benchmark-num">03</span>
+                <span class="benchmark-title">Transparent Control</span>
+                <span class="benchmark-desc">Guaranteed governance, compliance, and end-to-end operational clarity.</span>
+              </div>
+            </div>
+          </div>
+
+          <div >
+            <div class="about-media-wrapper">
+              <img src="/assets/about/vision.png" alt="Our Vision - Digital ETRM" class="about-media-img" loading="lazy" decoding="async" />
+              <div class="media-glow-accent"></div>
+            </div>
+            <div class="about-card-stat-pill">
+              <span class="pill-glow-dot cyan"></span>
+              <span>Global Provider of Digital ETRM & ERP</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT CHAPTER 5: STATS, CONTACT & FOOTPRINT -->
+      <section class="story-section section-about-stats" id="sec-about-stats">
+        <div class="about-stats-container">
+          
+          <!-- 4 Stats Cards from Reference Image -->
+          <div class="about-stats-row">
+            <div class="about-stat-card glass-panel">
+              <div class="stat-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                  <line x1="4" y1="22" x2="4" y2="15"></line>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-badge">COUNTRIES</div>
+                <div class="stat-digit">1 +</div>
+              </div>
+            </div>
+
+            <div class="about-stat-card glass-panel">
+              <div class="stat-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-badge">CLIENTS</div>
+                <div class="stat-digit">3 +</div>
+              </div>
+            </div>
+
+            <div class="about-stat-card glass-panel">
+              <div class="stat-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-badge">PROJECTS</div>
+                <div class="stat-digit">8 +</div>
+              </div>
+            </div>
+
+            <div class="about-stat-card glass-panel">
+              <div class="stat-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-badge">TEAM MEMBERS</div>
+                <div class="stat-digit">20 +</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- About Company Corporate Hub Box -->
+          <div class="about-corporate-box glass-panel">
+            <div class="corp-left">
+              <h3 class="corp-title">OLEOVISTA SOLUTIONS</h3>
+              <p class="corp-desc">
+                We design and develop scalable enterprise platforms that streamline the flow of data, automate critical processes, and provide real-time insights into trading positions and risk exposure.
+              </p>
+              <div class="corp-socials">
+                <a href="#" class="corp-social-btn" title="Twitter / X" aria-label="Twitter">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+                <a href="https://www.linkedin.com/company/oleovista-solutions-private-limited/?viewAsMember=true" class="corp-social-btn" title="LinkedIn" aria-label="LinkedIn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="corp-right">
+              <div class="corp-email-card">
+                <span class="corp-email-label">DIRECT INQUIRIES & CONTACT</span>
+                <a href="mailto:corporate@oleovista.com" class="corp-email-link">corporate@oleovista.com</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Footer -->
+          <footer class="about-experience-footer">
+            <div class="about-footer-text">
+              <p>© 2025 Oleovista - Software Solutions & Automated Commodity Risk Management</p>
+            </div>
+            <div class="about-footer-links">
+              <a href="#">Contact Us</a>
+              <span class="af-sep">|</span>
+              <a href="#">Privacy Policy</a>
+            </div>
+          </footer>
+
+        </div>
+      </section>
+
+    </div><!-- End #about-view -->
+
+    <!-- SERVICES EXPERIENCE VIEW LAYER -->
+    <div id="services-view" class="view-layer">
+
+      <!-- SERVICES CHAPTER 1: HERO -->
+      <section class="story-section section-svc-hero" id="sec-svc-hero">
+        <div class="hero-center">
+          <div class="hero-badge svc-badge">ETRM · CTRM · RISK · AUTOMATION</div>
+          <h1 class="hero-title svc-title">OUR SERVICES</h1>
+          <p class="hero-subtitle">End-to-end software for commodity and energy trading, from trade capture to settlement.</p>
+          <div class="scroll-cta">
+            <div class="mouse-icon"><div class="wheel-dot"></div></div>
+            <span class="cta-text">Scroll to explore our services</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES CHAPTER 2: ACERS -->
+      <section class="story-section section-svc-left" id="sec-svc-acers">
+        <div class="svc-block" class="about-media-card glass-panel vision-media-card">
+          <!-- <div class="svc-index"></div> -->
+          <div class="card-eyebrow">FLAGSHIP PLATFORM</div>
+          <h2 class="svc-heading">Automated Commodity &amp; Energy Risk System</h2>
+          <p class="svc-text">ACERS is an intelligent ERP + ETRM platform that brings trade capture, positions, risk, finance, operations and compliance into one unified, cloud-ready system for commodity and energy firms.</p>
+          <div class="svc-tags">
+            <span>Trade Capture &amp; Management</span>
+            <span>Real-Time Position Management</span>
+            <span>Multi-Exchange Integration</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES CHAPTER 3: RISK -->
+      <section class="story-section section-svc-right" id="sec-svc-risk">
+        <div class="svc-block">
+          <!-- <div class="svc-index"></div> -->
+          <div class="card-eyebrow">ANALYTICS</div>
+          <h2 class="svc-heading">Risk Analytics &amp; Compliance</h2>
+          <p class="svc-text">Real-time mark-to-market, realised and unrealised P/L and Value-at-Risk, with instant stress and scenario testing. Exposure is consolidated across trades, portfolios and counterparties, with accuracy and compliance across every business unit.</p>
+          <div class="svc-cols">
+            <div><h4>Live P/L &amp; VaR</h4><p>Continuous MTM, P/L and VaR calculations on one dashboard.</p></div>
+            <div><h4>Audit-ready</h4><p>Role-based access, full audit trails and multi-tenant security.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES CHAPTER 4: WORKFLOW + DELIVERY -->
+      <section class="story-section section-svc-left" id="sec-svc-workflow">
+        <div class="svc-block">
+          <!-- <div class="svc-index"></div> -->
+          <div class="card-eyebrow">OPERATIONS</div>
+          <h2 class="svc-heading">Enterprise Workflow Automation</h2>
+          <p class="svc-text">Settlements, invoicing, document control, trade confirmations and audit tracking run automatically, cutting manual effort and operational risk.</p>
+          <div class="svc-steps">
+            <div><span>A</span>Discovery &amp; Planning</div>
+            <div><span>B</span>Integration &amp; Configuration</div>
+            <div><span>C</span>Testing &amp; Optimisation</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES CHAPTER 5: CONTACT -->
+      <section class="story-section section-svc-contact" id="sec-svc-contact">
+        <div class="svc-cta">
+          <div class="card-eyebrow">START A PROJECT</div>
+          <h2 class="svc-heading">Let's build your trading platform</h2>
+          <p class="svc-text">Tell us about your trading operation and we will show you how ACERS fits.</p>
+          <div class="svc-mail">corporate@oleovista.com</div>
+          <p class="svc-foot">© 2025 Oleovista - Software Solutions &amp; Automated Commodity Risk Management</p>
+        </div>
+      </section>
+
+    </div><!-- End #services-view -->
+
+    <!-- CAREERS EXPERIENCE VIEW LAYER -->
+    <div id="careers-view" class="view-layer">
+
+      <!-- CAREERS CHAPTER 1: HERO (mountain, sunset theme) -->
+      <section class="story-section section-car-hero" id="sec-car-hero">
+        <div class="hero-center">
+          <div class="hero-badge car-badge">CAREERS · JOIN OLEOVISTA</div>
+          <h1 class="hero-title car-title">BUILD WITH US</h1>
+          <p class="hero-subtitle">Help build the software that moves the world's energy and commodities.</p>
+          <div class="car-hero-actions">
+            <button class="car-btn car-btn-primary" data-careers-goto="0.5">View open roles</button>
+          </div>
+          <div class="scroll-cta">
+            <div class="mouse-icon"><div class="wheel-dot"></div></div>
+            <span class="cta-text">Scroll to explore careers</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREERS CHAPTER 2: WHY US -->
+      <section class="story-section section-car-left" id="sec-car-why">
+        <div class="car-block">
+          <!-- <div class="car-index">01</div> -->
+          <div class="card-eyebrow car-eyebrow">LIFE AT OLEOVISTA</div>
+          <h2 class="car-heading">Work where global energy markets meet great software</h2>
+          <p class="car-text">Our platforms run the trading, risk and settlement desks of energy and commodity companies across continents. Small teams, real ownership and work that ships to live clients.</p>
+          <div class="car-perks">
+            <div><span></span><h4>Global impact</h4><p>Your code supports trades between ports and markets worldwide.</p></div>
+            <div><span></span><h4>Hybrid &amp; flexible</h4><p>Flexible hours, hybrid work and remote-friendly teams.</p></div>
+            <div><span></span><h4>Keep learning</h4><p>Yearly learning budget, certifications and mentoring.</p></div>
+            <div><span></span><h4>Cared for</h4><p>Health cover for you and your family.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREERS CHAPTER 3: JOB OPENINGS -->
+      <section class="story-section section-car-left" id="sec-car-openings">
+        <div class="car-block car-block-wide">
+          <!-- <div class="car-index">02</div> -->
+          <div class="card-eyebrow car-eyebrow">OPEN POSITIONS · <span id="careers-count"></span></div>
+          <h2 class="car-heading">Find your next role</h2>
+          <div class="car-filters" id="careers-filters"></div>
+          <div class="car-jobs" id="careers-job-list"></div>
+          <p class="car-foot-note">Click a role to see full details and apply.</p>
+        </div>
+      </section>
+
+      <!-- CAREERS CHAPTER 4: HIRING PROCESS -->
+      <section class="story-section section-car-left" id="sec-car-process">
+        <div class="car-block">
+          <!-- <div class="car-index">03</div> -->
+          <div class="card-eyebrow car-eyebrow">HOW WE HIRE</div>
+          <h2 class="car-heading">A simple, respectful process</h2>
+          <div class="car-steps">
+            <div><span>1</span><div><h4>Apply</h4><p>Send your CV by email. We reply to every application.</p></div></div>
+            <div><span>2</span><div><h4>Intro call</h4><p>A 30-minute chat about you, the role and the team.</p></div></div>
+            <div><span>3</span><div><h4>Skills conversation</h4><p>A practical discussion or small task, never a trick test.</p></div></div>
+            <div><span>4</span><div><h4>Offer</h4><p>Meet the team, then a clear offer, usually within 2–3 weeks.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREERS CHAPTER 5: GENERAL APPLICATION -->
+      <section class="story-section section-car-left" id="sec-car-apply">
+        <div class="car-block">
+          <!-- <div class="car-index">04</div> -->
+          <div class="card-eyebrow car-eyebrow">GENERAL APPLICATION</div>
+          <h2 class="car-heading">Don't see the right role?</h2>
+          <p class="car-text">We are always glad to meet talented people. Send us your CV and tell us what you would love to work on.</p>
+          <div class="car-hero-actions car-left-actions">
+            <button class="car-btn car-btn-primary" data-careers-general>Send a general application</button>
+          </div>
+          <div class="car-mail careers-mail">careers@oleovista.com</div>
+          <p class="svc-foot">© 2025 Oleovista Solutions Private Limited</p>
+        </div>
+      </section>
+
+    </div><!-- End #careers-view -->
+
+    <!-- TEAM EXPERIENCE VIEW LAYER -->
+    <div id="team-view" class="view-layer">
+
+      <!-- TEAM CHAPTER 1: HERO (mountain, greenery theme) -->
+      <section class="story-section section-team-hero" id="sec-team-hero">
+        <div class="hero-center">
+          <div class="hero-badge tm-badge">OUR PEOPLE · OLEOVISTA</div>
+          <h1 class="hero-title tm-title">MEET OUR TEAM</h1>
+          <p class="hero-subtitle">Engineers, analysts and designers building software for global energy markets.</p>
+          <div class="scroll-cta">
+            <div class="mouse-icon"><div class="wheel-dot"></div></div>
+            <span class="cta-text">Scroll to meet the team</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM CHAPTER 2: THE TEAM (one long list that scrolls over the meadow) -->
+      <section class="story-section section-team-grid" id="sec-team-grid">
+        <div class="tm-track" id="team-track">
+          <div class="tm-intro">
+            <div class="tm-bgword" aria-hidden="true">Our People</div>
+            <div class="card-eyebrow tm-eyebrow">PROFESSIONAL TEAM</div>
+            <h2 class="tm-heading">Meet Our Experts</h2>
+            <p class="tm-text">Our success comes from teamwork, deep technical expertise and a shared love for building things that work.</p>
+          </div>
+
+          <div class="tm-label" id="team-anchor-lead">Leadership</div>
+          <div class="tm-lead" id="team-leadership"></div>
+
+          <div class="tm-label" id="team-anchor-grid">Our Experts</div>
+          <div class="tm-grid" id="team-grid"></div>
+
+          <div class="tm-join" id="team-anchor-join">
+            <div class="card-eyebrow tm-eyebrow">GROW WITH US</div>
+            <h2 class="tm-heading">Want to be part of the team?</h2>
+            <p class="tm-text">We are always looking for curious, kind and talented people.</p>
+            <button class="car-btn car-btn-primary tm-join-btn" data-team-careers>See open positions</button>
+            <p class="svc-foot">© 2025 Oleovista Solutions Private Limited</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- End #team-view -->
+
+    <!-- CONTACT US EXPERIENCE VIEW LAYER -->
+    <div id="contact-view" class="view-layer">
+
+      <!-- CONTACT CHAPTER 1: HERO (your mountain) -->
+      <section class="story-section section-contact-hero" id="sec-contact-hero">
+        <div class="ct-hero">
+          <div class="ct-pill">CONTACT US</div>
+          <h1 class="ct-hero-title">Let's talk about your <span>project</span></h1>
+          <p class="ct-hero-sub">Visit us at Carnival Infopark, Kochi, or tell us what you need below. Our team will get back to you shortly.</p>
+          <div class="ct-hero-actions">
+            <button class="ct-btn ct-btn-primary" data-contact-go="brief">Start your project <span aria-hidden="true">&rarr;</span></button>
+            <button class="ct-btn ct-btn-ghost" data-contact-go="chat">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Chat with us
+            </button>
+          </div>
+          <div class="ct-hero-stats">
+            <div><strong>8+</strong><span>Projects delivered</span></div>
+            <div><strong>20+</strong><span>Experts on the team</span></div>
+            <div><strong>1 day</strong><span>Typical reply time</span></div>
+          </div>
+          <div class="scroll-cta">
+            <div class="mouse-icon"><div class="wheel-dot"></div></div>
+            <span class="cta-text">Scroll to reach us</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT CHAPTER 2: ONE LONG TRACK THAT SCROLLS OVER THE 3D WORLD -->
+      <section class="story-section section-contact-grid" id="sec-contact-grid">
+        <div class="ct-track" id="contact-track">
+
+          <!-- 1. REACH US -->
+          <div class="ct-block" id="contact-anchor-reach">
+            <div class="ct-head">
+              <div class="ct-watermark" aria-hidden="true">Contact Us</div>
+              <h2 class="ct-h2">Reach Us<span>.</span></h2>
+            </div>
+            <div class="ct-reach">
+              <a class="ct-reach-card" data-ct-href="tel">
+                <span class="ct-reach-top"><span class="ct-ico"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="ct-arrow">&nearr;</span></span>
+                <span class="ct-reach-label">CALL US</span>
+                <span class="ct-reach-value" data-ct="phone">+91 95394 94809</span>
+                <span class="ct-reach-note">Talk to our team directly</span>
+              </a>
+              <a class="ct-reach-card" data-ct-href="whatsapp" target="_blank" rel="noopener">
+                <span class="ct-reach-top"><span class="ct-ico"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.5 8.5 0 1 1 21 11.5z"/><path d="M9 9.5c.3 1.8 2.2 3.8 4 4.4l1.1-1.1 1.9.8-.4 1.5c-3 .4-6.5-2.8-7-6l1.5-.5.8 1.9z"/></svg></span><span class="ct-arrow">&nearr;</span></span>
+                <span class="ct-reach-label">WHATSAPP</span>
+                <span class="ct-reach-value">Chat on WhatsApp</span>
+                <span class="ct-reach-note">Fastest way to reach us</span>
+              </a>
+              <a class="ct-reach-card" data-ct-href="mail">
+                <span class="ct-reach-top"><span class="ct-ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span><span class="ct-arrow">&nearr;</span></span>
+                <span class="ct-reach-label">EMAIL US</span>
+                <span class="ct-reach-value" data-ct="email">corporate@oleovista.com</span>
+                <span class="ct-reach-note">We reply within one business day</span>
+              </a>
+              <a class="ct-reach-card" data-ct-href="maps" target="_blank" rel="noopener">
+                <span class="ct-reach-top"><span class="ct-ico"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="ct-arrow">&nearr;</span></span>
+                <span class="ct-reach-label">VISIT US</span>
+                <span class="ct-reach-value">Carnival Infopark, Kochi</span>
+                <span class="ct-reach-note">Get directions</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- 2. PROJECT BRIEF + FORM -->
+          <div class="ct-block ct-brief" id="contact-anchor-brief">
+            <div class="ct-brief-left">
+              <div class="ct-eyebrow">TELL US WHAT YOU'RE BUILDING</div>
+              <h2 class="ct-h3">A quick brief is all it takes to get started.</h2>
+              <p class="ct-text">Share your goals, timeline and budget, even a rough idea works. Our team reviews every enquiry and gets back to you personally, usually within one business day.</p>
+              <ul class="ct-checks">
+                <li>No obligation, no sales pressure</li>
+                <li>A real engineer reads your message</li>
+                <li>Clear next steps after our first call</li>
+              </ul>
+              <div class="ct-info">
+                <div class="ct-info-title">OFFICE ADDRESS</div>
+                <p data-ct="address">Oleovista Solutions Private Limited<br>Carnival Infopark, Phase 1, Infopark Campus,<br>Kakkanad, Kochi, Kerala, India</p>
+                <div class="ct-info-title">PHONE NUMBER &amp; EMAIL</div>
+                <ul class="ct-dash">
+                  <li><a data-ct-href="tel" data-ct="phone">+91 95394 94809</a></li>
+                  <li><a data-ct-href="mail" data-ct="email">corporate@oleovista.com</a></li>
+                </ul>
+                <div class="ct-info-title">SOCIAL MEDIA</div>
+                <ul class="ct-dash ct-social-list">
+                  <li><a data-ct-social="linkedin" target="_blank" rel="noopener">LinkedIn</a></li>
+                  <li><a data-ct-social="instagram" target="_blank" rel="noopener">Instagram</a></li>
+                  <li><a data-ct-social="facebook" target="_blank" rel="noopener">Facebook</a></li>
+                  <li><a data-ct-social="x" target="_blank" rel="noopener">X (Twitter)</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="ct-form-card">
+              <form id="contact-project-form" class="ct-form" novalidate>
+                <h3>Start your project</h3>
+                <p class="ct-form-note">Fields marked * are required.</p>
+                <input id="cf-name" name="name" placeholder="Name *" autocomplete="name">
+                <input id="cf-email" name="email" type="email" placeholder="Email *" autocomplete="email">
+                <div class="ct-row">
+                  <select id="cf-code" name="code" aria-label="Country code">
+                    <option value="+91" selected>+91 India</option>
+                    <option value="+971">+971 UAE</option>
+                    <option value="+966">+966 Saudi Arabia</option>
+                    <option value="+974">+974 Qatar</option>
+                    <option value="+968">+968 Oman</option>
+                    <option value="+65">+65 Singapore</option>
+                    <option value="+44">+44 UK</option>
+                    <option value="+41">+41 Switzerland</option>
+                    <option value="+1">+1 USA / Canada</option>
+                    <option value="">Other</option>
+                  </select>
+                  <input id="cf-phone" name="phone" type="tel" placeholder="Phone number *" autocomplete="tel-national">
+                </div>
+                <input id="cf-company" name="company" placeholder="Company (optional)" autocomplete="organization">
+                <select id="cf-service" name="service" aria-label="What do you need?">
+                  <option value="">What do you need? (optional)</option>
+                  <option>ACERS – ERP + ETRM platform</option>
+                  <option>Risk analytics &amp; compliance</option>
+                  <option>Workflow automation</option>
+                  <option>Custom software development</option>
+                  <option>Something else</option>
+                </select>
+                <input id="cf-subject" name="subject" placeholder="Subject *">
+                <textarea id="cf-message" name="message" rows="4" placeholder="Message *"></textarea>
+                <div class="ct-form-error" role="alert"></div>
+                <div class="ct-form-actions">
+                  <button type="submit" class="ct-btn ct-btn-primary ct-submit">Submit</button>
+                  <button type="button" class="ct-btn ct-btn-ghost" id="cf-whatsapp">Send on WhatsApp</button>
+                </div>
+                <p class="ct-form-hint">Submit opens your email app with everything filled in, ready to send to <span data-ct="email">corporate@oleovista.com</span>.</p>
+              </form>
+              <div id="contact-form-success" class="ct-success" hidden>
+                <div class="ct-success-ico">&#10003;</div>
+                <h3>Thanks, <span id="cf-success-name"></span>!</h3>
+                <p>Your email app should now be open with your brief. Press <strong>Send</strong> and our team will get back to you shortly.</p>
+                <p class="ct-form-hint">Nothing opened? Email us at <a data-ct-href="mail" data-ct="email">corporate@oleovista.com</a> or call <a data-ct-href="tel" data-ct="phone">+91 95394 94809</a>.</p>
+                <button type="button" class="ct-btn ct-btn-ghost" id="cf-reset-btn">Send another message</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. CHAT -->
+          <div class="ct-block ct-chat-block" id="contact-anchor-chat">
+            <div class="ct-chat-left">
+              <div class="ct-pill ct-pill-sm">&#10022; INSTANT ANSWERS</div>
+              <h2 class="ct-h3">Prefer to chat? Ask us anything, right now.</h2>
+              <p class="ct-text">Not ready to fill a form? Our assistant answers common questions about our services, process and pricing instantly, and hands you over to a real person on WhatsApp whenever you like.</p>
+              <div class="ct-prompts">
+                <button data-chat-prompt="What services do you offer?">"What services do you offer?"</button>
+                <button data-chat-prompt="What is ACERS?">"What is ACERS?"</button>
+                <button data-chat-prompt="How soon can we start?">"How soon can we start?"</button>
+              </div>
+            </div>
+            <div class="ct-chat">
+              <div class="ct-chat-head">
+                <span class="ct-chat-avatar">O</span>
+                <span><strong>Oleovista Assistant</strong><small>Automated answers · team on WhatsApp</small></span>
+                <a class="ct-chat-wa" data-ct-href="whatsapp" target="_blank" rel="noopener" title="Talk to a person on WhatsApp">Talk to a person</a>
+              </div>
+              <div class="ct-chat-msgs" id="ai-chat-messages">
+                <div class="ct-msg ct-msg-bot"><div class="ct-bubble">Hi! 👋 I'm the Oleovista assistant. We build ETRM, ERP and risk software for commodity and energy companies. What would you like to know?</div></div>
+              </div>
+              <div class="ct-chat-chips">
+                <button data-chat-prompt="What does a project cost?">Pricing</button>
+                <button data-chat-prompt="Where is your office?">Office location</button>
+                <button data-chat-prompt="How do I contact your team?">Contact the team</button>
+                <button data-chat-prompt="Do you provide support after launch?">Support</button>
+              </div>
+              <div class="ct-chat-input">
+                <input id="ai-chat-input" placeholder="Type a message..." autocomplete="off">
+                <button id="ai-chat-send" aria-label="Send">
+                  <svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. FAQ -->
+          <div class="ct-block" id="contact-anchor-faq">
+            <div class="ct-head">
+              <div class="ct-watermark" aria-hidden="true">Good to know</div>
+              <h2 class="ct-h2">Frequently asked<span>.</span></h2>
+            </div>
+            <div class="ct-faq">
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">What services does Oleovista provide?<span></span></button>
+                <div class="ct-faq-a"><p>We design and build software for commodity and energy trading: our ACERS platform (ERP + ETRM), risk analytics and compliance tools, workflow automation for settlements and operations, and custom enterprise software.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">How long does a project take?<span></span></button>
+                <div class="ct-faq-a"><p>It depends on scope. After a short discovery call we share a clear plan with milestones. Smaller modules can go live in weeks; full platform roll-outs are planned in phases.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">How do you price your work?<span></span></button>
+                <div class="ct-faq-a"><p>We offer fixed-scope quotes for well-defined projects and dedicated team engagements for longer work. Share a brief and we'll come back with options.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">How do you guarantee quality?<span></span></button>
+                <div class="ct-faq-a"><p>Every release goes through code review, automated tests and user-acceptance testing with your team, with full audit trails for compliance-sensitive features.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">Do you provide support after release?<span></span></button>
+                <div class="ct-faq-a"><p>Yes. We offer maintenance and support plans covering updates, monitoring, bug fixes and new features as your business grows.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. MAP -->
+          <div class="ct-block" id="contact-anchor-map">
+            <div class="ct-map">
+              <iframe id="ct-map-frame" title="Oleovista office location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe>
+              <button class="ct-map-shield" id="ct-map-shield" type="button">Click to use the map</button>
+              <div class="ct-map-card">
+                <strong>Oleovista Solutions Private Limited</strong>
+                <span data-ct="addressShort">Carnival Infopark, Phase 1, Kakkanad, Kochi</span>
+                <a class="ct-btn ct-btn-primary ct-btn-sm" data-ct-href="maps" target="_blank" rel="noopener">Open in Maps &nearr;</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. FOOTER -->
+          <footer class="ct-footer">
+            <div class="ct-foot-grid">
+              <div class="ct-foot-brand">
+                <div class="ct-foot-logo">OLEOVISTA<small>SOLUTIONS PRIVATE LIMITED</small></div>
+                <p>Software for commodity and energy trading: trade capture, risk, operations and compliance in one place.</p>
+                <ul class="ct-foot-contacts">
+                  <li><a data-ct-href="tel" data-ct="phone">+91 95394 94809</a></li>
+                  <li><a data-ct-href="mail" data-ct="email">corporate@oleovista.com</a></li>
+                  <li data-ct="addressShort">Carnival Infopark, Phase 1, Kakkanad, Kochi</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Services</h4>
+                <ul>
+                  <li><a href="#" data-ct-nav="nav-services">ACERS platform</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">Risk analytics</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">Workflow automation</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">Custom software</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>Company</h4>
+                <ul>
+                  <li><a href="#" data-ct-nav="nav-home">Home</a></li>
+                  <li><a href="#" data-ct-nav="nav-about">About us</a></li>
+                  <li><a href="#" data-ct-nav="nav-team">Team</a></li>
+                  <li><a href="#" data-ct-nav="nav-careers">Careers</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>Get in touch</h4>
+                <ul>
+                  <li><a href="#" data-contact-go="brief">Start a project</a></li>
+                  <li><a href="#" data-contact-go="chat">Chat with us</a></li>
+                  <li><a data-ct-href="whatsapp" target="_blank" rel="noopener">WhatsApp</a></li>
+                  <li><a data-ct-href="maps" target="_blank" rel="noopener">Directions</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="ct-foot-bottom">
+              <span>&copy; <span id="ct-year">2026</span> Oleovista Solutions Private Limited. All rights reserved.</span>
+              <button class="ct-top" id="ct-scroll-top" type="button" aria-label="Back to top">&uarr;</button>
+            </div>
+          </footer>
+
+        </div>
+      </section>
+
+    </div><!-- End #contact-view -->
+
+  </main>
+
+  <!-- Slide-out Menu Drawer -->
+  <div id="menu-drawer" class="menu-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">MENU</span>
+      <button id="drawer-close" class="close-btn" aria-label="Close navigation">&times;</button>
+    </div>
+
+    <!-- Main Navigation Pages (Essential for Mobile & Tablet) -->
+    <div class="drawer-section">
+      <span class="drawer-section-title">PAGES</span>
+      <ul class="drawer-pages-list">
+        <li><a href="#" class="drawer-page-link active" data-page="home">Home</a></li>
+        <li><a href="#" class="drawer-page-link" data-page="about">About Us</a></li>
+        <li><a href="#" class="drawer-page-link" data-page="services">Services</a></li>
+        <li><a href="#" class="drawer-page-link" data-page="careers">Careers</a></li>
+        <li><a href="#" class="drawer-page-link" data-page="team">Team</a></li>
+        <li><a href="#" class="drawer-page-link" data-page="contact">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Active View Chapters -->
+    <div class="drawer-section drawer-chapters-section">
+      <span class="drawer-section-title">CHAPTERS</span>
+      <ul class="drawer-nav" id="drawer-home-nav">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 Hero &amp; Overview</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.18">02 Strategic Vision</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.42">03 Oil &amp; Refined Products</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.68">04 Metals &amp; Minerals</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.92">05 Global Trading Hubs</a></li>
+      </ul>
+      <ul class="drawer-nav" id="drawer-about-nav" style="display: none;">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 About Us &amp; Values</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.18">02 Who We Are &amp; Solutions</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.42">03 Our Mission</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.68">04 Our Vision</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.92">05 Global Reach &amp; Metrics</a></li>
+      </ul>
+      <ul class="drawer-nav" id="drawer-services-nav" style="display: none;">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 Our Services</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.24">02 ACERS Platform</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.48">03 Risk Analytics &amp; Compliance</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.74">04 Workflow Automation</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.93">05 Contact</a></li>
+      </ul>
+      <ul class="drawer-nav" id="drawer-careers-nav" style="display: none;">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 Careers</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.24">02 Life at Oleovista</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.5">03 Open Positions</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.77">04 How We Hire</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.94">05 Apply</a></li>
+      </ul>
+      <ul class="drawer-nav" id="drawer-team-nav" style="display: none;">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 Our Team</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.2" data-team-anchor="lead">02 Leadership</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.45" data-team-anchor="grid">03 Our Experts</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.95" data-team-anchor="join">04 Join Us</a></li>
+      </ul>
+      <ul class="drawer-nav" id="drawer-contact-nav" style="display: none;">
+        <li><a href="#" class="drawer-link" data-target="0.0">01 Let's Talk</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.22" data-contact-anchor="reach">02 Reach Us</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.4" data-contact-anchor="brief">03 Start Your Project</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.6" data-contact-anchor="chat">04 Chat With Us</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.78" data-contact-anchor="faq">05 FAQs</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.92" data-contact-anchor="map">06 Location</a></li>
+      </ul>
+    </div>
+
+    <div class="drawer-info">
+      <a href="https://wa.me/919539494809?text=Hello%20Oleovista%20Solutions%2C%20I%20would%20like%20to%20connect." target="_blank" rel="noopener noreferrer" class="drawer-wa-link">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.32c-.82-1.3-1.26-2.82-1.26-4.38 0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42 1.56 1.56 2.41 3.63 2.41 5.83 0 4.54-3.7 8.24-8.24 8.24z"/>
+        </svg>
+        <span>Chat on WhatsApp</span>
+      </a>
+      <p>OLEOVISTA SOLUTIONS</p>
+      <p>Geneva &bull; Dubai &bull; Singapore</p>
+    </div>
+  </div>
+
+  <!-- Drawer Backdrop Overlay -->
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  <!-- Detail Modal -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-card glass-panel">
+      <button id="modal-close" class="modal-close-btn">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Careers: job details + apply panel -->
+  <div id="job-panel" class="job-panel" aria-hidden="true">
+    <div class="job-panel-card" role="dialog" aria-modal="true">
+      <button id="job-panel-close" class="job-panel-close" aria-label="Close">&times;</button>
+      <div id="job-panel-body" class="job-panel-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oleovista Solutions | 3D Cinematic Aurora Experience</title>
+  <meta name="description" content="Oleovista Solutions - Next-Generation Digital ETRM & Automated Commodity Risk Management Systems. Explore our 3D cinematic interactive world.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="loading-state">
+
+  <!-- Aurora Preloader Screen -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="aurora-spinner">
+        <div class="spinner-ring ring-1"></div>
+        <div class="spinner-ring ring-2"></div>
+        <div class="spinner-ring ring-3"></div>
+        <div class="spinner-core">
+          <svg class="logo-icon-svg" viewBox="0 0 100 100">
+            <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#aurora-grad)" stroke-width="6"/>
+            <polyline points="30,42 50,28 70,42" fill="none" stroke="url(#aurora-grad)" stroke-width="5" stroke-linecap="round"/>
+            <polyline points="30,58 50,72 70,58" fill="none" stroke="url(#aurora-grad)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="8" fill="#00f5a0"/>
+            <defs>
+              <linearGradient id="aurora-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f5a0" />
+                <stop offset="50%" stop-color="#00d9f5" />
+                <stop offset="100%" stop-color="#7b2cbf" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <h2 class="loader-title">OLEOVISTA</h2>
+      <p class="loader-subtitle">Loading 3D Cinematic Aurora Experience...</p>
+      
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <span id="progress-text" class="progress-text">0%</span>
+
+      <button id="start-btn" class="start-btn hidden">
+        <span>ENTER 3D EXPERIENCE</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Background Aurora Render Canvas & Three.js 3D Viewport -->
+  <div class="canvas-viewport">
+    <canvas id="aurora-canvas" class="aurora-canvas"></canvas>
+    <canvas id="webgl-canvas" class="webgl-canvas"></canvas>
+    <div class="aurora-vignette"></div>
+    <div class="aurora-overlay-grid"></div>
+  </div>
+
+  <!-- Dynamic Fixed Navigation & HUD -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-logo">
+        <svg class="logo-mark" viewBox="0 0 100 100">
+          <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="currentColor" stroke-width="8"/>
+          <polyline points="32,45 50,30 68,45" fill="none" stroke="#00f5a0" stroke-width="7" stroke-linecap="round"/>
+          <polyline points="32,55 50,70 68,55" fill="none" stroke="#00d9f5" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="7" fill="#00f5a0"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">OLEOVISTA</span>
+          <span class="brand-tag">TECHNOLOGIES</span>
+        </div>
+      </div>
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span class="status-label">ETRM CORE ACTIVE</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#hero" class="nav-item active">Home</a>
+      <a href="#about" class="nav-item">About Us</a>
+      <a href="#mission" class="nav-item">Mission & Vision</a>
+      <a href="#metrics" class="nav-item">Metrics</a>
+      <a href="#tech" class="nav-item">ETRM Suite</a>
+      <a href="#contact" class="nav-item">Contact</a>
+    </nav>
+
+    <div class="nav-controls">
+      <button id="sound-btn" class="hud-btn" title="Toggle Cosmic Ambience">
+        <svg class="icon-sound-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <svg class="icon-sound-on hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <span class="btn-text">Audio</span>
+      </button>
+
+      <button id="tour-btn" class="hud-btn highlight" title="Toggle Auto 3D Cinematic Movie">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span class="btn-text">Cinematic Movie Mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive 3D World Scroll Wrapper -->
+  <main id="app-world" class="app-world">
+
+    <!-- 3D HERO SECTION -->
+    <section id="hero" class="scene-section hero-section">
+      <div class="glass-card hero-card floating-3d" data-depth="0.3">
+        <div class="card-badge">
+          <span class="pulse-icon"></span>
+          <span>ENTERPRISE ETRM & RISK AUTOMATION</span>
+        </div>
+        <h1 class="hero-title">
+          ABOUT <span class="gradient-text">OLEOVISTA</span>
+        </h1>
+        <h2 class="hero-subtitle">OUR CORE VALUES</h2>
+        <p class="hero-description">
+          Empowering global commodity and energy trading firms with intelligent, high-performance, automated risk management software and enterprise digital transformation.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="#about" class="cta-primary">
+            <span>Explore Core Values</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+          </a>
+          <button id="hero-demo-trigger" class="cta-secondary">
+            <span>Launch ETRM Visualizer</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </button>
+        </div>
+
+        <div class="hero-quick-stats">
+          <div class="stat-pill">
+            <span class="pill-number">47+</span>
+            <span class="pill-label">Countries</span>
+          </div>
+          <div class="stat-pill">
+            <span class="pill-number">110+</span>
+            <span class="pill-label">Clients</span>
+          </div>
+          <div class="stat-pill">
+            <span class="pill-number">250+</span>
+            <span class="pill-label">Projects</span>
+          </div>
+          <div class="stat-pill">
+            <span class="pill-number">30+</span>
+            <span class="pill-label">Team Members</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <span class="scroll-mouse">
+          <span class="scroll-wheel"></span>
+        </span>
+        <span class="scroll-text">Scroll down or play cinematic movie</span>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COMPANY OVERVIEW & CORE VALUES -->
+    <section id="about" class="scene-section about-section">
+      <div class="section-header center">
+        <span class="section-tag">WHO WE ARE</span>
+        <h2 class="section-title">Architects of Commodity Intelligence</h2>
+      </div>
+
+      <div class="grid-2col">
+        <div class="glass-card value-card floating-3d" data-depth="0.4">
+          <div class="card-icon-header">
+            <div class="icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            </div>
+            <h3>Advanced Software Solutions</h3>
+          </div>
+          <p class="body-text">
+            We are a technology-driven organisation specialising in the design, development, and implementation of advanced software solutions tailored for the global commodity and energy markets. With a strong foundation in innovation and automation, our company is committed to transforming how businesses manage trading operations, market exposure, and enterprise-wide risk.
+          </p>
+          <div class="card-tags">
+            <span>Global Commodity Markets</span>
+            <span>Energy Trading Systems</span>
+            <span>Enterprise Risk Automation</span>
+          </div>
+        </div>
+
+        <div class="glass-card value-card floating-3d" data-depth="0.2">
+          <div class="card-icon-header">
+            <div class="icon-wrapper cyan">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3>High-Performance Ecosystems</h3>
+          </div>
+          <p class="body-text">
+            Our expertise lies in building high-performance, scalable, and secure systems that integrate seamlessly into the complex workflows of commodity and energy trading firms. We empower organisations to operate with greater efficiency, transparency, and accuracy through modern technology and intelligent automation.
+          </p>
+          <div class="card-tags">
+            <span>High-Throughput ETRM</span>
+            <span>Real-time Risk Analytics</span>
+            <span>Seamless API Integration</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: MISSION & VISION -->
+    <section id="mission" class="scene-section mission-section">
+      <div class="grid-2col gap-lg">
+        
+        <div class="glass-card mission-card floating-3d" data-depth="0.5">
+          <div class="glowing-border-top green"></div>
+          <div class="mission-header">
+            <div class="badge-icon green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+            </div>
+            <h2>OUR MISSION</h2>
+          </div>
+          <p class="mission-statement">
+            "To deliver intelligent, automated risk management solutions that simplify complex commodity trading operations and empower organisations with real-time insights and operational excellence."
+          </p>
+          <ul class="mission-points">
+            <li><span class="check-icon">✓</span> Real-Time Position & Exposure Tracking</li>
+            <li><span class="check-icon">✓</span> Automated Value-at-Risk (VaR) Engine</li>
+            <li><span class="check-icon">✓</span> Streamlined Trade Lifecycle Automation</li>
+          </ul>
+        </div>
+
+        <div class="glass-card mission-card floating-3d" data-depth="0.3">
+          <div class="glowing-border-top cyan"></div>
+          <div class="mission-header">
+            <div class="badge-icon cyan">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+            <h2>OUR VISION</h2>
+          </div>
+          <p class="mission-statement">
+            "To become the leading global provider of digital ETRM and ERP systems by continually innovating, integrating modern technologies, and building solutions that redefine efficiency, transparency, and risk control in the commodity and energy sectors."
+          </p>
+          <ul class="mission-points">
+            <li><span class="check-icon">✓</span> Next-Gen Cloud Native Architecture</li>
+            <li><span class="check-icon">✓</span> Unified Commodity & Energy ERP</li>
+            <li><span class="check-icon">✓</span> AI-Powered Predictive Analytics</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: GLOBAL METRICS & IMPACT -->
+    <section id="metrics" class="scene-section metrics-section">
+      <div class="section-header center">
+        <span class="section-tag">GLOBAL PROVEN TRACK RECORD</span>
+        <h2 class="section-title">Trusted By Energy & Commodity Leaders</h2>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="glass-card metric-card floating-3d" data-depth="0.4">
+          <div class="metric-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <div class="counter-number" data-target="47">0</div>
+          <div class="metric-symbol">+</div>
+          <h3 class="metric-label">COUNTRIES</h3>
+          <p class="metric-desc">Global footprint across Europe, Americas & Asia-Pacific</p>
+        </div>
+
+        <div class="glass-card metric-card floating-3d" data-depth="0.3">
+          <div class="metric-icon cyan">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <div class="counter-number" data-target="110">0</div>
+          <div class="metric-symbol">+</div>
+          <h3 class="metric-label">CLIENTS</h3>
+          <p class="metric-desc">Enterprise trading houses, energy firms & institutions</p>
+        </div>
+
+        <div class="glass-card metric-card floating-3d" data-depth="0.5">
+          <div class="metric-icon gold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </div>
+          <div class="counter-number" data-target="250">0</div>
+          <div class="metric-symbol">+</div>
+          <h3 class="metric-label">PROJECTS</h3>
+          <p class="metric-desc">Successful ETRM & ERP systems deployed end-to-end</p>
+        </div>
+
+        <div class="glass-card metric-card floating-3d" data-depth="0.2">
+          <div class="metric-icon purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          </div>
+          <div class="counter-number" data-target="30">0</div>
+          <div class="metric-symbol">+</div>
+          <h3 class="metric-label">TEAM MEMBERS</h3>
+          <p class="metric-desc">Specialized software architects & domain risk experts</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: INTERACTIVE ETRM PLATFORM DEMO -->
+    <section id="tech" class="scene-section tech-section">
+      <div class="glass-card demo-card floating-3d" data-depth="0.3">
+        <div class="demo-header">
+          <div>
+            <span class="section-tag">LIVE SIMULATION</span>
+            <h2 class="section-title">Oleovista Risk & Trading Engine</h2>
+          </div>
+          <div class="demo-controls">
+            <button id="sim-buy-btn" class="sim-btn buy">+ BUY OIL FUTURES</button>
+            <button id="sim-sell-btn" class="sim-btn sell">- SELL GAS HEDGE</button>
+          </div>
+        </div>
+
+        <div class="demo-body">
+          <div class="demo-chart-box">
+            <div class="chart-header">
+              <span class="chart-title">CRUDE & BRENT EXPOSURE MONITOR (REAL-TIME)</span>
+              <span id="live-var-badge" class="var-badge">VaR: $1.42M | Normal</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+              <canvas id="trading-chart"></canvas>
+            </div>
+          </div>
+
+          <div class="demo-stats-box">
+            <div class="stat-row">
+              <span>Open Positions:</span>
+              <strong id="stat-positions">1,420 Lots</strong>
+            </div>
+            <div class="stat-row">
+              <span>Daily P&L:</span>
+              <strong id="stat-pnl" class="positive">+$482,910</strong>
+            </div>
+            <div class="stat-row">
+              <span>Risk Limit Used:</span>
+              <strong id="stat-risk">38.4%</strong>
+            </div>
+            <div class="stat-row">
+              <span>Automated Hedging:</span>
+              <strong class="positive">ACTIVE</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT & FOOTER -->
+    <section id="contact" class="scene-section contact-section">
+      <div class="glass-card contact-card floating-3d" data-depth="0.4">
+        <div class="grid-2col">
+          <div class="contact-info">
+            <div class="brand-logo large">
+              <svg class="logo-mark" viewBox="0 0 100 100">
+                <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="currentColor" stroke-width="8"/>
+                <polyline points="32,45 50,30 68,45" fill="none" stroke="#00f5a0" stroke-width="7" stroke-linecap="round"/>
+                <polyline points="32,55 50,70 68,55" fill="none" stroke="#00d9f5" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="50" cy="50" r="7" fill="#00f5a0"/>
+              </svg>
+              <h2>OLEOVISTA SOLUTIONS</h2>
+            </div>
+
+            <p class="body-text margin-top-sm">
+              We design and develop scalable enterprise platforms that streamline the flow of data, automate critical processes, and provide real-time insights into trading positions and risk exposure.
+            </p>
+
+            <div class="direct-contact-box">
+              <span class="label">Direct Inquiry Email:</span>
+              <div class="email-copy-bar">
+                <span class="email-address">corporate@oleovista.com</span>
+                <button id="copy-email-btn" class="copy-btn" title="Copy email address">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span id="copy-text">Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener" class="social-btn" title="Twitter / X">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-form-wrapper">
+            <h3 class="form-title">Send Enterprise Request</h3>
+            <form id="contact-form" class="contact-form">
+              <div class="input-group">
+                <input type="text" id="form-name" required placeholder="Full Name">
+              </div>
+              <div class="input-group">
+                <input type="email" id="form-email" required placeholder="Business Email">
+              </div>
+              <div class="input-group">
+                <select id="form-interest">
+                  <option value="etrm">ETRM Software Solution</option>
+                  <option value="risk">Automated Risk Engine</option>
+                  <option value="erp">Commodity ERP Integration</option>
+                  <option value="consulting">Enterprise Advisory</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <textarea id="form-message" rows="3" required placeholder="Tell us about your organization's requirements..."></textarea>
+              </div>
+              <button type="submit" class="submit-btn">
+                <span>Submit Inquiry</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </form>
+            <div id="form-feedback" class="form-feedback hidden"></div>
+          </div>
+        </div>
+
+        <footer class="footer-bar">
+          <p>© 2025 Oleovista - Software Solutions & Automated Commodity Risk Management</p>
+          <div class="footer-links">
+            <a href="#contact">Contact us</a>
+            <span class="sep">|</span>
+            <a href="#" id="privacy-link">Privacy policy</a>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Dialog for Privacy & Info -->
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <div class="modal-card glass-card">
+      <button id="modal-close" class="modal-close-btn">&times;</button>
+      <h3 id="modal-title">Privacy Policy & Security</h3>
+      <div id="modal-content" class="modal-body">
+        <p>Oleovista Solutions is committed to enterprise-grade data protection, confidentiality, and GDPR compliance across all energy trading and risk management software implementations.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
