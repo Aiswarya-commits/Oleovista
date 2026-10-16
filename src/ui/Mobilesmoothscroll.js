@@ -36,8 +36,13 @@ export class MobileSmoothScroll {
       const chapters = [...document.querySelectorAll(`#chapters-${name} .chapter-item[data-progress]`)]
         .map((c) => parseFloat(c.dataset.progress))
         .filter((v) => !isNaN(v));
-      this.views[name] = { el, strip: STRIP_VIEWS.includes(name), chapters, timer: null };
+      const track = document.getElementById(`${name}-track`);   // team-track / contact-track
+      this.views[name] = { el, strip: STRIP_VIEWS.includes(name), chapters, track, timer: null };
     });
+
+    // Team / Contact: measured speed of the long track (pixels it moves per 1.0 of progress)
+    this.trackSlope = 0;
+    this.trackRef = null;
 
     this.knots = [[0, 0], [1, 1]];
     this.frame = 0;
@@ -115,9 +120,31 @@ export class MobileSmoothScroll {
 
   slopeAt(p) {                                   // pixels of content per 1.0 of progress
     const v = this.views[this.current];
-    if (!v.strip) return 1 / (this.rig.scrollSpeed * 1.5);   // keep the page's own speed
+    if (!v.strip) {
+      // Team / Contact: the track moves as fast as it measured, never faster than the normal speed
+      const base = 1 / (this.rig.scrollSpeed * 1.5);
+      return Math.max(base, this.trackSlope);
+    }
     const [a, b] = this.segment(Math.min(1, Math.max(0, p)));
     return Math.max(MIN_SLOPE, (b[1] - a[1]) / (b[0] - a[0]));
+  }
+
+  // Team / Contact: watch how far the track really moves on screen for a change in progress
+  measureTrack(v) {
+    if (!v.track) return;
+    // the track on screen was placed by the page code during the LAST frame,
+    // so pair it with last frame's progress
+    const y = v.track.getBoundingClientRect().top;
+    const p = this.prevProgress;
+    this.prevProgress = this.rig.getProgress();
+    if (p === undefined) return;
+    if (!this.trackRef) { this.trackRef = { p, y }; return; }
+    const dp = p - this.trackRef.p;
+    if (Math.abs(dp) < 0.006) return;                    // wait for a clear change
+    if (Math.abs(dp) > 0.08) { this.trackRef = { p, y }; return; }   // a menu jump, not a swipe
+    const s = Math.abs(y - this.trackRef.y) / Math.abs(dp);
+    this.trackSlope = this.trackSlope ? this.trackSlope * 0.5 + s * 0.5 : s;
+    this.trackRef = { p, y };
   }
 
   /* ---------- switching pages ---------- */
@@ -127,6 +154,8 @@ export class MobileSmoothScroll {
     this.fling = 0;
     this.tracking = false;
     this.lastOffset = -1;
+    this.trackRef = null;
+    this.prevProgress = undefined;
     if (!v.strip) return;
     clearTimeout(v.timer);
     v.el.classList.add('m-strip');
@@ -165,10 +194,11 @@ export class MobileSmoothScroll {
     const v = this.views[this.current];
     if (v.strip && this.frame++ % 30 === 0) this.measure();    // images / job list can change the height
 
+    if (!v.strip) this.measureTrack(v);
     const slope = this.slopeAt(this.rig.targetProgress);
 
-    // 1 px of finger movement = 1 px of content movement
-    this.rig.touchScale = v.strip ? 1 / (this.rig.scrollSpeed * 1.5 * slope) : 1;
+    // 1 px of finger movement = 1 px of content movement (all pages)
+    this.rig.touchScale = 1 / (this.rig.scrollSpeed * 1.5 * slope);
 
     // momentum after the finger lifts
     if (this.fling) {

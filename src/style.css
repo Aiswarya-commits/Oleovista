@@ -3027,3 +3027,24 @@ body.m-strip-on #content-container {
   -webkit-backdrop-filter: none !important;
           backdrop-filter: none !important;
 }
+/* ==========================================================================
+   MOBILE - LARGER LOGO
+   ========================================================================== */
+@media (max-width: 768px) {
+  .brand-img {
+    height: 64px;
+    max-width: 190px;
+  }
+}
+@media (max-width: 560px) {
+  .brand-img {
+    height: 58px;
+    max-width: 170px;
+  }
+}
+@media (max-width: 400px) {
+  .brand-img {
+    height: 52px;
+    max-width: 145px;
+  }
+}
