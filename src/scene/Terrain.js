@@ -38,6 +38,20 @@ export const GREEN_THEMES = {
     ripple:   [0.30, 1.05, 0.45],
     pulse:    [0.03, 0.18, 0.06]
   },
+  // Careers page - fresh bright spring green under a golden sunrise
+  spring: {
+    meadow:   [0.75, 1.75, 0.35],
+    slope:    [0.45, 1.35, 0.25],
+    crevasse: [0.12, 0.42, 0.10],
+    cliff:    [0.45, 0.52, 0.38],
+    summit:   [0.98, 1.00, 0.90],
+    drift:    [0.95, 1.15, 0.55],
+    sun:      [1.25, 1.15, 0.80],
+    shadow:   [0.20, 0.34, 0.18],
+    rim:      [1.00, 1.10, 0.45],
+    ripple:   [0.60, 1.20, 0.35],
+    pulse:    [0.08, 0.22, 0.05]
+  },
   // Extra - warm golden olive hills
   olive: {
     meadow:   [1.30, 1.32, 0.40],
@@ -108,24 +122,21 @@ export class Terrain {
 
   async load() {
     const texLoader = new THREE.TextureLoader(this.loadingManager);
-    const gltfLoader = new GLTFLoader(this.loadingManager);
-    if (gltfLoader.manager && !gltfLoader.manager.abortController) {
-      gltfLoader.manager.abortController = new AbortController();
-    }
-
+    
     const [
-      [lightmap, rockDiffuse, rockNormal, snowRockMix, perlinNoise, noise],
-      gltf
+      lightmap,
+      rockDiffuse,
+      rockNormal,
+      snowRockMix,
+      perlinNoise,
+      noise
     ] = await Promise.all([
-      Promise.all([
-        texLoader.loadAsync('/assets/textures/trading-lightmap.webp'),
-        texLoader.loadAsync('/assets/textures/rock_diffuse.webp'),
-        texLoader.loadAsync('/assets/textures/rock_normal.webp'),
-        texLoader.loadAsync('/assets/textures/snowRockMix.webp'),
-        texLoader.loadAsync('/assets/textures/perlinNoise.webp'),
-        texLoader.loadAsync('/assets/textures/noise.webp')
-      ]),
-      gltfLoader.loadAsync('/assets/models/mountains.glb')
+      texLoader.loadAsync('/assets/textures/trading-lightmap.webp'),
+      texLoader.loadAsync('/assets/textures/rock_diffuse.webp'),
+      texLoader.loadAsync('/assets/textures/rock_normal.webp'),
+      texLoader.loadAsync('/assets/textures/snowRockMix.webp'),
+      texLoader.loadAsync('/assets/textures/perlinNoise.webp'),
+      texLoader.loadAsync('/assets/textures/noise.webp')
     ]);
 
     [rockDiffuse, rockNormal, perlinNoise, noise].forEach(t => {
@@ -139,6 +150,12 @@ export class Terrain {
     this.uniforms.uSnowRockMix.value = snowRockMix;
     this.uniforms.uPerlin.value = perlinNoise;
     this.uniforms.uNoise.value = noise;
+
+    const gltfLoader = new GLTFLoader(this.loadingManager);
+    if (gltfLoader.manager && !gltfLoader.manager.abortController) {
+      gltfLoader.manager.abortController = new AbortController();
+    }
+    const gltf = await gltfLoader.loadAsync('/assets/models/mountains.glb');
     
     // Find the Mountain mesh
     let mountainMesh = null;

@@ -293,6 +293,16 @@ export class Atmosphere {
       this.targetHemiSky.set('#6fae8a');
       this.targetHemiGround.set('#0b2016');
       this.targetFogColor.set('#244536');
+    } else if (timeOfDay === 'spring') {
+      // Careers: fresh spring green under a warm golden sunrise sky
+      this.targetTop.set('#3d6b78');
+      this.targetBottom.set('#f3d9a4');
+      this.targetSun.set('#ffd27a');
+      this.targetSunLight.set('#fff1d0');
+      this.targetSunIntensity = 2.4;
+      this.targetHemiSky.set('#bfe3a8');
+      this.targetHemiGround.set('#3f6b24');
+      this.targetFogColor.set('#c9cf9c');
     } else if (timeOfDay === 'olive') {
       // Warm golden olive hills
       this.targetTop.set('#56633a');

@@ -17,6 +17,7 @@ const THEMES = {
   aurora:   { label: 'Aurora',   icon: '🟢', sky: 'contact',  water: 'contact' },
   mint:     { label: 'Mint',     icon: '🍃', sky: 'mint',     water: 'about' },
   pine:     { label: 'Pine',     icon: '🌲', sky: 'pine',     water: 'greenery' },
+  spring:   { label: 'Spring',   icon: '🌼', sky: 'spring',   water: 'greenery' },
   olive:    { label: 'Olive',    icon: '🫒', sky: 'olive',    water: 'greenery' },
   sage:     { label: 'Sage',     icon: '🌾', sky: 'sage',     water: 'greenery' }
 };
@@ -28,7 +29,7 @@ const PAGE_THEMES = {
   about: 'jade',
   contact: 'aurora',
   services: 'mint',
-  careers: 'pine'
+  careers: 'spring'
 };
 
 export class UIManager {
