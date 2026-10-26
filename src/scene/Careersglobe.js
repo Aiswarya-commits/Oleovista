@@ -5,11 +5,9 @@ import * as THREE from 'three';
   -----------------------------------------------------------------------------------------------
   Runs ONLY on the Careers view (#careers-view has class "active").
 
-  Scroll progress (cameraRig progress 0..1):
-    0.00 - 0.04  hero: your mountain (Sunset theme set by UIManager), held still
-    0.04 - 0.18  the camera tips down and sinks through the dusk haze, fades through deep blue,
-                 and comes out in space in front of the Earth
-    0.18 - 1.00  the Earth sits on the RIGHT side of the screen (about half of it visible) so the
+  The Careers page now OPENS DIRECTLY IN SPACE (no mountain first):
+    on open      the veil clears and the camera glides out to the Earth (ARRIVE_SECS)
+    0.00 - 1.00  the Earth sits on the RIGHT side of the screen (about half of it visible) so the
                  content on the left stays readable. It turns with your scrolling and is wrapped
                  in a dashed network of trade routes between cities.
 
@@ -19,8 +17,7 @@ import * as THREE from 'three';
 
 const GLOBE_Y = -4200;               // the space scene sits far below the mountain
 const R = 100;                       // Earth radius (world units)
-const DIVE_START = 0.04;
-const DIVE_END = 0.18;
+const ARRIVE_SECS = 1.8;             // length of the arrival animation when the page opens (no mountain first)
 const BG = new THREE.Color('#01040b');
 const DUSK = new THREE.Color('#150c19');
 const ARC_COLOR = new THREE.Color('#d6ecff');
@@ -573,25 +570,16 @@ export class CareersGlobe {
       return;
     }
     if (!this.built) this.build();
+    if (!this.active) this.enterAt = elapsed;     // page just opened -> start the arrival
     this.active = true;
 
     const t = this.cameraRig.getProgress();
     const cam = this.camera;
-    const d = clamp01((t - DIVE_START) / (DIVE_END - DIVE_START));
-    const inSpace = d >= 0.5;
+    // arrival phase: 0.5 = just opened, 1 = settled (the page now starts in space, no mountain)
+    const d = 0.5 + 0.5 * clamp01((elapsed - this.enterAt) / ARRIVE_SECS);
+    const inSpace = true;
 
-    if (!inSpace) {
-      // on the mountain: hero vista, then tip down and sink into the dusk haze
-      const k = ease(d * 2);
-      this.restoreFov();
-      this.cameraRig.cameraCurve.getPointAt(0, this._p);
-      this.cameraRig.targetCurve.getPointAt(0, this._l);
-      this._p.y -= k * 45;
-      this._l.y -= k * 150;
-      cam.up.set(0, 1, 0);
-      cam.position.copy(this._p);
-      cam.lookAt(this._l);
-    } else {
+    {
       // in space: Earth on the right, about half of it in view
       const k = ease((d - 0.5) * 2);                       // 0 = just arrived, 1 = settled
       // a narrower lens while in space keeps the off-centre globe round (restored on exit)
@@ -642,7 +630,7 @@ export class CareersGlobe {
       this.stars.material.uniforms.uTime.value = elapsed;
 
       // routes draw themselves in as you arrive, then packets keep flowing
-      const reveal = smooth(0.55, 1.0, d) * 0.6 + smooth(DIVE_END, 0.32, t) * 0.4;
+      const reveal = smooth(0.55, 1.0, d) * 0.6 + smooth(0.0, 0.14, t) * 0.4;
       const tmp = this._l;
       this.net.arcs.forEach((a, i) => {
         a.u.uDraw.value = clamp01((reveal - a.delay * 0.6) / 0.45);

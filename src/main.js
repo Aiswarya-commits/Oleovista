@@ -13,6 +13,7 @@ import { CareersGlobe } from './scene/Careersglobe.js';
 import { TeamMeadow } from './scene/Teammeadow.js';
 import { ContactNetwork } from './scene/Contactnetwork.js';
 import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
+import { OliviaAssistant } from './ui/Olivia.js';
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
@@ -74,6 +75,8 @@ class App {
       this.uiManager?.updateProgress(loaded, total || totalEst);
     };
 
+       this.olivia = new OliviaAssistant({ uiManager: this.uiManager });
+
     // Subsystems
     this.atmosphere = new Atmosphere(this.scene);
     this.water = new Water(this.scene);
@@ -129,12 +132,52 @@ class App {
       terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
     });
 
+    // Prepare every page's 3D world now, behind the loading screen, so switching pages never freezes
+    if (this.uiManager.loaderText) this.uiManager.loaderText.textContent = 'Preparing 3D scenes...';
+    await this.prewarmScenes();
+
     // Complete loading
     this.uiManager.updateProgress(1, 1);
     this.uiManager.onLoaded();
 
     // Start render loop
     this.animate();
+  }
+
+  /*
+    PERFORMANCE: without this, the first visit to each page froze the screen for a few seconds
+    (About: the photo-sea shader being compiled for the GPU; Careers / Team / Contact: their 3D worlds
+    and textures being built). Doing it all once during the loading screen makes every page switch instant.
+  */
+  async prewarmScenes() {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    try {
+      // 1. let the About photo finish loading (max 3 s), so it can be uploaded to the GPU now
+      for (let i = 0; i < 30 && !this.aboutOcean?.sea?.uniforms?.ready; i++) await wait(100);
+
+      // 2. build the worlds that are normally created on first visit
+      for (const c of [this.careersGlobe, this.teamMeadow, this.contactNetwork]) {
+        try { if (c && !c.built && typeof c.build === 'function') c.build(); } catch (e) { console.warn('[prewarm] build failed', e); }
+        await wait(0);                                   // let the loading screen repaint between builds
+      }
+
+      // 3. briefly show every hidden 3D object, compile all shaders and upload all textures, then hide again
+      const hidden = [];
+      this.scene.traverse((o) => { if (!o.visible) { hidden.push(o); o.visible = true; } });
+      if (typeof this.renderer.compileAsync === 'function') await this.renderer.compileAsync(this.scene, this.camera);
+      else this.renderer.compile(this.scene, this.camera);
+      const seen = new Set();
+      this.scene.traverse((o) => {
+        const mats = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
+        mats.forEach((m) => {
+          const texs = [m.map, ...Object.values(m.uniforms || {}).map((u) => u && u.value)];
+          texs.forEach((t) => { if (t && t.isTexture && !seen.has(t)) { seen.add(t); this.renderer.initTexture(t); } });
+        });
+      });
+      hidden.forEach((o) => { o.visible = false; });
+    } catch (e) {
+      console.warn('[prewarm] skipped:', e);   // never block the site; pages will just prepare on first visit
+    }
   }
 
   initEvents() {
@@ -188,6 +231,13 @@ class App {
     this.careersGlobe?.update(dt, elapsed); // Careers Earth globe (does nothing on other pages)
     this.teamMeadow?.update(dt, elapsed);   // Team meadow surface (does nothing on other pages)
     this.contactNetwork?.update(dt, elapsed); // Contact 3D connectivity network (does nothing on other pages)
+
+    // PERFORMANCE: the Team meadow is drawn as 16 full-screen grass layers, so on high-DPI /
+    // scaled laptop screens render it at a slightly lower resolution (invisible on grass).
+    // Other pages keep full sharpness. setPixelRatio only runs when the value actually changes.
+    const maxRatio = this.teamMeadow?.current === 'meadow' ? 1.25 : 2;
+    const ratio = Math.min(window.devicePixelRatio, maxRatio);
+    if (this.renderer.getPixelRatio() !== ratio) this.renderer.setPixelRatio(ratio);
 
     // Render 3D Scene
     this.renderer.render(this.scene, this.camera);

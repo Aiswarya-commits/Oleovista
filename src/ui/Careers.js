@@ -7,7 +7,7 @@
   (subject + all the form details filled in). They attach their CV and press Send. No server needed.
 */
 
-export const CAREERS_EMAIL = 'careers@oleovista.com';
+export const CAREERS_EMAIL = 'corporate@oleovista.com';
 
 const BENEFITS = [
   'Hybrid working and flexible hours',
@@ -19,163 +19,178 @@ const BENEFITS = [
 export const JOBS = [
   {
     id: 'OV-ENG-101',
-    title: 'Senior Full-Stack Engineer – ACERS Platform',
+    title: 'Lead Python Developer / Senior Backend Technical Lead',
     dept: 'Engineering',
-    location: 'India · Hybrid',
+    location: 'Kochi, Kerala, India',
     type: 'Full-time',
-    experience: '5+ years',
-    summary: 'Build the core of ACERS, our ERP + ETRM platform for commodity and energy trading firms.',
-    about: 'You will design and ship features across trade capture, positions, risk and settlements, working closely with product, quants and our clients\' trading desks. You will own modules end to end, from data model to UI.',
+    experience: '6–7+ years',
+    summary: 'Lead the backend architecture and development of our next-generation ETRM platform.',
+    about: 'This is a hands-on technical leadership role focused on Python, Django/FastAPI, PostgreSQL, transaction processing, distributed systems, messaging, security, cloud and system architecture. You will own technical design and implementation, guide developers, and make sure the platform is scalable, secure, reliable and transactionally accurate. Experience in banking, fintech, payments, trading, brokerage, treasury or other financial transaction systems is strongly preferred. Direct ETRM/Treasury experience is an advantage but not mandatory.',
     responsibilities: [
-      'Design, build and maintain services and UIs for trade capture, positions and P/L',
-      'Model complex commodity contracts (physical and paper) in clean, testable code',
-      'Integrate exchange, market-data and ERP feeds through robust APIs',
-      'Review code, mentor engineers and keep quality high with automated tests',
-      'Work with clients to turn trading workflows into product features'
+      'Architecture & leadership: own backend architecture, system design, technical standards and implementation strategy; lead technical planning, code reviews, estimation, mentoring and delivery, working with Product, Business, QA, DevOps and Frontend teams',
+      'Python backend development: build production-grade services with Python, Django and/or FastAPI, including REST APIs, business workflows, state-based processing, external integrations and high-volume transaction services, with asynchronous/background processing using Celery and messaging',
+      'Transaction processing & data integrity: design reliable financial workflows with strong consistency, concurrency control, idempotency, locking, transaction isolation, retry/recovery and rollback, plus auditability, traceability and reconciliation between internal and external systems',
+      'Event-driven & distributed systems: design architectures using Kafka, RabbitMQ, Celery or similar, with reliable asynchronous processing, retries, failure handling and recovery for scalability and resilience',
+      'Database & data architecture: design and optimise PostgreSQL schemas, data models, SQL queries, indexes, transactions and performance; use Redis for caching/distributed processing and MongoDB/NoSQL where appropriate',
+      'Security & financial controls: implement authentication, authorization, RBAC, OAuth2/OIDC, JWT, MFA, least privilege, encryption, TLS, secrets management and audit logging; protect sensitive financial data and enforce critical transaction authorization and business rules server-side, following OWASP principles',
+      'Cloud & DevOps: deploy and support services on Microsoft Azure with Docker, CI/CD and Git; set up logging, monitoring, health checks, diagnostics, deployment practices and production troubleshooting'
     ],
     requirements: [
-      '5+ years building production web applications',
-      'Strong in TypeScript / JavaScript and one backend stack (Node.js, Java or .NET)',
-      'Solid SQL and data-modelling skills (PostgreSQL or SQL Server)',
-      'Experience with REST / event-driven architectures and cloud deployment',
-      'Clear communication in English'
+      '6–7+ years of professional backend development experience',
+      'Backend & architecture: Python, Django/FastAPI, REST APIs, PostgreSQL, SQL, system design, microservices, distributed systems, transaction processing, concurrency, idempotency, workflow/state management, reconciliation and asynchronous processing',
+      'Messaging & processing: Kafka, RabbitMQ, Celery, event-driven architecture, message-based processing, retry and failure-recovery patterns',
+      'Security: API security, authentication, authorization, RBAC, OAuth2/OIDC, JWT, MFA, encryption, TLS, secrets management, access control, audit logging, secure coding and OWASP principles',
+      'Cloud & engineering: Microsoft Azure, Docker, CI/CD, Git, application monitoring, logging, performance optimisation and production support',
+      'Leadership: architecture ownership, code reviews, mentoring, technical decision-making, problem-solving, stakeholder collaboration and end-to-end delivery ownership'
     ],
-    niceToHave: ['Exposure to ETRM / CTRM, banking or trading systems', 'React and data-heavy dashboards', 'Kafka, Redis or time-series databases']
+    niceToHave: [
+      'Banking, fintech, payments, trading, brokerage, treasury or financial technology experience',
+      'Transaction-heavy, financially critical or regulated applications',
+      'Financial reconciliation, settlements, balances, payments, positions or transaction lifecycles',
+      'ETRM or Treasury Management Systems',
+      'Banking APIs, payment systems, financial integrations, trading platforms or market-data systems',
+      'Banking-grade security, compliance, audit and access-control requirements',
+      'PCI DSS, ISO 27001, SOC 2 or similar security frameworks',
+      'MongoDB, Redis, Kubernetes and multi-tenant SaaS architecture',
+      'React, Angular, TypeScript or Java',
+      'Oracle (an advantage, not mandatory)'
+    ]
   },
   {
-    id: 'OV-PRD-102',
-    title: 'ETRM Business Analyst',
-    dept: 'Product',
-    location: 'India · Hybrid',
-    type: 'Full-time',
-    experience: '3–6 years',
-    summary: 'Be the bridge between trading desks and our engineers, turning workflows into clear product specs.',
-    about: 'You will run discovery workshops with traders, risk managers and back-office teams, map their processes, and write the specifications our engineers build ACERS features from.',
+    id: 'OV-ENG-102',
+    title: 'Lead Frontend Developer – Treasury & ETRM',
+    dept: 'Engineering',
+    location: 'Kochi, Kerala, India',
+    type: 'Full-time · Remote / On-site',
+    experience: '6–7+ years',
+    summary: 'Own the frontend architecture and development of a next-generation Treasury Management System within our ETRM platform.',
+    about: 'This is a hands-on leadership role requiring strong expertise in React, TypeScript, JavaScript, frontend architecture, enterprise data-intensive applications, API integration, security, performance, testing and modern frontend engineering. You will lead technical design and implementation, set development standards, mentor developers and own frontend delivery from requirements through production. Experience in banking, fintech, payments, trading, brokerage, treasury or other transaction-heavy financial systems is strongly preferred. Direct ETRM/Treasury experience is not mandatory.',
     responsibilities: [
-      'Run client workshops and document trade lifecycle, risk and settlement workflows',
-      'Write user stories, acceptance criteria and functional specifications',
-      'Configure ACERS for new clients and support user-acceptance testing',
-      'Prioritise the backlog with product and engineering leads',
-      'Train client users and write product documentation'
+      'Frontend architecture & leadership: own frontend architecture, component design, coding standards, design patterns, technical decisions, code reviews, estimation, task planning, mentoring and delivery, working with Product, UI/UX, Backend, QA, DevOps and Business teams',
+      'React application development: build scalable, reusable, maintainable applications with React, TypeScript and JavaScript, including complex forms, dashboards, reports, transaction screens and workflow-driven interfaces',
+      'Enterprise data & grids: build large, data-intensive interfaces with advanced data grids, server-side filtering, sorting, pagination, searching, virtualization, inline/editable grids, bulk actions, row selection, validation and high-volume data handling',
+      'Treasury & transaction workflows: build interfaces for transaction entry, approvals, workflow/state transitions, exception handling, reconciliation, status tracking and reporting, with appropriate frontend validation and user controls',
+      'API, state & real-time integration: integrate REST APIs and manage client/server state with Redux Toolkit, Zustand, TanStack Query/React Query or equivalent; implement WebSockets/SSE for real-time updates where required',
+      'Security: authentication, authorization, RBAC, OAuth2/OIDC, JWT, session/token management, secure API communication, XSS/CSRF protection, secure data handling and OWASP principles',
+      'Performance & user experience: optimise data-heavy applications through code splitting, lazy loading, caching, memoization, virtualization and bundle/rendering optimisation; maintain strong Core Web Vitals, responsiveness, accessibility and browser compatibility',
+      'Testing & quality: establish automated unit, integration and end-to-end testing with Jest/Vitest, React Testing Library and Playwright/Cypress',
+      'Cloud, CI/CD & production: work with Git, Docker, CI/CD, GitHub Actions/Azure DevOps and Azure/AWS; support monitoring, error tracking, logging, production troubleshooting, releases and operational stability'
     ],
     requirements: [
-      '3+ years as a business analyst on trading, treasury, banking or ERP systems',
-      'Understanding of the trade lifecycle: front, middle and back office',
-      'Confident with SQL and Excel for data analysis',
-      'Excellent written and spoken English'
+      '6–7+ years of professional frontend development experience',
+      'Core: React.js, TypeScript, JavaScript (ES6+), frontend and component-based architecture, REST API integration, enterprise/data-intensive applications',
+      'Data grids: large data grids, server-side filtering & pagination, editable grids',
+      'State & forms: Redux Toolkit/Zustand, TanStack Query/React Query, complex forms and validation with React Hook Form and Zod',
+      'Security: authentication, authorization, RBAC, OAuth2/OIDC, JWT, session/token management, secure API communication, XSS/CSRF protection, OWASP, secure data handling',
+      'Performance & real-time: code splitting, lazy loading, memoization, caching, virtualization, bundle and rendering optimisation, Core Web Vitals, WebSockets, Server-Sent Events (SSE)',
+      'Testing & engineering: Jest/Vitest, React Testing Library, Playwright/Cypress, Git, Docker, CI/CD, GitHub Actions/Azure DevOps, Azure/AWS, monitoring, error tracking, logging, production troubleshooting',
+      'Responsive design, accessibility and browser compatibility',
+      'Leadership: technical decision-making, code reviews, coding standards, design patterns, estimation, task planning, mentoring, team leadership and end-to-end delivery'
     ],
-    niceToHave: ['Experience with oil, gas, power or metals trading', 'Certification such as CBAP or PSPO', 'Agile / Scrum delivery']
+    niceToHave: [
+      'Enterprise-level, transaction-heavy or data-intensive applications',
+      'Financial, banking, fintech, payments, trading, brokerage or treasury systems (strongly preferred)',
+      'Financial workflows: approvals, reconciliation, settlements, positions, balances, reporting or transaction lifecycles',
+      'ETRM/Treasury systems (an advantage, not mandatory)',
+      'Next.js, including SSR/SSG, routing, middleware and modern application patterns',
+      'AG Grid or equivalent advanced data-grid frameworks',
+      'Design systems and reusable component libraries',
+      'Material UI, Ant Design or Tailwind CSS',
+      'Recharts, ECharts, D3 or equivalent data-visualisation libraries',
+      'Frontend observability and performance monitoring',
+      'Kubernetes and cloud-native environments',
+      'Micro-frontends or modular frontend architecture'
+    ]
   },
   {
-    id: 'OV-RSK-103',
-    title: 'Quantitative Risk Analyst',
-    dept: 'Trading & Risk',
-    location: 'India · Hybrid',
-    type: 'Full-time',
-    experience: '2–5 years',
-    summary: 'Build the MTM, VaR and stress-testing models behind our risk analytics module.',
-    about: 'You will develop and validate the risk models inside ACERS: mark-to-market, Value-at-Risk, exposure and scenario analysis for commodity portfolios, and help clients understand the numbers.',
+    id: 'OV-ENG-103',
+    title: 'Backend Developer',
+    dept: 'Engineering',
+    location: 'Kochi, Kerala, India',
+    type: 'Full-time · Remote / On-site',
+    experience: '4–5 years',
+    summary: 'Build secure, reliable Python backend services for our Treasury Management System.',
+    about: 'We are looking for a mid-level Backend Developer with strong hands-on experience in Python, Django/FastAPI, databases, REST APIs, secure transaction processing and enterprise application development. You will work closely with the Lead Developer and the Frontend, QA, DevOps and Business teams to design, develop, test and maintain reliable backend solutions, and take ownership of assigned modules. Prior experience in ETRM, Treasury, Banking or Energy Trading is not required.',
     responsibilities: [
-      'Implement and validate MTM, P/L attribution, VaR and stress-test models',
-      'Build forward curves and volatility surfaces from market data',
-      'Prototype analytics in Python and work with engineers to productionise them',
-      'Write clear model documentation for clients and auditors'
+      'Develop and maintain backend services using Python, Django / FastAPI, PostgreSQL, Oracle and SQL',
+      'Design and develop scalable, maintainable REST APIs and backend services',
+      'Implement business logic and complex workflows based on functional requirements',
+      'Design and optimise database schemas, queries, indexes, relationships and transactions',
+      'Work with multiple databases / database instances and ensure data consistency and reliability',
+      'Implement secure, reliable transaction processing, including validation, concurrency handling, error handling and data integrity',
+      'Implement authentication, authorization, role-based access control and audit logging',
+      'Develop integrations with external APIs and third-party systems',
+      'Identify and resolve application bugs, performance issues and production problems',
+      'Write and maintain unit and integration tests',
+      'Take part in code reviews and follow established coding and architectural standards',
+      'Collaborate with the Lead Developer on technical design and implementation decisions',
+      'Work closely with Frontend, QA, DevOps, Product and Business teams across the lifecycle: requirements → development → testing → deployment → production support'
     ],
     requirements: [
-      'Degree in finance, maths, statistics, engineering or similar',
-      '2+ years in market risk, quant or trading analytics',
-      'Strong Python (pandas, NumPy) and SQL',
-      'Good grasp of derivatives: futures, swaps and options'
+      '4–5 years of professional software development experience',
+      'Strong hands-on experience with Python',
+      'Good experience with Django / Django REST Framework and/or FastAPI',
+      'Strong experience with PostgreSQL, Oracle and SQL',
+      'Good knowledge of database design, SQL queries, transactions, indexing and query optimisation',
+      'Strong understanding of REST APIs and backend application development',
+      'Good understanding of authentication, authorization, application security and secure data handling',
+      'Understanding of transaction management, concurrency, data integrity and auditability',
+      'Experience with Git, Docker, Linux, CI/CD and Redis',
+      'Experience troubleshooting and optimising backend applications',
+      'Strong problem-solving and debugging skills, and good communication and teamwork',
+      'Understanding of frontend-backend integration and end-to-end flow: Frontend → API → Business Logic → Database'
     ],
-    niceToHave: ['FRM or CFA progress', 'Commodity or energy market experience', 'Monte-Carlo simulation']
+    niceToHave: [
+      'Multi-database architecture / multiple database instances',
+      'React, JavaScript or similar frontend technologies',
+      'Enterprise-level or transaction-heavy applications',
+      'Turning complex business requirements into technical solutions',
+      'Strong attention to data accuracy, security, reliability and performance',
+      'Willingness to learn new business domains and technologies'
+    ]
   },
   {
     id: 'OV-ENG-104',
-    title: 'DevOps & Cloud Engineer',
+    title: 'Frontend Developer – Treasury System',
     dept: 'Engineering',
-    location: 'Remote · India',
-    type: 'Full-time',
-    experience: '3+ years',
-    summary: 'Run secure, multi-tenant cloud environments for clients trading around the clock.',
-    about: 'You will own our cloud infrastructure, CI/CD and observability, keeping ACERS fast, secure and always available for clients across time zones.',
+    location: 'Kochi, Kerala, India',
+    type: 'Full-time · Remote / On-site',
+    experience: '3–4 years',
+    summary: 'Build secure, responsive, user-friendly React interfaces for our Treasury Management System.',
+    about: 'We are looking for a mid-level Frontend Developer with strong hands-on experience in React, JavaScript, TypeScript, Next.js, REST API integration and modern frontend practices. You will work closely with the Lead Frontend Developer and the Backend, QA, DevOps, Product and Business teams, take ownership of assigned modules and help build a secure, scalable and reliable enterprise application. Prior experience in ETRM, Treasury, Banking or Energy Trading is not required, but you should be willing to learn the Treasury domain.',
     responsibilities: [
-      'Manage cloud infrastructure as code (Terraform or similar)',
-      'Build and improve CI/CD pipelines and container deployments',
-      'Set up monitoring, alerting, logging, backups and disaster recovery',
-      'Harden security: access control, secrets, patching and audits'
+      'Develop and maintain frontend applications using React, JavaScript, TypeScript and Next.js',
+      'Build reusable, maintainable React components',
+      'Develop forms, dashboards, reports, data tables, workflows and transaction screens',
+      'Integrate with backend services over REST APIs, working with backend developers on data handling, validation and error handling',
+      'Implement state management with Redux Toolkit, Zustand or similar',
+      'Handle form validation with libraries such as React Hook Form / Zod',
+      'Implement authentication, authorization and role-based access in coordination with backend services',
+      'Follow frontend security and secure data-handling practices',
+      'Build responsive interfaces with good UI/UX and browser compatibility',
+      'Optimise performance for data-intensive screens and tables',
+      'Write and maintain unit and component tests',
+      'Take part in code reviews, fix bugs and production issues, and work with the team on Git, CI/CD, builds, deployment and production support'
     ],
     requirements: [
-      '3+ years in DevOps / SRE roles',
-      'Hands-on with AWS or Azure, Docker and Kubernetes',
-      'Scripting in Bash or Python',
-      'Experience running production databases'
+      '3–4 years of professional frontend development experience',
+      'Strong hands-on experience with React.js',
+      'Good knowledge of JavaScript and TypeScript',
+      'Good experience with Next.js',
+      'Strong understanding of React components, Hooks, state management and reusable component development',
+      'Experience with Redux Toolkit, Zustand or similar state-management solutions',
+      'Good understanding of REST APIs and frontend-backend integration',
+      'Experience with Git and CI/CD',
+      'Basic understanding of frontend security, authentication and authorization',
+      'Good understanding of responsive design and frontend performance',
+      'Strong problem-solving and debugging skills, and good communication and teamwork'
     ],
-    niceToHave: ['ISO 27001 / SOC 2 experience', 'Prometheus and Grafana', 'On-call experience for financial systems']
-  },
-  {
-    id: 'OV-DSN-105',
-    title: 'Creative Developer – 3D Web',
-    dept: 'Design',
-    location: 'India · Hybrid',
-    type: 'Full-time',
-    experience: '2+ years',
-    summary: 'Craft immersive WebGL experiences like this website, and beautiful product dashboards.',
-    about: 'You will design and build 3D, motion-rich web experiences with three.js and shaders, and help bring the same polish to data visualisation inside our products.',
-    responsibilities: [
-      'Build interactive 3D scenes with three.js / WebGL and GLSL shaders',
-      'Create scroll-driven storytelling and smooth UI animation',
-      'Optimise for performance on laptops and phones',
-      'Design data visualisations for trading dashboards'
-    ],
-    requirements: [
-      '2+ years front-end development with a strong portfolio',
-      'Good knowledge of three.js, WebGL and modern JavaScript',
-      'An eye for typography, motion and detail'
-    ],
-    niceToHave: ['Blender or other 3D tools', 'GSAP', 'D3 or other charting libraries']
-  },
-  {
-    id: 'OV-BD-106',
-    title: 'Business Development Manager – Energy Markets',
-    dept: 'Business',
-    location: 'Dubai, UAE',
-    type: 'Full-time',
-    experience: '6+ years',
-    summary: 'Grow ACERS across trading houses, refiners and bunker suppliers in the Middle East and beyond.',
-    about: 'You will find and win new clients for our trading and risk software, from first meeting to signed contract, working with our solution team on demos and proposals.',
-    responsibilities: [
-      'Build a pipeline of trading houses, refiners, shippers and bunker suppliers',
-      'Lead discovery meetings, product demos and commercial proposals',
-      'Negotiate and close software and services contracts',
-      'Represent Oleovista at industry events'
-    ],
-    requirements: [
-      '6+ years in B2B sales or business development in energy, commodities or fintech',
-      'A network in Middle East energy and trading markets',
-      'Strong presentation and negotiation skills'
-    ],
-    niceToHave: ['Selling ETRM / CTRM or ERP software', 'Arabic language skills']
-  },
-  {
-    id: 'OV-ENG-107',
-    title: 'Graduate Software Engineer',
-    dept: 'Engineering',
-    location: 'India · On-site',
-    type: 'Full-time · Graduate',
-    experience: '0–1 years',
-    summary: 'Start your career building real software for global energy-trading companies.',
-    about: 'A structured first year: mentoring, a learning plan and real work in a product team, shipping features to live clients from your first months.',
-    responsibilities: [
-      'Write, test and ship code with a senior engineer as your mentor',
-      'Fix bugs and add features across the ACERS platform',
-      'Learn how trading, risk and settlements work'
-    ],
-    requirements: [
-      'Degree in computer science, IT or engineering (2024–2026 graduates)',
-      'Good programming basics in any language',
-      'Curious, eager to learn and a good team player'
-    ],
-    niceToHave: ['Internship or personal projects you can show', 'Interest in finance or markets']
+    niceToHave: [
+      'Jest/Vitest or React Testing Library',
+      'Material UI, Ant Design, Tailwind CSS or similar UI frameworks',
+      'Dashboards, reports, forms and data-intensive applications',
+      'Azure/AWS or cloud-based application environments'
+    ]
   }
 ];
 

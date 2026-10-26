@@ -7,8 +7,10 @@
   <link rel="icon" type="image/png" href="/assets/OleoLogo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Josefin+Sans:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="/src/company-content.css" />
+  <link rel="stylesheet" href="/src/about-showcase.css" />
   <style>
     /* LIGHT dropdown: 10 themes shown in two columns so the list stays short */
     #dropdown-light .header-dropdown-menu { display: grid; grid-template-columns: 1fr 1fr; min-width: 260px; }
@@ -49,11 +51,11 @@
     <div class="header-container">
       <div class="logo-area">
         <a href="#" class="brand-logo" id="brand-logo-btn" title="Oleovista Solutions - Initial Landing View">
-          <!-- <svg class="emblem" width="28" height="24" viewBox="0 0 100 80" fill="none">
-            <path d="M50 8 L85 68 L15 68 Z" stroke="#ffffff" stroke-width="6" fill="rgba(45,98,140,0.3)"/>
-            <path d="M50 24 L72 68 L28 68 Z" stroke="#7ab4db" stroke-width="4" fill="none"/>
-          </svg> -->
-          <img src="/assets/Logoole.png" alt="Oleovista Logo" class="brand-img" />
+          <img src="/assets/OleoLogo.png" alt="Oleovista Logo" class="brand-icon" />
+          <div class="brand-text-wrap">
+            <span class="brand-company-name">Oleovista Solutions</span>
+            <span class="brand-company-sub">Private Limited</span>
+          </div>
         </a>
       </div>
 
@@ -140,10 +142,10 @@
               <span class="dropdown-icon">🏔️</span>
               <span class="dropdown-item-label">Scroll</span>
             </button>
-            <button class="dropdown-item" data-mode="orbit">
+            <!-- <button class="dropdown-item" data-mode="orbit">
               <span class="dropdown-icon">🛸</span>
               <span class="dropdown-item-label">Free 3D</span>
-            </button>
+            </button> -->
             <button class="dropdown-item" data-mode="auto">
               <span class="dropdown-icon">🎬</span>
               <span class="dropdown-item-label">Cruise</span>
@@ -222,28 +224,33 @@
 
     <!-- About Mode Chapters Track -->
     <div class="chapters-container" id="chapters-about" style="display: none;">
-      <!-- <div class="progress-track">
-        <div id="progress-bar-fill-about" class="progress-fill"></div>
-      </div> -->
       <div class="chapter-item active" data-progress="0.0">
         <div class="chapter-dot"></div>
         <span class="chapter-name">01 ABOUT US</span>
       </div>
-      <div class="chapter-item" data-progress="0.18">
+      <div class="chapter-item" data-progress="0.16">
         <div class="chapter-dot"></div>
-        <span class="chapter-name">02 OVERVIEW</span>
+        <span class="chapter-name">02 WHO WE ARE</span>
       </div>
-      <div class="chapter-item" data-progress="0.42">
+      <div class="chapter-item" data-progress="0.32">
         <div class="chapter-dot"></div>
         <span class="chapter-name">03 MISSION</span>
       </div>
-      <div class="chapter-item" data-progress="0.68">
+      <div class="chapter-item" data-progress="0.48">
         <div class="chapter-dot"></div>
-        <span class="chapter-name">04 VISION</span>
+        <span class="chapter-name">04 FEATURES</span>
       </div>
-      <div class="chapter-item" data-progress="0.92">
+      <div class="chapter-item" data-progress="0.64">
         <div class="chapter-dot"></div>
-        <span class="chapter-name">05 REACH</span>
+        <span class="chapter-name">05 SOLUTIONS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.8">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">06 BENEFITS</span>
+      </div>
+      <div class="chapter-item" data-progress="0.93">
+        <div class="chapter-dot"></div>
+        <span class="chapter-name">07 CONTACT</span>
       </div>
     </div>
 
@@ -262,11 +269,11 @@
       </div>
       <div class="chapter-item" data-progress="0.48">
         <div class="chapter-dot"></div>
-        <span class="chapter-name">03 RISK</span>
+        <span class="chapter-name">03 MODULES</span>
       </div>
       <div class="chapter-item" data-progress="0.74">
         <div class="chapter-dot"></div>
-        <span class="chapter-name">04 WORKFLOW</span>
+        <span class="chapter-name">04 WHO IT'S FOR</span>
       </div>
       <div class="chapter-item" data-progress="0.93">
         <div class="chapter-dot"></div>
@@ -365,7 +372,7 @@
       <div class="hero-center">
         <div class="hero-badge"></div>
         <h1 class="hero-title">Oleovista Solutions</h1>
-        <p class="hero-subtitle">Operating Efficiently, Leading with Innovation.</p>
+        <p class="hero-subtitle">Every deal. Every position. Every risk. One system.</p>
         
         <div class="scroll-cta">
           <div class="mouse-icon">
@@ -383,13 +390,13 @@
         <h2 class="card-title">Our Core Competency</h2>
         <div class="card-text">
           <p>
-            Our company’s primary focus is delivering an end-to-end Automated Commodity & Energy Risk Management System (ETRM/CTRM) that addresses the full spectrum of trading, risk, finance, operations, and compliance functions.
+            Oleovista Solutions builds enterprise trading and risk platforms for energy and financial markets. ACERS, our ETRM system, runs the full deal lifecycle — capture, valuation, risk, scheduling and settlement — in one place, with one audit trail.
           </p>
           <p>
             We combine deep domain understanding with robust software engineering practices, ensuring our clients benefit from systems that are both technologically advanced and operationally practical.
           </p>
         </div>
-        <div class="card-stats">
+        <!-- <div class="card-stats">
           <div class="stat-box">
             <span class="stat-num">+1M</span>
             <span class="stat-label">Metric Tons Delivered</span>
@@ -402,19 +409,19 @@
             <span class="stat-num">360°</span>
             <span class="stat-label">Integrated Value Chain</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
 
     <!-- CHAPTER 3: OIL DIVISION -->
-    <section class="story-section section-oil" id="sec-oil">
-      <div class="division-header">
+    <!-- <section class="story-section section-oil" id="sec-oil">
+      <div class="division-header"> -->
         <!-- <div class="division-pill">ENERGY SECTOR</div>
         <h2 class="division-title">OIL & REFINED PRODUCTS</h2>
         <p class="division-desc">Leveraging extensive logistics hubs, blending terminals, and global bunkering networks.</p> -->
-      </div>
+      <!-- </div> -->
 
-      <div class="products-grid">
+      <!-- <div class="products-grid">
         <div class="product-card glass-panel" data-prod="crude">
           <div class="prod-num">01</div>
           <h3 class="prod-title">Crude Oil</h3>
@@ -422,70 +429,72 @@
           <button class="expand-btn">Explore Details &rarr;</button>
         </div>
 
-        <div class="product-card glass-panel" data-prod="marine">
+                <div class="product-card glass-panel" data-prod="gasoline">
           <div class="prod-num">02</div>
-          <h3 class="prod-title">Marine Fuels</h3>
-          <p class="prod-snippet">Bunkering operations in Fujairah, UAE—the third largest bunkering market globally—delivering high-grade fuel directly to vessels with green transition protocols.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
-
-        <div class="product-card glass-panel" data-prod="gasoline">
-          <div class="prod-num">03</div>
           <h3 class="prod-title">Gasoline</h3>
           <p class="prod-snippet">Comprehensive range of gasoline and blending components supported by our Fujairah storage facilities and relationships with international majors.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
         </div>
 
-        <div class="product-card glass-panel" data-prod="lpg">
+
+        <div class="product-card glass-panel" data-prod="marine">
+          <div class="prod-num">03</div>
+          <h3 class="prod-title">Marine Fuels</h3>
+          <p class="prod-snippet">Bunkering operations in Fujairah, UAE—the third largest bunkering market globally—delivering high-grade fuel directly to vessels with green transition protocols.</p>
+          <button class="expand-btn">Explore Details &rarr;</button>
+        </div> -->
+
+
+        <!-- <div class="product-card glass-panel" data-prod="lpg">
           <div class="prod-num">04</div>
           <h3 class="prod-title">LPG (Liquefied Gas)</h3>
           <p class="prod-snippet">Global trade via Very Large Gas Carriers (VLGCs) from the US and Arabian Gulf to Asia, plus pressurized LPG cargoes for regional infrastructure.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
+        </div> -->
 
-        <div class="product-card glass-panel" data-prod="gas-power">
+        <!-- <div class="product-card glass-panel" data-prod="gas-power">
           <div class="prod-num">05</div>
           <h3 class="prod-title">Gas & Power</h3>
           <p class="prod-snippet">Power and gas trading licenses in Turkey and European interconnected grids, enabling active participation in evolving regional energy dynamics.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
+        </div> -->
 
-        <div class="product-card glass-panel" data-prod="fuel-oil">
+        <!-- <div class="product-card glass-panel" data-prod="fuel-oil">
           <div class="prod-num">06</div>
           <h3 class="prod-title">Fuel Oil</h3>
           <p class="prod-snippet">Specialized blending operations for marine fuel and utility-grade power generation, producing low-sulfur and high-sulfur compliant fuels.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
+        </div> -->
 
-        <div class="product-card glass-panel" data-prod="distillates">
+        <!-- <div class="product-card glass-panel" data-prod="distillates">
           <div class="prod-num">07</div>
           <h3 class="prod-title">Distillates</h3>
           <p class="prod-snippet">Efficient value chain connecting East & Southern Africa with vessel and overland pipeline/truck supply routes exceeding 1M+ metric tons.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
+        </div> -->
 
-        <div class="product-card glass-panel" data-prod="naphtha">
+        <!-- <div class="product-card glass-panel" data-prod="naphtha">
           <div class="prod-num">08</div>
           <h3 class="prod-title">Naphtha & Low Carbon</h3>
           <p class="prod-snippet">Petrochemical cracker feedstocks and emerging renewable biofuels, driving lower carbon intensity across global logistics.</p>
           <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
-      </div>
-    </section>
+        </div> -->
+      <!-- </div>
+    </section> -->
 
     <!-- CHAPTER 4: METALS DIVISION -->
     <section class="story-section section-metals" id="sec-metals">
       <div class="division-header">
         <div class="division-pill">MINERALS & RAW COMMODITIES</div>
-        <h2 class="division-title">METALS & DRY BULK</h2>
+        <h2 class="division-title">PRODUCTS</h2>
         <p class="division-desc">Transportation, storage, and supply of ferrous, non-ferrous, and industrial minerals from mine to smelter.</p>
       </div>
 
       <div class="metals-grid">
         <div class="metal-card glass-panel">
           <div class="card-icon"></div>
-          <h3>Automated Commodity & Energy Risk System (ACERS)</h3>
-          <p>Simplify and automate your entire trading operations with ACERS, an intelligent ERP + ETRM platform for commodity and energy firms.</p>
+          <h3>ACERS — Energy Trading &amp; Risk Management</h3>
+          <p>A complete ETRM platform for oil and refined products — crude, gasoline, diesel, jet and fuel oil — covering paper trades from deal capture to settlement.</p>
         </div>
 
         <div class="metal-card glass-panel">
@@ -570,26 +579,17 @@
 
       <!-- ABOUT CHAPTER 1: HERO & VALUES -->
       <section class="story-section section-about-hero" id="sec-about-hero">
-        <div class="hero-center about-hero-center">
+        <div class="hero-center about-hero-center" style="margin-bottom: 400px;">
           <!-- <div class="about-breadcrumb-badge">
             <span class="bc-home">Home</span>
             <span class="bc-sep">—</span>
             <span class="bc-current">About us</span>
           </div> -->
-          <div class="hero-badge about-badge"></div>
-          <h1 class="hero-title about-title">ABOUT US</h1>
+          <div class="hero-badge about-badge">DISCOVER OLEOVISTA</div>
+          <h1 class="hero-title about-title">About Us</h1>
           <p class="hero-subtitle about-subtitle">
-            Pioneering digital ETRM & ERP systems, transforming commodity trading operations and enterprise risk management across global markets.
+            We design, build and support trading and risk platforms for energy and financial markets: accurate, auditable, fast to implement and built to adapt.
           </p>
-          
-          <div class="about-hero-card glass-panel">
-            <div class="about-hero-card-inner">
-              <div class="about-hero-brand">OLEOVISTA SOLUTIONS</div>
-              <p class="about-hero-desc">
-                We design and develop scalable enterprise platforms that streamline the flow of data, automate critical processes, and provide real-time insights into trading positions and risk exposure.
-              </p>
-            </div>
-          </div>
 
           <div class="scroll-cta">
             <div class="mouse-icon">
@@ -600,240 +600,240 @@
         </div>
       </section>
 
-      <!-- ABOUT CHAPTER 2: WHO WE ARE & CORE EXPERTISE -->
-      <section class="story-section section-about-who" id="sec-about-who">
-        <div class="about-split-grid">
-          <div >
-            <div class="card-eyebrow">WHO WE ARE</div>
-            <h2 class="card-title">Technology-Driven Software Solutions</h2>
-            <div class="card-text">
-              <p>
-                We are a technology-driven organisation specialising in the design, development, and implementation of advanced software solutions tailored for the global commodity and energy markets. With a strong foundation in innovation and automation, our company is committed to transforming how businesses manage trading operations, market exposure, and enterprise-wide risk.
-              </p>
-              <p>
-                Our expertise lies in building high-performance, scalable, and secure systems that integrate seamlessly into the complex workflows of commodity and energy trading firms. We empower organisations to operate with greater efficiency, transparency, and accuracy through modern technology and intelligent automation.
-              </p>
-            </div>
-            <div class="about-pill-tags">
-              <span class="about-pill">High-Performance Systems</span>
-              <span class="about-pill">Enterprise Risk Control</span>
-              <span class="about-pill">Intelligent Automation</span>
-            </div>
+      <!-- =====================================================================
+           ABOUT US - SHOWCASE SECTIONS (scroll over the ocean + ship)
+           Styles: /src/about-showcase.css   (all classes start with "ab-")
+           ===================================================================== -->
+
+      <!-- 2. WHO WE ARE + ACERS DASHBOARD -->
+      <section class="story-section ab-section" id="sec-about-who">
+        <div class="ab-wrap">
+          <div class="ab-head ab-center">
+            <div class="ab-eyebrow">WHO WE ARE</div>
+            <h2 class="ab-h2">Every deal. Every position. Every risk.<br>One system.</h2>
+            <p class="ab-lead">Oleovista Solutions Pvt Ltd is a software development company based in Kochi, India. We design, build and support trading and risk platforms for energy and financial markets. Our first product, ACERS, is a full ETRM system in use with our clients; our second, a treasury trading system, is in development.</p>
           </div>
 
-          <div >
-            <div class="about-media-wrapper">
-              <img src="/assets/about/finance.png" alt="Strategic Partnership" class="about-media-img" loading="lazy" decoding="async" />
-              <div class="media-overlay-badge">
-                <span class="mob-dot"></span>
-                <span>Trusted Strategic Partnership</span>
+          <!-- ACERS dashboard preview (illustrative sample data) -->
+          <div class="ab-dash" aria-label="ACERS dashboard preview with sample data">
+            <aside class="ab-dash-side">
+              <div class="ab-dash-brand"><span class="ab-dot"></span>ACERS</div>
+              <nav>
+                <span class="on">Dashboard</span><span>Trade capture</span><span>Positions</span><span>P&amp;L</span>
+                <span>Initial margin</span><span>Risk</span><span>Settlement</span><span>Reports</span>
+              </nav>
+              <div class="ab-dash-feed"><i></i>ICE feed live</div>
+            </aside>
+            <div class="ab-dash-main">
+              <div class="ab-dash-top">
+                <div><small>Desk</small><strong>Oil &amp; Products · Paper</strong></div>
+                <span class="ab-chip-sample">Sample data</span>
               </div>
-            </div>
-            <div class="about-media-caption">
-              <h3>Empowering Global Trading Firms</h3>
-              <p>Seamlessly integrating modern technologies with high-performance execution workflows across worldwide energy markets.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT CHAPTER 3: OUR MISSION -->
-      <section class="story-section section-about-mission" id="sec-about-mission">
-        <div class="about-feature-grid">
-          <div >
-            <div class="about-media-wrapper">
-              <img src="/assets/about/commodity.jpg" alt="Our Mission - Intelligent Risk Management" class="about-media-img" loading="lazy" decoding="async" />
-              <div class="media-glow-accent"></div>
-            </div>
-            <div class="about-card-stat-pill">
-              <span class="pill-glow-dot"></span>
-              <span>Real-Time Intelligence & Execution</span>
-            </div>
-          </div>
-
-          <div >
-            <div class="card-eyebrow">STRATEGIC PURPOSE</div>
-            <h2 class="card-title">OUR MISSION</h2>
-            <div class="card-text mission-quote">
-              <p class="mission-lead">
-                "To deliver intelligent, automated risk management solutions that simplify complex commodity trading operations and empower organisations with real-time insights and operational excellence."
-              </p>
-            </div>
-            <div class="mission-pillars">
-              <div class="pillar-item">
-                <div class="pillar-icon"></div>
-                <div class="pillar-content">
-                  <h4>Intelligent Automation</h4>
-                  <p>Eliminate manual operational friction with automated hedging, position tracking, and straight-through trade processing.</p>
-                </div>
+              <div class="ab-kpis">
+                <div><small>Net P&amp;L (MTD)</small><strong class="up">+$1.24M</strong><em>+3.8% vs last month</em></div>
+                <div><small>Open positions</small><strong>186 lots</strong><em>12 products · 9 months</em></div>
+                <div><small>Initial margin</small><strong>$4.62M</strong><em>62% of limit</em></div>
+                <div><small>VaR (95%, 1-day)</small><strong>$318K</strong><em>Within limit</em></div>
               </div>
-              <div class="pillar-item">
-                <div class="pillar-icon"></div>
-                <div class="pillar-content">
-                  <h4>Real-Time Insights</h4>
-                  <p>Equip trading desks with instantaneous visibility into exposure, VaR metrics, and market volatilities.</p>
-                </div>
-              </div>
-              <div class="pillar-item">
-                <div class="pillar-icon"></div>
-                <div class="pillar-content">
-                  <h4>Operational Excellence</h4>
-                  <p>Resilient institutional standards engineered to perform during unprecedented commodity market volatility.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT CHAPTER 4: OUR VISION -->
-      <section class="story-section section-about-vision" id="sec-about-vision">
-        <div class="about-feature-grid reverse">
-          <div >
-            <div class="card-eyebrow">FUTURE HORIZON</div>
-            <h2 class="card-title">OUR VISION</h2>
-            <div class="card-text vision-quote">
-              <p class="vision-lead">
-                "To become the leading global provider of digital ETRM and ERP systems by continually innovating, integrating modern technologies, and building solutions that redefine efficiency, transparency, and risk control in the commodity and energy sectors."
-              </p>
-            </div>
-            <div class="vision-benchmarks">
-              <div class="benchmark-box">
-                <span class="benchmark-num">01</span>
-                <span class="benchmark-title">ETRM & ERP Leadership</span>
-                <span class="benchmark-desc">Setting the global benchmark for enterprise energy and commodity platforms.</span>
-              </div>
-              <div class="benchmark-box">
-                <span class="benchmark-num">02</span>
-                <span class="benchmark-title">Continuous Innovation</span>
-                <span class="benchmark-desc">Harnessing advanced analytics, AI models, and cloud-native scalability.</span>
-              </div>
-              <div class="benchmark-box">
-                <span class="benchmark-num">03</span>
-                <span class="benchmark-title">Transparent Control</span>
-                <span class="benchmark-desc">Guaranteed governance, compliance, and end-to-end operational clarity.</span>
-              </div>
-            </div>
-          </div>
-
-          <div >
-            <div class="about-media-wrapper">
-              <img src="/assets/about/vision.png" alt="Our Vision - Digital ETRM" class="about-media-img" loading="lazy" decoding="async" />
-              <div class="media-glow-accent"></div>
-            </div>
-            <div class="about-card-stat-pill">
-              <span class="pill-glow-dot cyan"></span>
-              <span>Global Provider of Digital ETRM & ERP</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT CHAPTER 5: STATS, CONTACT & FOOTPRINT -->
-      <section class="story-section section-about-stats" id="sec-about-stats">
-        <div class="about-stats-container">
-          
-          <!-- 4 Stats Cards from Reference Image -->
-          <div class="about-stats-row">
-            <div class="about-stat-card glass-panel">
-              <div class="stat-icon-wrap">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
-                  <line x1="4" y1="22" x2="4" y2="15"></line>
-                </svg>
-              </div>
-              <div class="stat-body">
-                <div class="stat-badge">COUNTRIES</div>
-                <div class="stat-digit">1 +</div>
-              </div>
-            </div>
-
-            <div class="about-stat-card glass-panel">
-              <div class="stat-icon-wrap">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <div class="stat-body">
-                <div class="stat-badge">CLIENTS</div>
-                <div class="stat-digit">3 +</div>
-              </div>
-            </div>
-
-            <div class="about-stat-card glass-panel">
-              <div class="stat-icon-wrap">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                  <polyline points="2 17 12 22 22 17"></polyline>
-                  <polyline points="2 12 12 17 22 12"></polyline>
-                </svg>
-              </div>
-              <div class="stat-body">
-                <div class="stat-badge">PROJECTS</div>
-                <div class="stat-digit">8 +</div>
-              </div>
-            </div>
-
-            <div class="about-stat-card glass-panel">
-              <div class="stat-icon-wrap">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <div class="stat-body">
-                <div class="stat-badge">TEAM MEMBERS</div>
-                <div class="stat-digit">20 +</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- About Company Corporate Hub Box -->
-          <div class="about-corporate-box glass-panel">
-            <div class="corp-left">
-              <h3 class="corp-title">OLEOVISTA SOLUTIONS</h3>
-              <p class="corp-desc">
-                We design and develop scalable enterprise platforms that streamline the flow of data, automate critical processes, and provide real-time insights into trading positions and risk exposure.
-              </p>
-              <div class="corp-socials">
-                <a href="#" class="corp-social-btn" title="Twitter / X" aria-label="Twitter">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              <div class="ab-dash-grid">
+                <div class="ab-card ab-chart">
+                  <div class="ab-card-h"><span>P&amp;L · last 30 days</span><span class="ab-tabs"><b>1M</b><i>3M</i><i>YTD</i></span></div>
+                  <svg viewBox="0 0 600 180" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="abFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fe39a" stop-opacity=".35"/><stop offset="1" stop-color="#2fe39a" stop-opacity="0"/></linearGradient>
+                    </defs>
+                    <g class="ab-gridlines"><line x1="0" y1="45" x2="600" y2="45"/><line x1="0" y1="90" x2="600" y2="90"/><line x1="0" y1="135" x2="600" y2="135"/></g>
+                    <path class="ab-area" d="M0,150 L30,142 L60,146 L90,128 L120,132 L150,118 L180,124 L210,104 L240,110 L270,92 L300,98 L330,80 L360,86 L390,70 L420,76 L450,58 L480,64 L510,48 L540,54 L570,36 L600,30 L600,180 L0,180 Z" fill="url(#abFill)"/>
+                    <path class="ab-line" d="M0,150 L30,142 L60,146 L90,128 L120,132 L150,118 L180,124 L210,104 L240,110 L270,92 L300,98 L330,80 L360,86 L390,70 L420,76 L450,58 L480,64 L510,48 L540,54 L570,36 L600,30"/>
                   </svg>
-                </a>
-                <a href="https://www.linkedin.com/company/oleovista-solutions-private-limited/?viewAsMember=true" class="corp-social-btn" title="LinkedIn" aria-label="LinkedIn">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            <div class="corp-right">
-              <div class="corp-email-card">
-                <span class="corp-email-label">DIRECT INQUIRIES & CONTACT</span>
-                <a href="mailto:corporate@oleovista.com" class="corp-email-link">corporate@oleovista.com</a>
+                </div>
+                <div class="ab-card ab-donut">
+                  <div class="ab-card-h"><span>Exposure by product</span></div>
+                  <div class="ab-donut-body">
+                    <svg viewBox="0 0 42 42" aria-hidden="true">
+                      <circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/>
+                      <circle cx="21" cy="21" r="15.9" fill="none" stroke="#2fe39a" stroke-width="5" stroke-dasharray="38 62" stroke-dashoffset="25"/>
+                      <circle cx="21" cy="21" r="15.9" fill="none" stroke="#9be564" stroke-width="5" stroke-dasharray="24 76" stroke-dashoffset="87"/>
+                      <circle cx="21" cy="21" r="15.9" fill="none" stroke="#14b88a" stroke-width="5" stroke-dasharray="18 82" stroke-dashoffset="63"/>
+                      <circle cx="21" cy="21" r="15.9" fill="none" stroke="#5f7d6b" stroke-width="5" stroke-dasharray="20 80" stroke-dashoffset="45"/>
+                    </svg>
+                    <ul>
+                      <li><i style="background:#2fe39a"></i>Crude 38%</li>
+                      <li><i style="background:#9be564"></i>Gasoil / diesel 24%</li>
+                      <li><i style="background:#14b88a"></i>Gasoline 18%</li>
+                      <li><i style="background:#5f7d6b"></i>Fuel oil &amp; other 20%</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="ab-card ab-table">
+                  <div class="ab-card-h"><span>Positions</span><span class="ab-muted">Live from ICE · prices from Nasdaq</span></div>
+                  <div class="ab-table-scroll">
+                    <table>
+                      <thead><tr><th>Product</th><th>Contract</th><th>Net (lots)</th><th>MTM price</th><th>Unrealised P&amp;L</th></tr></thead>
+                      <tbody>
+                        <tr><td><i class="c1"></i>Brent crude futures</td><td>Dec-26</td><td>+120</td><td>78.42</td><td class="up">+$84,300</td></tr>
+                        <tr><td><i class="c2"></i>Gasoil futures</td><td>Jan-27</td><td>−45</td><td>702.25</td><td class="up">+$21,150</td></tr>
+                        <tr><td><i class="c3"></i>RBOB gasoline swap</td><td>Dec-26</td><td>+30</td><td>2.1840</td><td class="down">−$6,720</td></tr>
+                        <tr><td><i class="c4"></i>Fuel oil 3.5% swap</td><td>Q1-27</td><td>−20</td><td>441.50</td><td class="up">+$9,400</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="ab-card ab-margin">
+                  <div class="ab-card-h"><span>Initial margin</span></div>
+                  <div class="ab-bar"><span style="width:62%"></span></div>
+                  <div class="ab-margin-rows"><span>Used <b>$4.62M</b></span><span>Excess <b class="up">$2.83M</b></span></div>
+                  <button type="button" class="ab-mini-btn" tabindex="-1">What-if on new trade ›</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Footer -->
-          <footer class="about-experience-footer">
-            <div class="about-footer-text">
-              <p>© 2025 Oleovista - Software Solutions & Automated Commodity Risk Management</p>
+          <div class="ab-partners">
+            <div class="ab-eyebrow">CONNECTED</div>
+            <h3 class="ab-h3">Integrating with the exchanges and systems your desk already uses</h3>
+            <div class="ab-partner-row">
+              <span>ICE</span><span>Nasdaq</span><span>Brokers</span><span>ERP</span><span>Treasury systems</span><span>REST APIs</span>
             </div>
-            <div class="about-footer-links">
-              <a href="#">Contact Us</a>
-              <span class="af-sep">|</span>
-              <a href="#">Privacy Policy</a>
-            </div>
-          </footer>
+          </div>
+        </div>
+      </section>
 
+      <!-- 3. MISSION + WHAT WE BELIEVE (feature cards) -->
+      <section class="story-section ab-section" id="sec-about-mission">
+        <div class="ab-wrap">
+          <div class="ab-head ab-center">
+            <div class="ab-eyebrow">OUR MISSION</div>
+            <h2 class="ab-h2">Software as rigorous as the markets it runs.</h2>
+            <p class="ab-lead">To give trading organisations software that is as rigorous as the markets they operate in: accurate, auditable, fast to implement and built to adapt.</p>
+          </div>
+          <div class="ab-cards4">
+            <article class="ab-fcard">
+              <div class="ab-art ab-art-photo"><img src="/assets/About1.png" alt="Domain first" loading="lazy" decoding="async"></div>
+              <h4>Domain first</h4>
+              <p>Good trading software starts with understanding the trade, the contract and the risk. The code comes after.</p>
+            </article>
+            <article class="ab-fcard">
+              <div class="ab-art ab-art-photo"><img src="/assets/About2.png" alt="One version of the truth" loading="lazy" decoding="async"></div>
+              <h4>One version of the truth</h4>
+              <p>Every position, price and P&amp;L figure comes from one system, not from reconciling three.</p>
+            </article>
+            <article class="ab-fcard">
+              <div class="ab-art ab-art-photo"><img src="/assets/About3.png" alt="No black boxes" loading="lazy" decoding="async"></div>
+              <h4>No black boxes</h4>
+              <p>Clients can see how every number was calculated and change the rules themselves.</p>
+            </article>
+            <article class="ab-fcard">
+              <div class="ab-art ab-art-photo"><img src="/assets/About4.png" alt="We stay" loading="lazy" decoding="async"></div>
+              <h4>We stay</h4>
+              <p>Implementation is the start of the relationship, not the end.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. FEATURE ROWS -->
+      <section class="story-section ab-section" id="sec-about-vision">
+        <div class="ab-wrap ab-rows">
+          <div class="ab-row">
+            <div class="ab-row-text">
+              <div class="ab-eyebrow">FEATURE 01</div>
+              <h3 class="ab-h3">One system, one truth.</h3>
+              <p>Front, middle and back office work from the same data. ACERS runs the full deal lifecycle (capture, valuation, risk, scheduling and settlement) in one place, with one audit trail.</p>
+              <button type="button" class="ab-btn" data-ct-nav="nav-services">Explore ACERS <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="ab-row-art ab-row-photo"><img src="/assets/11.png" alt="One system, one truth" loading="lazy" decoding="async"></div>
+          </div>
+          <div class="ab-row ab-row-rev">
+            <div class="ab-row-text">
+              <div class="ab-eyebrow">FEATURE 02</div>
+              <h3 class="ab-h3">Transparent calculations.</h3>
+              <p>Every valuation and risk number can be traced back to its inputs and rules. Commodities, contracts, workflows and reports are set up by configuration, not custom code, so upgrades stay simple.</p>
+            </div>
+                        <div class="ab-row-art ab-row-photo"><img src="/assets/about/vision.png" alt="One system, one truth" loading="lazy" decoding="async"></div>
+
+            <!-- <div class="ab-row-art ab-panel-lines">
+              <svg viewBox="0 0 400 260" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M-10,200 C80,120 140,240 220,150 S360,60 410,90"/>
+                <path d="M-10,212 C80,132 140,252 220,162 S360,72 410,102"/>
+                <path d="M-10,224 C80,144 140,264 220,174 S360,84 410,114"/>
+                <path d="M-10,236 C80,156 140,276 220,186 S360,96 410,126"/>
+              </svg>
+            </div> -->
+          </div>
+          <div class="ab-row">
+            <div class="ab-row-text">
+              <div class="ab-eyebrow">FEATURE 03</div>
+              <h3 class="ab-h3">Connected to ICE and Nasdaq.</h3>
+              <p>Trades booked on ICE flow straight in through the ICE trade-capture API, with no re-keying. Prices come from Nasdaq and initial margin is calculated automatically, so positions, P&amp;L and risk are always current.</p>
+              <button type="button" class="ab-btn" data-ct-nav="nav-contact">Talk to us <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="ab-row-art ab-row-photo"><img src="/assets/about/commodity.jpg" alt="One system, one truth" loading="lazy" decoding="async"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. WHO IT IS FOR -->
+      <section class="story-section ab-section" id="sec-about-solutions">
+        <div class="ab-wrap ab-split">
+          <div class="ab-split-left">
+            <div class="ab-eyebrow">SOLUTIONS</div>
+            <h2 class="ab-h2">Built for every oil &amp; products trading desk.</h2>
+            <p class="ab-lead">ACERS is a complete ETRM platform for financial oil and refined-products trading: crude, gasoline, diesel, jet fuel, fuel oil, naphtha and natural gas futures and swaps. Physical trading, scheduling and inventory can be added as a client-specific build.</p>
+          </div>
+          <div class="ab-stack">
+            <article class="ab-scard"><span class="ab-num">01</span><div><h4>Oil trading houses &amp; prop firms</h4><p>Real-time positions and P&amp;L by product, book, trader, contract month and strategy.</p></div></article>
+            <article class="ab-scard"><span class="ab-num">02</span><div><h4>Refiners</h4><p>Hedge crack spreads and product margins with full visibility of exposure.</p></div></article>
+            <article class="ab-scard"><span class="ab-num">03</span><div><h4>National oil companies &amp; producers</h4><p>Hedge output with transparent valuation and settlement.</p></div></article>
+            <article class="ab-scard"><span class="ab-num">04</span><div><h4>Bank, fund &amp; broker desks</h4><p>Trade crude and products on ICE with automatic capture and initial margin.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. BENEFITS / NUMBERS -->
+      <section class="story-section ab-section" id="sec-about-benefits">
+        <div class="ab-wrap ab-split">
+          <div class="ab-split-left">
+            <div class="ab-eyebrow">BENEFITS</div>
+            <h2 class="ab-h2">Accurate. Auditable.<br>Built to adapt.<br><span>Welcome to Oleovista Solutions.</span></h2>
+            <ul class="ab-ticks">
+              <li>Fast implementation with our own team</li>
+              <li>Deploy your way: cloud, private cloud or on-premise</li>
+              <li>REST APIs and connectors to brokers, ERP and treasury systems</li>
+            </ul>
+          </div>
+          <!-- <div class="ab-stats">
+            <div class="ab-stat ab-stat-light"><strong>20+</strong><span>Team members</span></div>
+            <div class="ab-stat"><strong>8+</strong><span>Projects delivered</span></div>
+            <div class="ab-stat"><strong>3+</strong><span>Clients</span></div>
+            <div class="ab-stat"><strong>1 day</strong><span>Typical reply time</span></div>
+          </div> -->
+        </div>
+      </section>
+
+      <!-- 7. CALL TO ACTION + CONTACT + FOOTER -->
+      <section class="story-section ab-section" id="sec-about-stats">
+        <div class="ab-wrap">
+          <div class="ab-cta">
+            <h2 class="ab-h1">Every deal. Every position.<br>Every risk. One system.</h2>
+            <p class="ab-lead">Tell us about your trading desk and we will show you how ACERS fits.</p>
+            <div class="ab-cta-btns">
+              <button type="button" class="ab-btn ab-btn-solid" data-ct-nav="nav-contact">Get in touch <span aria-hidden="true">→</span></button>
+              <button type="button" class="ab-btn" data-ct-nav="nav-services">Explore ACERS</button>
+            </div>
+          </div>
+          <div class="ab-foot">
+            <div class="ab-foot-brand">
+              <strong>OLEOVISTA SOLUTIONS</strong>
+              <p>Enterprise trading and risk platforms for energy and financial markets.</p>
+              <a href="mailto:corporate@oleovista.com">corporate@oleovista.com</a>
+            </div>
+            <div class="ab-foot-cols">
+              <div><h5>Company</h5><a href="#" data-ct-nav="nav-home">Home</a><a href="#" data-ct-nav="nav-services">Services</a><a href="#" data-ct-nav="nav-team">Team</a><a href="#" data-ct-nav="nav-careers">Careers</a></div>
+              <div><h5>Socials</h5><a href="https://www.linkedin.com/company/oleovista-solutions-private-limited/?viewAsMember=true" target="_blank" rel="noopener">LinkedIn</a><a href="#" data-ct-nav="nav-contact">Contact us</a></div>
+            </div>
+          </div>
+          <p class="ab-copy">© 2026 Oleovista Solutions Private Limited · Kochi, India</p>
         </div>
       </section>
 
@@ -845,9 +845,9 @@
       <!-- SERVICES CHAPTER 1: HERO -->
       <section class="story-section section-svc-hero" id="sec-svc-hero">
         <div class="hero-center">
-          <div class="hero-badge svc-badge">ETRM · CTRM · RISK · AUTOMATION</div>
-          <h1 class="hero-title svc-title">OUR SERVICES</h1>
-          <p class="hero-subtitle">End-to-end software for commodity and energy trading, from trade capture to settlement.</p>
+          <div class="hero-badge svc-badge">ACERS · ETRM · TREASURY</div>
+          <h1 class="hero-title svc-title">Our Services</h1>
+          <p class="hero-subtitle">Enterprise trading and risk platforms for energy and financial markets, from deal capture to settlement.</p>
           <div class="scroll-cta">
             <div class="mouse-icon"><div class="wheel-dot"></div></div>
             <span class="cta-text">Scroll to explore our services</span>
@@ -855,46 +855,66 @@
         </div>
       </section>
 
-      <!-- SERVICES CHAPTER 2: ACERS -->
+      <!-- SERVICES CHAPTER 2: ACERS (ETRM) -->
       <section class="story-section section-svc-left" id="sec-svc-acers">
-        <div class="svc-block" class="about-media-card glass-panel vision-media-card">
-          <!-- <div class="svc-index"></div> -->
-          <div class="card-eyebrow">FLAGSHIP PLATFORM</div>
-          <h2 class="svc-heading">Automated Commodity &amp; Energy Risk System</h2>
-          <p class="svc-text">ACERS is an intelligent ERP + ETRM platform that brings trade capture, positions, risk, finance, operations and compliance into one unified, cloud-ready system for commodity and energy firms.</p>
+        <div class="svc-block svc-block-acers">
+          <div class="card-eyebrow">FLAGSHIP PRODUCT · ACERS (ETRM)</div>
+          <h2 class="svc-heading">ACERS — Energy Trading &amp; Risk Management, front to back.</h2>
+          <p class="svc-text">ACERS is a complete ETRM platform for financial oil and refined-products trading — crude, gasoline, diesel, jet fuel, fuel oil, naphtha and natural gas futures and swaps. Trades flow straight in from ICE through the trade-capture API, prices come from Nasdaq, and initial margins are calculated automatically, so positions, P&amp;L, risk and settlement are always current and fully auditable.</p>
+          <p class="svc-text svc-note">Physical trading, scheduling and inventory can be added as a client-specific build.</p>
           <div class="svc-tags">
-            <span>Trade Capture &amp; Management</span>
-            <span>Real-Time Position Management</span>
-            <span>Multi-Exchange Integration</span>
+            <span>ICE trade capture</span>
+            <span>Nasdaq market data</span>
+            <span>Automatic initial margin</span>
+            <span>Futures &amp; swaps</span>
           </div>
         </div>
       </section>
 
-      <!-- SERVICES CHAPTER 3: RISK -->
+      <!-- SERVICES CHAPTER 3: ACERS MODULES -->
       <section class="story-section section-svc-right" id="sec-svc-risk">
-        <div class="svc-block">
-          <!-- <div class="svc-index"></div> -->
-          <div class="card-eyebrow">ANALYTICS</div>
-          <h2 class="svc-heading">Risk Analytics &amp; Compliance</h2>
-          <p class="svc-text">Real-time mark-to-market, realised and unrealised P/L and Value-at-Risk, with instant stress and scenario testing. Exposure is consolidated across trades, portfolios and counterparties, with accuracy and compliance across every business unit.</p>
-          <div class="svc-cols">
-            <div><h4>Live P/L &amp; VaR</h4><p>Continuous MTM, P/L and VaR calculations on one dashboard.</p></div>
-            <div><h4>Audit-ready</h4><p>Role-based access, full audit trails and multi-tenant security.</p></div>
+        <div class="svc-block svc-wide">
+          <div class="card-eyebrow">ACERS MODULES</div>
+          <h2 class="svc-heading">Everything from deal capture to settlement</h2>
+          <div class="svc-modules">
+            <div><h4>ICE trade capture</h4><p>Trades booked on ICE flow in automatically through the ICE trade-capture API — no re-keying. Manual entry for OTC swaps, options and spreads.</p></div>
+            <div><h4>Position &amp; P&amp;L</h4><p>Real-time positions by product, book, trader, contract month and strategy; mark-to-market and realised/unrealised P&amp;L.</p></div>
+            <div><h4>Market data (Nasdaq)</h4><p>Live and end-of-day prices from Nasdaq; forward curves, volatilities and settlement prices for valuation.</p></div>
+            <div><h4>Initial margin</h4><p>Exchange initial margin per account and portfolio, with margin calls, excess/deficit and what-if margin on new trades.</p></div>
+            <div><h4>Risk management</h4><p>Value-at-Risk, stress and scenario testing, with exposure consolidated across books, portfolios and counterparties.</p></div>
+            <div><h4>Settlement &amp; confirmations</h4><p>Trade confirmations, daily settlement, variation margin, fees and broker statement reconciliation.</p></div>
+            <div><h4>Reporting &amp; dashboards</h4><p>Configurable reports, dashboards and data exports for traders, risk, finance and management.</p></div>
+            <div><h4>Integration</h4><p>REST APIs and connectors to ICE, Nasdaq, brokers, ERP and treasury systems.</p></div>
+            <div><h4>Physical trading <small>on request</small></h4><p>Physical deal capture, scheduling, inventory and quality adjustments, built to your requirements.</p></div>
           </div>
         </div>
       </section>
 
-      <!-- SERVICES CHAPTER 4: WORKFLOW + DELIVERY -->
+      <!-- SERVICES CHAPTER 4: WHO IT IS FOR + KEY BENEFITS -->
       <section class="story-section section-svc-left" id="sec-svc-workflow">
-        <div class="svc-block">
-          <!-- <div class="svc-index"></div> -->
-          <div class="card-eyebrow">OPERATIONS</div>
-          <h2 class="svc-heading">Enterprise Workflow Automation</h2>
-          <p class="svc-text">Settlements, invoicing, document control, trade confirmations and audit tracking run automatically, cutting manual effort and operational risk.</p>
-          <div class="svc-steps">
-            <div><span>A</span>Discovery &amp; Planning</div>
-            <div><span>B</span>Integration &amp; Configuration</div>
-            <div><span>C</span>Testing &amp; Optimisation</div>
+        <div class="svc-block svc-wide">
+          <div class="card-eyebrow">WHO IT IS FOR</div>
+          <h2 class="svc-heading">Built for oil &amp; refined-products trading</h2>
+          <div class="svc-two">
+            <div>
+              <h4>Who uses ACERS</h4>
+              <ul class="svc-list">
+                <li>Oil trading houses and proprietary trading firms</li>
+                <li>Refiners hedging crack spreads and product margins</li>
+                <li>National oil companies and producers hedging output</li>
+                <li>Commodity desks at banks, funds and brokers trading crude and products on ICE</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Key benefits</h4>
+              <ul class="svc-list">
+                <li><strong>One system, one truth.</strong> Front, middle and back office work from the same data.</li>
+                <li><strong>Transparent calculations.</strong> Every valuation and risk number traces back to its inputs and rules.</li>
+                <li><strong>Configurable, not customised.</strong> Commodities, contracts, workflows and reports are set up by configuration, so upgrades stay simple.</li>
+                <li><strong>Fast implementation.</strong> Our implementation team takes you from kickoff to go-live.</li>
+                <li><strong>Deploy your way.</strong> Cloud, private cloud or on-premise.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -904,7 +924,7 @@
         <div class="svc-cta">
           <div class="card-eyebrow">START A PROJECT</div>
           <h2 class="svc-heading">Let's build your trading platform</h2>
-          <p class="svc-text">Tell us about your trading operation and we will show you how ACERS fits.</p>
+          <p class="svc-text">Tell us about your trading desk and we will show you how ACERS fits. Cloud, private cloud or on-premise.</p>
           <div class="svc-mail">corporate@oleovista.com</div>
           <p class="svc-foot">© 2025 Oleovista - Software Solutions &amp; Automated Commodity Risk Management</p>
         </div>
@@ -919,8 +939,8 @@
       <section class="story-section section-car-hero" id="sec-car-hero">
         <div class="hero-center">
           <div class="hero-badge car-badge">CAREERS · JOIN OLEOVISTA</div>
-          <h1 class="hero-title car-title">BUILD WITH US</h1>
-          <p class="hero-subtitle">Help build the software that moves the world's energy and commodities.</p>
+          <h1 class="hero-title car-title">Build With Us</h1>
+          <p class="hero-subtitle">Help build the trading and risk platforms that run energy and financial markets.</p>
           <div class="car-hero-actions">
             <button class="car-btn car-btn-primary" data-careers-goto="0.5">View open roles</button>
           </div>
@@ -937,7 +957,7 @@
           <!-- <div class="car-index">01</div> -->
           <div class="card-eyebrow car-eyebrow">LIFE AT OLEOVISTA</div>
           <h2 class="car-heading">Work where global energy markets meet great software</h2>
-          <p class="car-text">Our platforms run the trading, risk and settlement desks of energy and commodity companies across continents. Small teams, real ownership and work that ships to live clients.</p>
+          <p class="car-text">We build ACERS, our energy trading and risk management (ETRM) platform, and a new treasury trading system. We work domain first: understand the trade, the contract and the risk, then write the code. Small teams, real ownership and work that ships to live clients.</p>
           <div class="car-perks">
             <div><span></span><h4>Global impact</h4><p>Your code supports trades between ports and markets worldwide.</p></div>
             <div><span></span><h4>Hybrid &amp; flexible</h4><p>Flexible hours, hybrid work and remote-friendly teams.</p></div>
@@ -984,7 +1004,7 @@
           <div class="car-hero-actions car-left-actions">
             <button class="car-btn car-btn-primary" data-careers-general>Send a general application</button>
           </div>
-          <div class="car-mail careers-mail">careers@oleovista.com</div>
+          <div class="car-mail careers-mail">corporate@oleovista.comm</div>
           <p class="svc-foot">© 2025 Oleovista Solutions Private Limited</p>
         </div>
       </section>
@@ -998,8 +1018,8 @@
       <section class="story-section section-team-hero" id="sec-team-hero">
         <div class="hero-center">
           <div class="hero-badge tm-badge">OUR PEOPLE · OLEOVISTA</div>
-          <h1 class="hero-title tm-title">MEET OUR TEAM</h1>
-          <p class="hero-subtitle">Engineers, analysts and designers building software for global energy markets.</p>
+          <h1 class="hero-title tm-title">Meet Our Team</h1>
+          <p class="hero-subtitle">The people who design, build and support Oleovista's trading and risk platforms.</p>
           <div class="scroll-cta">
             <div class="mouse-icon"><div class="wheel-dot"></div></div>
             <span class="cta-text">Scroll to meet the team</span>
@@ -1014,7 +1034,7 @@
             <div class="tm-bgword" aria-hidden="true">Our People</div>
             <div class="card-eyebrow tm-eyebrow">PROFESSIONAL TEAM</div>
             <h2 class="tm-heading">Meet Our Experts</h2>
-            <p class="tm-text">Our success comes from teamwork, deep technical expertise and a shared love for building things that work.</p>
+            <p class="tm-text">Domain first: we understand the trade, the contract and the risk before we write the code. And we stay: implementation is the start of the relationship, not the end.</p>
           </div>
 
           <div class="tm-label" id="team-anchor-lead">Leadership</div>
@@ -1051,11 +1071,11 @@
               Chat with us
             </button>
           </div>
-          <div class="ct-hero-stats">
+          <!-- <div class="ct-hero-stats">
             <div><strong>8+</strong><span>Projects delivered</span></div>
             <div><strong>20+</strong><span>Experts on the team</span></div>
             <div><strong>1 day</strong><span>Typical reply time</span></div>
-          </div>
+          </div> -->
           <div class="scroll-cta">
             <div class="mouse-icon"><div class="wheel-dot"></div></div>
             <span class="cta-text">Scroll to reach us</span>
@@ -1154,7 +1174,8 @@
                 <input id="cf-company" name="company" placeholder="Company (optional)" autocomplete="organization">
                 <select id="cf-service" name="service" aria-label="What do you need?">
                   <option value="">What do you need? (optional)</option>
-                  <option>ACERS – ERP + ETRM platform</option>
+                  <option>ACERS – ETRM platform</option>
+                  <option>Treasury trading system</option>
                   <option>Risk analytics &amp; compliance</option>
                   <option>Workflow automation</option>
                   <option>Custom software development</option>
@@ -1198,7 +1219,7 @@
                 <a class="ct-chat-wa" data-ct-href="whatsapp" target="_blank" rel="noopener" title="Talk to a person on WhatsApp">Talk to a person</a>
               </div>
               <div class="ct-chat-msgs" id="ai-chat-messages">
-                <div class="ct-msg ct-msg-bot"><div class="ct-bubble">Hi! 👋 I'm the Oleovista assistant. We build ETRM, ERP and risk software for commodity and energy companies. What would you like to know?</div></div>
+                <div class="ct-msg ct-msg-bot"><div class="ct-bubble">Hi! 👋 I'm the Oleovista assistant. We build trading and risk platforms for energy and financial markets, including ACERS, our ETRM system. What would you like to know?</div></div>
               </div>
               <div class="ct-chat-chips">
                 <button data-chat-prompt="What does a project cost?">Pricing</button>
@@ -1224,7 +1245,7 @@
             <div class="ct-faq">
               <div class="ct-faq-item">
                 <button class="ct-faq-q">What services does Oleovista provide?<span></span></button>
-                <div class="ct-faq-a"><p>We design and build software for commodity and energy trading: our ACERS platform (ERP + ETRM), risk analytics and compliance tools, workflow automation for settlements and operations, and custom enterprise software.</p></div>
+                <div class="ct-faq-a"><p>We design, build and support trading and risk platforms for energy and financial markets. Our first product, ACERS, is a complete ETRM system for oil and refined-products trading, from deal capture to settlement. Our second, a treasury trading system, is in development.</p></div>
               </div>
               <div class="ct-faq-item">
                 <button class="ct-faq-q">How long does a project take?<span></span></button>
@@ -1237,6 +1258,14 @@
               <div class="ct-faq-item">
                 <button class="ct-faq-q">How do you guarantee quality?<span></span></button>
                 <div class="ct-faq-a"><p>Every release goes through code review, automated tests and user-acceptance testing with your team, with full audit trails for compliance-sensitive features.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">Does ACERS connect to ICE and Nasdaq?<span></span></button>
+                <div class="ct-faq-a"><p>Yes. Trades booked on ICE flow into ACERS automatically through the ICE trade-capture API, with no re-keying, and live and end-of-day prices come from Nasdaq. REST APIs and connectors also link ACERS to brokers, ERP and treasury systems.</p></div>
+              </div>
+              <div class="ct-faq-item">
+                <button class="ct-faq-q">Can ACERS run in our own environment?<span></span></button>
+                <div class="ct-faq-a"><p>Yes. Deploy your way: cloud, private cloud or on-premise. Commodities, contracts, workflows and reports are set up by configuration, so upgrades stay simple.</p></div>
               </div>
               <div class="ct-faq-item">
                 <button class="ct-faq-q">Do you provide support after release?<span></span></button>
@@ -1263,7 +1292,7 @@
             <div class="ct-foot-grid">
               <div class="ct-foot-brand">
                 <div class="ct-foot-logo">OLEOVISTA<small>SOLUTIONS PRIVATE LIMITED</small></div>
-                <p>Software for commodity and energy trading: trade capture, risk, operations and compliance in one place.</p>
+                <p>Enterprise trading and risk platforms for energy and financial markets. Every deal, every position, every risk: one system.</p>
                 <ul class="ct-foot-contacts">
                   <li><a data-ct-href="tel" data-ct="phone">+91 95394 94809</a></li>
                   <li><a data-ct-href="mail" data-ct="email">corporate@oleovista.com</a></li>
@@ -1273,10 +1302,10 @@
               <div>
                 <h4>Services</h4>
                 <ul>
-                  <li><a href="#" data-ct-nav="nav-services">ACERS platform</a></li>
-                  <li><a href="#" data-ct-nav="nav-services">Risk analytics</a></li>
-                  <li><a href="#" data-ct-nav="nav-services">Workflow automation</a></li>
-                  <li><a href="#" data-ct-nav="nav-services">Custom software</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">ACERS (ETRM)</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">ACERS modules</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">Treasury trading</a></li>
+                  <li><a href="#" data-ct-nav="nav-services">Integrations</a></li>
                 </ul>
               </div>
               <div>
@@ -1342,17 +1371,19 @@
         <li><a href="#" class="drawer-link" data-target="0.92">05 Global Trading Hubs</a></li>
       </ul>
       <ul class="drawer-nav" id="drawer-about-nav" style="display: none;">
-        <li><a href="#" class="drawer-link" data-target="0.0">01 About Us &amp; Values</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.18">02 Who We Are &amp; Solutions</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.42">03 Our Mission</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.68">04 Our Vision</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.92">05 Global Reach &amp; Metrics</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.0">01 About Us</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.16">02 Who We Are</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.32">03 Our Mission</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.48">04 Features</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.64">05 Solutions</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.8">06 Benefits</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.93">07 Get in Touch</a></li>
       </ul>
       <ul class="drawer-nav" id="drawer-services-nav" style="display: none;">
         <li><a href="#" class="drawer-link" data-target="0.0">01 Our Services</a></li>
         <li><a href="#" class="drawer-link" data-target="0.24">02 ACERS Platform</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.48">03 Risk Analytics &amp; Compliance</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.74">04 Workflow Automation</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.48">03 ACERS Modules</a></li>
+        <li><a href="#" class="drawer-link" data-target="0.74">04 Who It's For &amp; Benefits</a></li>
         <li><a href="#" class="drawer-link" data-target="0.93">05 Contact</a></li>
       </ul>
       <ul class="drawer-nav" id="drawer-careers-nav" style="display: none;">

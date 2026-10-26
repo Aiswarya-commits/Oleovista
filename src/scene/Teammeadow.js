@@ -5,10 +5,10 @@ import * as THREE from 'three';
   ---------------------------------------------------------------------------------------------------
   Runs ONLY on the Team view (#team-view has class "active").
 
-  Scroll progress (cameraRig progress 0..1):
-    0.00 - 0.03  hero: your mountain in the Greenery theme (set by UIManager), held still
-    0.03 - 0.15  the camera tips down and dives through a soft green haze onto the meadow
-    0.15 - 1.00  you look straight down at a living grass surface (wind, flowers, pollen, drifting
+  The Team page now OPENS DIRECTLY ON THE MEADOW (no mountain first):
+    on open      the green haze clears and the camera settles over the grass (ARRIVE_SECS)
+    0.00 - 0.13  hero: the camera sinks a little closer to the grass
+    0.13 - 1.00  you look straight down at a living grass surface (wind, flowers, pollen, drifting
                  cloud shadows). The camera glides over it as you scroll, so the surface moves up
                  together with the team cards laid on top of it.
 
@@ -16,8 +16,9 @@ import * as THREE from 'three';
 */
 
 const MEADOW_Y = -6000;            // the meadow sits far below the mountain
-const DIVE_START = 0.03;
-const DIVE_END = 0.15;
+const ARRIVE_SECS = 1.8;           // length of the arrival animation when the page opens (no mountain first)
+const CARDS_START = 0.13;          // = START in Team.js: the cards begin rising here
+const HERO_LIFT = 22;              // extra camera height on the hero; it settles as you scroll to the cards
 const LAYERS = 16;                 // grass shells
 const GRASS_H = 0.9;               // blade height (world units)
 const DENSITY = 3.4;               // blades per world unit
@@ -54,39 +55,64 @@ function grassMat(layer, shared) {
       uLayer: { value: layer }, uGround: { value: layer === 0 ? 1 : 0 },
       uTime: shared.uTime, uFade: shared.uFade, uHaze: { value: HAZE }
     },
+    // PERFORMANCE: the four slow, large-scale noise patterns (clumps, wind gusts, dry patches,
+    // cloud shadows) are worked out ONCE PER VERTEX here and passed to the pixel shader,
+    // instead of being recalculated for every pixel of all 16 grass layers.
     vertexShader: `
+      uniform float uTime;
       varying vec3 vW;
+      varying vec4 vField;   // x = clump, y = gust, z = dry patches, w = sun / cloud shadow
+      ${NOISE_GLSL}
       void main() {
         vec4 w = modelMatrix * vec4(position, 1.0);
         vW = w.xyz;
+        vec2 p = w.xz;
+        vField = vec4(
+          fbm(p * 0.09),
+          fbm(p * 0.05 + vec2(uTime * 0.18, uTime * 0.07)),
+          smoothstep(0.55, 0.85, fbm(p * 0.045 + 40.0)),
+          smoothstep(0.3, 0.75, fbm(p * 0.03 + vec2(uTime * 0.025, uTime * 0.015)))
+        );
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: `
       uniform float uLayer, uGround, uTime, uFade; uniform vec3 uHaze;
       varying vec3 vW;
-      ${NOISE_GLSL}
+      varying vec4 vField;
+      float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float noise(vec2 p) {
+        vec2 i = floor(p), f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+      }
+      // four random numbers from one cell in a single cheap call (no sin), for the blades
+      vec4 hash42(vec2 p) {
+        vec4 p4 = fract(vec4(p.xyxy) * vec4(0.1031, 0.1030, 0.0973, 0.1099));
+        p4 += dot(p4, p4.wzxy + 33.33);
+        return fract((p4.xxyz + p4.yzzw) * p4.zywx);
+      }
       // one blade per cell: x = inside the blade at this layer, y = height along the blade (0..1), z = random tint
       vec3 blade(vec2 q, float clump, float salt) {
         vec2 cell = floor(q);
         vec2 f = fract(q) - 0.5;
-        float bh = mix(0.3, 1.0, hash(cell + salt)) * mix(0.55, 1.15, clump);
-        vec2 c = (vec2(hash(cell + 3.1 + salt), hash(cell + 7.7 + salt)) - 0.5) * 0.7;
+        vec4 h = hash42(cell + salt * 17.0);
+        float bh = mix(0.3, 1.0, h.x) * mix(0.55, 1.15, clump);
+        vec2 c = (h.yz - 0.5) * 0.7;
         float tip = uLayer / bh;
         float ok = (tip <= 1.0 && length(f - c) <= 0.42 * (1.0 - tip * 0.85)) ? 1.0 : 0.0;
-        return vec3(ok, tip, hash(cell + 11.0 + salt));
+        return vec3(ok, tip, h.w);
       }
       void main() {
         vec2 p = vW.xz;
-        float clump = fbm(p * 0.09);
+        float clump = vField.x;
         // wind: blades lean more towards their tips
-        float gust = fbm(p * 0.05 + vec2(uTime * 0.18, uTime * 0.07));
+        float gust = vField.y;
         vec2 wind = vec2(sin(uTime * 1.4 + p.x * 0.3 + p.y * 0.2), cos(uTime * 1.1 + p.y * 0.35)) * (0.12 + 0.35 * gust);
         vec2 q = p * ${DENSITY.toFixed(2)} + wind * uLayer * uLayer * 2.2;
         // two offset, rotated blade lattices so the grass never looks like a grid
-        vec3 b1 = blade(q, clump, 0.0);
-        vec3 b2 = blade(mat2(0.8, -0.6, 0.6, 0.8) * q * 1.31 + vec2(0.37, 0.71), clump, 5.3);
-        if (uGround < 0.5 && b1.x < 0.5 && b2.x < 0.5) discard;
-        vec3 b = b1.x > 0.5 ? b1 : b2;
+        vec3 b = blade(q, clump, 0.0);
+        if (b.x < 0.5) b = blade(mat2(0.8, -0.6, 0.6, 0.8) * q * 1.31 + vec2(0.37, 0.71), clump, 5.3);   // only if the first missed
+        if (uGround < 0.5 && b.x < 0.5) discard;
         float tip = uGround > 0.5 ? 0.0 : b.y;
         float hue = b.z;
 
@@ -94,7 +120,7 @@ function grassMat(layer, shared) {
         vec3 col = mix(low, mid, smoothstep(0.0, 0.45, uLayer));
         col = mix(col, high * mix(0.7, 1.12, hue), smoothstep(0.35, 1.0, tip));
         col = mix(col, col * vec3(1.25, 1.1, 0.6), step(0.8, hue) * 0.6 * tip);     // a few dry, golden blades
-        float dry = smoothstep(0.55, 0.85, fbm(p * 0.045 + 40.0));                   // sun-dried patches
+        float dry = vField.z;                                                        // sun-dried patches
         col = mix(col, col * vec3(1.3, 1.12, 0.65), dry * 0.55);
         col *= mix(0.72, 1.15, clump);
 
@@ -102,10 +128,10 @@ function grassMat(layer, shared) {
         float fl = fract(hue * 97.31);
         if (fl > 0.982 && tip > 0.72) col = mix(vec3(1.0, 0.85, 0.28), vec3(0.97, 0.96, 0.88), step(0.5, fract(hue * 13.7)));
 
-        if (uGround > 0.5) col = vec3(0.11, 0.16, 0.04) * (0.7 + 0.6 * fbm(p * 0.7));
+        if (uGround > 0.5) col = vec3(0.11, 0.16, 0.04) * (0.7 + 0.6 * (noise(p * 0.7) * 0.67 + noise(p * 1.42 + 17.1) * 0.33));
 
         // drifting cloud shadows and sun patches
-        float sun = smoothstep(0.3, 0.75, fbm(p * 0.03 + vec2(uTime * 0.025, uTime * 0.015)));
+        float sun = vField.w;
         col *= mix(0.72, 1.3, sun);
         col *= 0.7 + 0.3 * smoothstep(0.0, 0.6, uLayer + uGround * 0.2);            // self-shadow near the ground
 
@@ -116,12 +142,15 @@ function grassMat(layer, shared) {
 
 function buildGrass(shared) {
   const g = new THREE.Group();
-  const geo = new THREE.PlaneGeometry(130, TRAVEL + 120, 1, 1).rotateX(-Math.PI / 2);
+  // one vertex every ~1.5 units, enough for the smooth large-scale patterns worked out per vertex
+  const geo = new THREE.PlaneGeometry(130, TRAVEL + 120, 88, 128).rotateX(-Math.PI / 2);
   for (let i = 0; i < LAYERS; i++) {
     const t = i / (LAYERS - 1);
     const m = new THREE.Mesh(geo, grassMat(t, shared));
     m.position.set(0, MEADOW_Y + t * GRASS_H, -TRAVEL / 2);
-    m.renderOrder = i;
+    // PERFORMANCE: draw the TOP layer first and the ground last. The camera looks down, so the
+    // depth test then skips every pixel already covered by a blade above it (same picture, far less work)
+    m.renderOrder = LAYERS - 1 - i;
     m.frustumCulled = false;
     g.add(m);
   }
@@ -263,32 +292,22 @@ export class TeamMeadow {
       return;
     }
     if (!this.built) this.build();
+    if (!this.active) this.enterAt = elapsed;     // page just opened -> start the arrival
     this.active = true;
 
     const t = this.cameraRig.getProgress();
     const cam = this.camera;
-    const d = clamp01((t - DIVE_START) / (DIVE_END - DIVE_START));
-    const inMeadow = d >= 0.5;
+    // arrival phase: 0.5 = just opened, 1 = settled (the page now starts on the meadow, no mountain)
+    const d = 0.5 + 0.5 * clamp01((elapsed - this.enterAt) / ARRIVE_SECS);
+    const inMeadow = true;
 
-    if (!inMeadow) {
-      // on the mountain: hero vista, then tip the camera down towards the valley floor
-      const k = ease(d * 2);
-      this.cameraRig.cameraCurve.getPointAt(0, this._p);
-      this.cameraRig.targetCurve.getPointAt(0, this._l);
-      this._f.subVectors(this._l, this._p).setY(0).normalize();
-      const down = this._p.clone().addScaledVector(this._f, 30);
-      down.y -= 160;
-      this._l.lerp(down, k);
-      this._p.y -= k * 55;
-      cam.up.set(0, 1, 0);
-      cam.position.copy(this._p);
-      cam.lookAt(this._l);
-    } else {
+    {
       // over the meadow, looking down; the camera glides along so the surface rises with the cards
       const k = ease((d - 0.5) * 2);
-      const s = clamp01((t - DIVE_END) / (1 - DIVE_END));
+      const s = clamp01((t - CARDS_START) / (1 - CARDS_START));
+      const heroLift = (1 - smooth(0, CARDS_START, t)) * HERO_LIFT;   // hero: a little higher, settles on scroll
       const z = 20 - s * TRAVEL;
-      const h = lerp(ARRIVE_H, CAM_H, k) + Math.sin(s * Math.PI) * 1.5;
+      const h = lerp(ARRIVE_H, CAM_H + heroLift, k) + Math.sin(s * Math.PI) * 1.5;
       this._p.set(Math.sin(s * 5.0) * 1.2, MEADOW_Y + GRASS_H + h, z);
       this._l.set(this._p.x * 0.6, MEADOW_Y, z - 3.5);
       cam.up.set(0, 0, -1);

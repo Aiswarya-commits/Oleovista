@@ -32,6 +32,10 @@ const PAGE_THEMES = {
   careers: 'spring'
 };
 
+// Pages that open on the mountain. About, Services, Careers, Team and Contact open
+// directly in their own 3D scene (sea, holograms, globe, meadow, signal world).
+const MOUNTAIN_PAGES = ['home'];
+
 export class UIManager {
   constructor(cameraRig, soundManager, atmosphere, terrain = null, water = null, tradingObjects = null) {
     this.cameraRig = cameraRig;
@@ -124,6 +128,7 @@ export class UIManager {
     this.curtain.style.cssText = 'position:fixed;inset:0;z-index:90;pointer-events:none;opacity:0;' +
       'background:radial-gradient(ellipse at 50% 45%,#0c1d2c 0%,#03070c 100%);transition:opacity 0.55s cubic-bezier(0.65,0,0.35,1);';
     document.body.appendChild(this.curtain);
+
 
     this.brandLogoBtn = document.getElementById('brand-logo-btn');
     this.navHome = document.getElementById('nav-home');
@@ -227,6 +232,14 @@ export class UIManager {
       return;
     }
     if (this.switching) return;
+
+    // standing at the very top (hero) of a mountain page, going to another mountain page
+    // -> smooth, continuous change (no dark fade). Only Home shows the mountain now, so every
+    // other page change uses the dark fade, which hides the jump into the page's own 3D scene.
+    if (MOUNTAIN_PAGES.includes(this.currentMode) && MOUNTAIN_PAGES.includes(newMode) && this.canMorph()) {
+      this.morphTo(newMode);
+      return;
+    }
     this.switching = true;
 
     // 1. fade to dark, 2. swap page + reset camera while hidden, 3. fade back in
@@ -239,6 +252,20 @@ export class UIManager {
         this.switching = false;
       }, 120);
     }, 560);
+  }
+
+  // true when the visitor is resting at the start (hero) of the current page in normal scroll mode
+  canMorph() {
+    const r = this.cameraRig;
+    if (!r || r.mode !== 'scroll') return false;
+    return r.getProgress() < 0.025 && (r.targetProgress ?? 0) < 0.025;
+  }
+
+  // SMOOTH PAGE CHANGE: the mountain and camera stay still and the colours flow into the new theme,
+  // while the old text fades out and the new text fades in.
+  morphTo(newMode) {
+    this.applyMode(newMode, false);          // false = colours glide instead of jumping
+    this.cameraRig.jumpToProgress(0.0, true);
   }
 
   // Applies one LIGHT theme to the mountain, sky and lake, and updates the dropdown.
@@ -278,9 +305,14 @@ export class UIManager {
     }
   }
 
-  applyMode(newMode) {
+  applyMode(newMode, instantTheme = true) {
     this.currentMode = newMode;
     this.careers?.close();
+    const lightDropdown = document.getElementById('dropdown-light');
+    if (lightDropdown) {
+      lightDropdown.style.display = newMode === 'home' ? '' : 'none';
+      lightDropdown.classList.remove('open');
+    }
     const lightCurrent = document.getElementById('light-current');
 
     // 1. navigation active state
@@ -295,7 +327,7 @@ export class UIManager {
     });
 
     // 2-4. theme for each page (change the names in PAGE_THEMES at the top of this file)
-    this.applyTheme(PAGE_THEMES[newMode] || 'day', true);
+    this.applyTheme(PAGE_THEMES[newMode] || 'day', instantTheme);
 
     // 5. oil & metals 3D objects only on Home
     this.tradingObjects?.setEnabled(newMode === 'home');

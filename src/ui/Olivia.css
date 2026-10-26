@@ -1,0 +1,489 @@
+/* =====================================================================
+   OLIVIA - Oleovista AI assistant (green edition)
+   ===================================================================== */
+:root {
+  --ol-g1: #2fe39a;          /* emerald */
+  --ol-g2: #9be564;          /* lime */
+  --ol-g3: #60923e;          /* brand olive */
+  --ol-deep: #0d3b2c;        /* forest ink */
+  --ol-ink: #12261c;
+  --ol-muted: #557063;
+  --ol-bg: #e4f3e9;
+  --ol-card: rgba(255, 255, 255, 0.78);
+  --ol-line: rgba(13, 59, 44, 0.12);
+  --ol-grad: linear-gradient(135deg, #2fe39a 0%, #6fcf62 50%, #60923e 100%);
+  --ol-font: var(--font-body, 'Montserrat', system-ui, sans-serif);
+  --ol-font-h: var(--font-heading, 'Josefin Sans', system-ui, sans-serif);
+}
+
+/* ---------- launcher (sits in .bottom-actions, above WhatsApp) ---------- */
+.olivia-launch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.olivia-launch--solo { position: fixed; right: 2.2rem; bottom: 6.5rem; z-index: 990; }
+
+.olivia-btn {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: 0 6px 22px rgba(47, 227, 154, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  transition: transform 0.35s cubic-bezier(.2, .9, .3, 1.3), box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.olivia-btn::before {           /* breathing halo */
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(47, 227, 154, 0.45) 0%, rgba(155, 229, 100, 0) 70%);
+  animation: olHalo 3.2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+.olivia-btn:hover { transform: scale(1.08); box-shadow: 0 8px 30px rgba(47, 227, 154, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.5) inset; }
+.olivia-btn:active { transform: scale(0.95); }
+.olivia-btn:focus-visible { outline: 2px solid var(--ol-g2); outline-offset: 4px; }
+.olivia-btn-orb { display: block; width: 100%; height: 100%; border-radius: 50%; }
+
+@keyframes olHalo {
+  0%, 100% { transform: scale(0.92); opacity: 0.55; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+
+/* speech bubble to the left of the orb */
+.olivia-bubble {
+  position: absolute;
+  right: calc(100% + 14px);
+  bottom: 50%;
+  translate: 0 50%;
+  width: max-content;
+  max-width: 15.5rem;
+  padding: 0.8rem 1.9rem 0.8rem 1rem;
+  border-radius: 1.1rem 1.1rem 0.3rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--ol-font-h);
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #06261a;
+  background:
+    radial-gradient(120% 140% at 0% 0%, #dcffe9 0%, rgba(220, 255, 233, 0) 55%),
+    radial-gradient(120% 140% at 100% 100%, #b9f27f 0%, rgba(185, 242, 127, 0) 60%),
+    linear-gradient(135deg, #7ff0bd, #a6ea74);
+  background-size: 200% 200%;
+  box-shadow: 0 10px 30px rgba(20, 120, 80, 0.28);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(10px) scale(0.92);
+  transform-origin: right center;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(.2, .9, .3, 1.2);
+  animation: olBubbleMorph 6s ease-in-out infinite;
+}
+.olivia-bubble span:last-of-type { color: #0b5a3a; font-weight: 600; }
+.olivia-launch.bubble-on .olivia-bubble { opacity: 1; transform: none; pointer-events: auto; }
+.olivia-bubble-x {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.4rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(6, 38, 26, 0.12);
+  color: #06261a;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.olivia-bubble-x:hover { background: rgba(6, 38, 26, 0.22); }
+@keyframes olBubbleMorph {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+/* ---------- overlay ---------- */
+html.olivia-lock, html.olivia-lock body { overscroll-behavior: none; }
+
+.olivia-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1003;
+  display: flex;
+  flex-direction: column;
+  color: var(--ol-ink);
+  font-family: var(--ol-font);
+  background: var(--ol-bg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+  overflow: hidden;
+}
+.olivia-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.45s ease, visibility 0s;
+}
+
+/* soft moving green light in the background */
+.olivia-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.olivia-bg i {
+  position: absolute;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.38;
+  animation: olDrift 18s ease-in-out infinite alternate;
+}
+.olivia-bg i:nth-child(1) { background: #a6efc8; left: -15vmax; top: -20vmax; }
+.olivia-bg i:nth-child(2) { background: #cdf3a2; right: -18vmax; bottom: -22vmax; animation-delay: -6s; }
+.olivia-bg i:nth-child(3) { background: #a7ecd0; left: 30%; top: 40%; width: 35vmax; height: 35vmax; animation-delay: -11s; opacity: 0.25; }
+@keyframes olDrift { to { transform: translate(6vmax, 4vmax) scale(1.12); } }
+
+.olivia-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem clamp(1rem, 3vw, 2.2rem);
+}
+.olivia-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--ol-font-h);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ol-deep);
+}
+.olivia-brand em { font-style: normal; font-weight: 400; color: var(--ol-muted); letter-spacing: 0.04em; }
+.olivia-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--ol-g1);
+  box-shadow: 0 0 0 4px rgba(47, 227, 154, 0.22);
+  animation: olHalo 2.4s ease-in-out infinite;
+}
+.olivia-top-actions { display: flex; gap: 0.6rem; }
+.olivia-circle {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--ol-line);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ol-deep);
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.olivia-circle svg { width: 20px; height: 20px; fill: currentColor; }
+.olivia-circle:hover { transform: scale(1.07); }
+.olivia-circle:focus-visible { outline: 2px solid var(--ol-g1); outline-offset: 3px; }
+.olivia-sound .ic-on { display: none; }
+.olivia-sound.is-on { background: var(--ol-grad); color: #fff; border-color: transparent; }
+.olivia-sound.is-on .ic-on { display: block; }
+.olivia-sound.is-on .ic-off { display: none; }
+.olivia-close { background: #ef4444; color: #fff; border-color: transparent; }
+.olivia-close:hover { background: #dc2626; }
+
+.olivia-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: 0 clamp(1rem, 4vw, 4rem) clamp(1rem, 3vh, 2.5rem);
+}
+
+/* chat column */
+.olivia-chat {
+  width: min(34.375rem, 100%);
+  height: min(40rem, 100%);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  transform: translateY(18px);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(.2, .8, .2, 1) 0.1s, opacity 0.5s ease 0.1s;
+}
+.olivia-overlay.is-open .olivia-chat { transform: none; opacity: 1; }
+
+.olivia-msgs {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0.4rem 1rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(13, 59, 44, 0.25) transparent;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 1.5rem);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 1.5rem);
+}
+.olivia-msgs > :first-child { margin-top: auto; }
+
+.olivia-msg {
+  max-width: 88%;
+  padding: 0.85rem 1.1rem;
+  border-radius: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  word-wrap: break-word;
+  animation: olMsgIn 0.45s cubic-bezier(.2, .8, .2, 1) both;
+}
+.olivia-msg--bot {
+  align-self: flex-start;
+  background: var(--ol-card);
+  border: 1px solid var(--ol-line);
+  border-bottom-left-radius: 0.35rem;
+  box-shadow: 0 6px 24px rgba(13, 59, 44, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.olivia-msg--user {
+  align-self: flex-end;
+  color: #fff;
+  background: var(--ol-grad);
+  border-bottom-right-radius: 0.35rem;
+  box-shadow: 0 8px 24px rgba(47, 180, 110, 0.3);
+  font-weight: 500;
+}
+.olivia-msg ul { margin: 0.45rem 0 0.2rem; padding-left: 1.15rem; }
+.olivia-msg li { margin: 0.2rem 0; }
+.olivia-msg small { color: var(--ol-muted); font-size: 0.8rem; }
+.olivia-msg strong { color: var(--ol-deep); }
+.olivia-msg a { color: #13804f; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.olivia-msg a:hover { color: var(--ol-g3); }
+.olivia-contact { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.55rem 0 0.35rem; }
+@keyframes olMsgIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } }
+
+.olivia-typing { display: inline-flex; gap: 5px; padding: 0.2rem 0; }
+.olivia-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ol-g1); animation: olDot 1.1s ease-in-out infinite; }
+.olivia-typing i:nth-child(2) { animation-delay: 0.15s; background: #6fcf62; }
+.olivia-typing i:nth-child(3) { animation-delay: 0.3s; background: var(--ol-g3); }
+@keyframes olDot { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-5px); opacity: 1; } }
+
+/* suggestion chips */
+.olivia-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.25rem 0 0.9rem; }
+.olivia-chips:empty { display: none; }
+.olivia-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(47, 180, 110, 0.35);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ol-deep);
+  font-family: var(--ol-font);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  animation: olMsgIn 0.45s ease both;
+}
+.olivia-chip span { color: #19a467; font-weight: 700; }
+.olivia-chip:hover { background: #e3fbe9; border-color: var(--ol-g1); transform: translateY(-1px); }
+.olivia-chip:focus-visible { outline: 2px solid var(--ol-g1); outline-offset: 2px; }
+
+/* input */
+.olivia-form {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.3rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--ol-line);
+  box-shadow: 0 10px 34px rgba(13, 59, 44, 0.1);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.olivia-form:focus-within { border-color: rgba(47, 227, 154, 0.7); box-shadow: 0 10px 34px rgba(47, 227, 154, 0.22); }
+.olivia-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ol-ink);
+  font-family: var(--ol-font);
+  font-size: 1rem;           /* 16px = no zoom on iOS */
+  padding: 0.7rem 0;
+}
+.olivia-input::placeholder { color: #8aa194; }
+.olivia-mic, .olivia-send {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.25s ease;
+}
+.olivia-mic { background: transparent; color: var(--ol-muted); }
+.olivia-mic svg { width: 21px; height: 21px; fill: currentColor; }
+.olivia-mic:hover { background: #ecf7ef; color: var(--ol-deep); }
+.olivia-mic.is-listening { background: #e3fbe9; color: #0f8a55; animation: olListen 1.2s ease-in-out infinite; }
+@keyframes olListen { 0%, 100% { box-shadow: 0 0 0 0 rgba(47, 227, 154, 0.5); } 50% { box-shadow: 0 0 0 9px rgba(47, 227, 154, 0); } }
+.olivia-send { background: var(--ol-grad); color: #fff; box-shadow: 0 6px 16px rgba(47, 180, 110, 0.4); }
+.olivia-send svg { width: 20px; height: 20px; }
+.olivia-send:hover { transform: scale(1.06); }
+.olivia-mic:focus-visible, .olivia-send:focus-visible { outline: 2px solid var(--ol-g1); outline-offset: 2px; }
+.olivia-note { margin: 0.7rem 0 0; text-align: center; font-size: 0.72rem; color: var(--ol-muted); }
+.olivia-note a { color: #13804f; font-weight: 600; }
+
+/* big orb */
+.olivia-orb-wrap {
+  position: relative;
+  flex: none;
+  width: min(40rem, 46vw, 78vh);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  transform: scale(0.85);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), opacity 0.6s ease, width 0.6s ease;
+}
+.olivia-overlay.is-open .olivia-orb-wrap { transform: scale(1); opacity: 1; }
+.olivia-orb { width: 100%; height: 100%; border-radius: 50%; position: relative; z-index: 1; }
+.olivia-orb-glow {
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(47, 227, 154, 0.55) 0%, rgba(155, 229, 100, 0.25) 45%, rgba(155, 229, 100, 0) 70%);
+  filter: blur(30px);
+  animation: olHalo 4.5s ease-in-out infinite;
+}
+.olivia-overlay.is-thinking .olivia-orb-glow { animation-duration: 1.4s; }
+
+/* ---------- tablet / mobile ---------- */
+@media (max-width: 1024px) {
+  .olivia-content { flex-direction: column-reverse; justify-content: flex-end; gap: 1rem; padding-top: 0; }
+  .olivia-chat { flex: 1; height: auto; width: min(40rem, 100%); }
+  .olivia-orb-wrap { width: min(18rem, 46vw, 30vh); }
+  .olivia-overlay.has-chat .olivia-orb-wrap { width: min(6.5rem, 14vh); }
+}
+@media (max-width: 768px) {
+  .olivia-btn { width: 48px; height: 48px; }
+  .olivia-bubble { max-width: 12.5rem; font-size: 0.6rem; }
+  .olivia-top { padding: 0.9rem 1rem; }
+  .olivia-circle { width: 40px; height: 40px; }
+  .olivia-brand { font-size: 0.85rem; }
+  .olivia-brand em { display: none; }
+  .olivia-content { padding: 0 1rem calc(0.8rem + env(safe-area-inset-bottom)); }
+  .olivia-msg { font-size: 0.9rem; max-width: 92%; }
+  .olivia-chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -1rem; padding: 0.25rem 1rem 0.8rem; scrollbar-width: none; }
+  .olivia-chips::-webkit-scrollbar { display: none; }
+  .olivia-chip { flex: none; }
+  .olivia-note { display: none; }
+}
+@media (max-width: 400px) {
+  .olivia-btn { width: 46px; height: 46px; }
+  .olivia-bubble { max-width: 11rem; }
+}
+@supports (height: 100dvh) { .olivia-overlay { height: 100dvh; bottom: auto; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .olivia-btn::before, .olivia-bg i, .olivia-bubble, .olivia-orb-glow, .olivia-dot { animation: none; }
+  .olivia-msg, .olivia-chip { animation: none; }
+}
+
+/* =====================================================================
+   v2: 3D WebGL orb, smoke, typewriter, thinking + stop
+   ===================================================================== */
+.olivia-gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.1s;
+}
+.olivia-overlay.is-open .olivia-gl { opacity: 1; }
+.olivia-overlay.has-gl .olivia-orb,
+.olivia-overlay.has-gl .olivia-orb-glow { display: none; }
+.olivia-overlay.has-gl .olivia-orb-wrap { opacity: 1; transform: none; }
+
+.olivia-thinking {
+  font-style: italic;
+  color: var(--ol-muted);
+  margin-right: 0.5rem;
+  animation: olPulseText 1.6s ease-in-out infinite;
+}
+@keyframes olPulseText { 50% { opacity: 0.45; } }
+.olivia-msg.is-typing { background: transparent; border-color: transparent; box-shadow: none; padding-left: 0.2rem; }
+.olivia-msg.is-streaming::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: var(--ol-g3);
+  animation: olCaret 0.8s steps(2) infinite;
+}
+@keyframes olCaret { 50% { opacity: 0; } }
+
+.olivia-send .ic-stop { display: none; }
+.olivia-overlay.is-busy .olivia-send { background: #fff; color: #ef4444; box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.35) inset; }
+.olivia-overlay.is-busy .olivia-send .ic-send { display: none; }
+.olivia-overlay.is-busy .olivia-send .ic-stop { display: block; }
+.olivia-overlay.is-busy .olivia-form { border-color: rgba(47, 227, 154, 0.6); }
+
+/* frosted chat so the smoke reads behind it */
+.olivia-overlay.has-gl .olivia-msg--bot { background: rgba(255, 255, 255, 0.82); }
+.olivia-msg.olivia-devnote { background: #fff8e6; border-color: #f2d48a; }
+.olivia-msg.olivia-devnote small { color: #6b5210; }
+
+/* Hovering the Olivia button shows the "I'm Olivia..." caption, like the WhatsApp tooltip.
+   The .is-hover class is added by Olivia.js (works on every mouse/touchpad). */
+.olivia-launch.is-hover .olivia-bubble,
+.olivia-btn:focus-visible + .olivia-bubble {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+/* invisible bridge so the mouse can move from the button onto the caption and click it */
+.olivia-bubble::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 16px;
+}
+/* when it only shows because of hover, hide the small x close button */
+.olivia-launch.is-hover:not(.bubble-on) .olivia-bubble-x { display: none; }
+.olivia-launch.is-hover:not(.bubble-on) .olivia-bubble { padding-right: 1rem; }

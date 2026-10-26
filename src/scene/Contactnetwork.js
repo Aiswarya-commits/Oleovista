@@ -6,10 +6,9 @@ import * as THREE from 'three';
   Runs ONLY on the Contact view (#contact-view has class "active").
   Same class name and file name as before, so main.js and UIManager.js need no changes.
 
-  Scroll progress (cameraRig progress 0..1):
-    0.00 - 0.03  hero: your existing mountain (theme set by UIManager), held still
-    0.03 - 0.15  the camera tips down and dives through an emerald haze
-    0.15 - 1.00  a night-time "signal" world: a large glowing 3D location pin hovers over a
+  The Contact page now OPENS DIRECTLY IN THE SIGNAL WORLD (no mountain first):
+    on open      the emerald haze clears and the camera descends towards the pin (ARRIVE_SECS)
+    0.00 - 1.00  a night-time "signal" world: a large glowing 3D location pin hovers over a
                  holographic city map of the office (Carnival Infopark, Kochi) with signal waves,
                  floating 3D contact icons (phone, mail, chat, web) circling it and paper planes
                  looping through the air. The camera slowly orbits the pin as you scroll, while
@@ -17,8 +16,7 @@ import * as THREE from 'three';
 */
 
 const NET_Y = -8000;               // far below every other scene
-const DIVE_START = 0.03;
-const DIVE_END = 0.15;
+const ARRIVE_SECS = 1.8;           // length of the arrival animation when the page opens (no mountain first)
 const BG = new THREE.Color('#020b08');
 const HAZE = new THREE.Color('#0a2a1d');
 const EMERALD = new THREE.Color('#2fe39a');
@@ -519,30 +517,19 @@ export class ContactNetwork {
       return;
     }
     if (!this.built) this.build();
+    if (!this.active) this.enterAt = elapsed;     // page just opened -> start the arrival
     this.active = true;
 
     const t = this.cameraRig.getProgress();
     const cam = this.camera;
-    const d = clamp01((t - DIVE_START) / (DIVE_END - DIVE_START));
-    const inWorld = d >= 0.5;
+    // arrival phase: 0.5 = just opened, 1 = settled (the page now starts in the signal world, no mountain)
+    const d = 0.5 + 0.5 * clamp01((elapsed - this.enterAt) / ARRIVE_SECS);
+    const inWorld = true;
 
-    if (!inWorld) {
-      // mountain hero, then tip down towards the valley floor
-      const k = ease(d * 2);
-      this.cameraRig.cameraCurve.getPointAt(0, this._p);
-      this.cameraRig.targetCurve.getPointAt(0, this._l);
-      this._f.subVectors(this._l, this._p).setY(0).normalize();
-      this._v.copy(this._p).addScaledVector(this._f, 40);
-      this._v.y -= 150;
-      this._l.lerp(this._v, k);
-      this._p.y -= k * 50;
-      cam.up.set(0, 1, 0);
-      cam.position.copy(this._p);
-      cam.lookAt(this._l);
-    } else {
+    {
       // descend from high above, then slowly orbit the pin as you scroll
       const k = ease((d - 0.5) * 2);
-      const s = clamp01((t - DIVE_END) / (1 - DIVE_END));
+      const s = clamp01(t);
       const a = -0.55 + s * Math.PI * 1.25;
       const r = lerp(150, 118 - 22 * Math.sin(s * Math.PI), k);
       const h = lerp(190, 44 + 14 * Math.cos(s * Math.PI * 2), k);

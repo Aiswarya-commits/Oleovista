@@ -182,8 +182,14 @@ export class MobileSmoothScroll {
   /* ---------- every frame, right after cameraRig.update(dt) ---------- */
   update(dt) {
     let want = null;
-    if (this.mq.matches && this.rig.mode === 'scroll') {
-      want = Object.keys(this.views).find((n) => this.views[n].el.classList.contains('active')) || null;
+    const active = Object.keys(this.views).find((n) => this.views[n].el.classList.contains('active')) || null;
+    if (this.rig.mode === 'scroll') {
+      if (this.mq.matches) {
+        want = active;
+      } else if (active === 'about') {
+        // Desktop: About Us runs as a smooth continuous flowing strip
+        want = 'about';
+      }
     }
     if (want !== this.current) {
       if (this.current) this.leave(this.current);

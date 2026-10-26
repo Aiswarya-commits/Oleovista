@@ -5,10 +5,9 @@ import * as THREE from 'three';
   -----------------------------------------------------------------------------------------
   Runs ONLY on the Services view (#services-view has class "active").
 
-  Scroll progress (cameraRig progress 0..1):
-    0.00 - 0.04  hero: your mountain, held still
-    0.04 - 0.16  a burst of light carries you into a dark hologram world
-    0.16 - 1.00  the camera glides past glowing holograms that build themselves
+  The Services page now OPENS DIRECTLY IN THE HOLOGRAM WORLD (no mountain first):
+    on open      a burst of light fades and the tank farm builds itself (ARRIVE_SECS)
+    0.00 - 1.00  the camera glides past glowing holograms that build themselves
                  with a scan line as you arrive:
                    storage tank farm  (01 ACERS platform)
                    refinery           (02 Risk analytics & compliance)
@@ -16,12 +15,11 @@ import * as THREE from 'three';
 */
 
 const HOLO_Y = -2400;             // the hologram world sits far below the mountain
-const DIVE_START = 0.04;
-const DIVE_END = 0.16;
+const ARRIVE_SECS = 1.8;          // length of the arrival animation when the page opens
 const CYAN = new THREE.Color('#235427');
 const BG = new THREE.Color('#02060b');
 
-// camera keys (relative to HOLO_Y), passed through in order between DIVE_END and 1.0
+// camera keys (relative to HOLO_Y), passed through in order between 0.0 and 1.0
 const CAM_POS = [
   [0, 160, 460], [-130, 85, 150], [95, 65, 115], [170, 95, -30],
   [370, 70, -90], [-40, 70, -290], [-110, 40, -330], [-30, 170, -250]
@@ -31,7 +29,8 @@ const CAM_LOOK = [
   [255, 30, -190], [-220, 8, -420], [-245, 6, -430], [-235, 0, -470]
 ];
 // when each hologram builds itself  [start, end] of scroll progress
-const REVEAL = { tanks: [0.15, 0.27], refinery: [0.38, 0.5], ships: [0.62, 0.74] };
+// (the tanks also build themselves on their own when the page opens)
+const REVEAL = { tanks: [0.0, 0.12], refinery: [0.38, 0.5], ships: [0.62, 0.74] };
 
 const clamp01 = (x) => Math.min(Math.max(x, 0), 1);
 const smooth = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
@@ -435,25 +434,19 @@ this.world.add(buildGround(this.shared), buildStreaks(this.shared), buildDust(th
       if (this.active) this.exit();
       return;
     }
+    if (!this.active) this.enterAt = elapsed;     // page just opened -> start the arrival
     this.active = true;
 
     const t = this.cameraRig.getProgress();
     const cam = this.camera;
 
-    // phase of the transition: 0 = on mountain, 1 = in hologram world
-    const d = clamp01((t - DIVE_START) / (DIVE_END - DIVE_START));
-    const inHolo = d >= 0.5;
+    // arrival phase: 0.5 = just opened, 1 = settled (no mountain any more)
+    const d = 0.5 + 0.5 * clamp01((elapsed - this.enterAt) / ARRIVE_SECS);
+    const inHolo = true;
 
-    if (d < 0.5) {
-      // still on the mountain: hold the camera at the initial hero vista
-      this.cameraRig.cameraCurve.getPointAt(0, this._p0);
-      this.cameraRig.targetCurve.getPointAt(0, this._l0);
-      cam.up.set(0, 1, 0);
-      cam.position.copy(this._p0);
-      cam.lookAt(this._l0);
-    } else {
-      // in the hologram world: glide along the hologram spline
-      const u = clamp01((t - DIVE_END) / (1.0 - DIVE_END));
+    {
+      // in the hologram world: glide along the hologram spline over the whole scroll
+      const u = clamp01(t);
       this.posCurve.getPoint(u, this._p);
       this.lookCurve.getPoint(u, this._l);
       const back = ease(1 - (d - 0.5) * 2);             // arrive from slightly further back
@@ -487,7 +480,7 @@ this.world.add(buildGround(this.shared), buildStreaks(this.shared), buildDust(th
       this.shared.uFade.value = smooth(0.5, 1.0, d);
       this.shared.uTime.value = elapsed;
 
-      this.tanks.u.uReveal.value = smooth(REVEAL.tanks[0], REVEAL.tanks[1], t);
+      this.tanks.u.uReveal.value = Math.max(smooth(REVEAL.tanks[0], REVEAL.tanks[1], t), smooth(0.55, 1.0, d));
       this.refinery.u.uReveal.value = smooth(REVEAL.refinery[0], REVEAL.refinery[1], t);
       this.ships.u.uReveal.value = smooth(REVEAL.ships[0], REVEAL.ships[1], t);
     } else {

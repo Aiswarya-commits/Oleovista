@@ -1,0 +1,118 @@
+/* =====================================================================
+   company-content.css
+   Styles for the company content added from the company profile document
+   (About "What we believe", Services ACERS modules / who it's for).
+   Loaded after style.css; it only adds new classes and never changes
+   existing ones, so the rest of the site is unaffected.
+   ===================================================================== */
+
+/* ---------- About: What we believe ---------- */
+.beliefs-title {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: #60923e;
+  margin: -0.6rem 0 0.7rem;
+}
+.mission-pillars.beliefs { gap: 0.55rem; }
+.mission-pillars.beliefs .pillar-item { padding: 0.6rem 1.1rem; }
+.mission-pillars.beliefs .pillar-content h4 { margin-bottom: 0.2rem; }
+.mission-pillars.beliefs .pillar-content p { font-size: 0.78rem; line-height: 1.45; }
+
+/* ---------- Services: ACERS intro ---------- */
+.svc-block-acers { max-width: 580px; }
+.svc-block-acers .svc-text { font-size: 0.88rem; line-height: 1.75; }
+.svc-note { margin-top: 0.8rem; font-size: 0.8rem !important; color: rgba(214, 236, 250, 0.6) !important; font-style: italic; }
+
+/* ---------- Services: wide blocks (modules, who it's for) ---------- */
+.svc-block.svc-wide { max-width: 860px; }
+.svc-wide .svc-heading { font-size: 2rem; margin-bottom: 1.2rem; }
+
+.svc-modules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.svc-modules > div {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(96, 146, 62, 0.35);
+  border-radius: 10px;
+  background: rgba(4, 18, 12, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.svc-modules > div:hover { border-color: rgba(155, 229, 100, 0.7); transform: translateY(-2px); }
+.svc-modules h4 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  color: #9be564;
+  margin-bottom: 0.35rem;
+}
+.svc-modules h4 small {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(214, 236, 250, 0.55);
+  margin-left: 0.3rem;
+}
+.svc-modules p { font-size: 0.74rem; line-height: 1.5; color: rgba(214, 236, 250, 0.75); }
+
+.svc-two {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(96, 146, 62, 0.35);
+}
+.svc-two h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: #60923e;
+  margin-bottom: 0.7rem;
+}
+.svc-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.svc-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(214, 236, 250, 0.8);
+}
+.svc-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9be564;
+  box-shadow: 0 0 8px rgba(155, 229, 100, 0.6);
+}
+.svc-list strong { color: #e6f7d8; font-weight: 600; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1280px) {
+  .svc-modules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .svc-modules p { font-size: 0.72rem; }
+}
+@media (max-height: 820px) and (min-width: 769px) {
+  /* short laptop screens: keep the 9 module tiles on screen */
+  .svc-wide .svc-heading { font-size: 1.6rem; margin-bottom: 0.8rem; }
+  .svc-modules { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+  .svc-modules > div { padding: 0.6rem 0.8rem; }
+  .svc-modules p { font-size: 0.7rem; line-height: 1.4; }
+}
+@media (max-width: 960px) {
+  .svc-two { grid-template-columns: 1fr; gap: 1.2rem; }
+}
+@media (max-width: 768px) {
+  .svc-wide .svc-heading { font-size: 1.5rem; }
+  .svc-modules { grid-template-columns: 1fr; }
+  .mission-pillars.beliefs .pillar-item { padding: 0.65rem 0.9rem; }
+}

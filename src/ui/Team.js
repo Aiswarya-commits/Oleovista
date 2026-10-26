@@ -22,14 +22,14 @@ const PRAV = '/assets/praveena.jpeg';
 export const LEADERSHIP = [
   { name: 'Anjitha Sebastian', role: 'Director', photo: ANJITHA, bio: 'Leads Oleovista\'s vision and strategy across energy and commodity trading software.', linkedin: '', email: '' },
   { name: 'Anushad', role: 'Director', photo: ANUSHAD, bio: 'Heads product engineering and the ACERS platform architecture.', linkedin: '', email: '' },
-  { name: 'Dileena Beegum', role: 'Director', photo: DILEENA, bio: 'Runs delivery, client success and day-to-day operations.', linkedin: '', email: '' }
+  { name: 'Dileena Beegum', role: 'Project Coordinator', photo: DILEENA, bio: 'Runs delivery, client success and day-to-day operations.', linkedin: '', email: '' }
 ];
 
 export const TEAM = [
   { name: 'Shemeem', role: 'Frontend Developer', photo: SHAM },
   { name: 'Aiswarya', role: 'Frontend Developer', photo: AISH },
-  { name: 'Razik', role: 'Tester', photo: RAZ },
-  { name: 'Praveena', role: 'Tester', photo: PRAV },
+  { name: 'Razik', role: 'QA Engineer', photo: RAZ },
+  { name: 'Praveena', role: 'QA Engineer', photo: PRAV },
   // { name: 'Member Name', role: 'QA Engineer', photo: '' },
   // { name: 'Member Name', role: 'Project Manager', photo: '' },
   // { name: 'Member Name', role: 'HR Manager', photo: '' },

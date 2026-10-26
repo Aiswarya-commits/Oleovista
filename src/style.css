@@ -10,6 +10,7 @@
   --color-glass-border: rgba(255, 255, 255, 0.12);
   --font-heading: 'Josefin Sans', sans-serif;
   --font-body: 'Montserrat', sans-serif;
+  --font-hero-italic: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
 }
 
 *, *::before, *::after {
@@ -119,9 +120,9 @@ body.loaded .loader-overlay {
 
 .loader-title {
   font-family: var(--font-heading);
-  letter-spacing: 0.35em;
+    letter-spacing: 0.35em;
   font-size: 1.1rem;
-  margin: 1.5rem 0 1rem;
+    margin: 1.5rem 0 1rem;
   color: #dce5ed;
 }
 
@@ -182,9 +183,58 @@ body.loaded .loader-overlay {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.85rem;
   text-decoration: none;
   color: var(--color-white);
+  cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand-icon {
+  height: 52px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  transition: transform 0.25s ease;
+}
+
+.brand-text-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.brand-company-name {
+  font-family: var(--font-heading);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.brand-company-sub {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(180, 235, 205, 0.88);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.brand-logo:hover .brand-icon {
+  transform: scale(1.05);
+}
+
+.brand-logo:hover .brand-company-name {
+  color: #7ae392;
 }
 
 .brand-text {
@@ -618,6 +668,7 @@ body.loaded .loader-overlay {
   transform: translateY(20px);
   transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
   pointer-events: none;
+  margin-bottom: 150px;
 }
 
 .story-section.active {
@@ -656,14 +707,14 @@ body.loaded .loader-overlay {
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 3.8rem;
+    font-size: 3.8rem;
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   margin-bottom: 1rem;
   color: var(--color-white);
   text-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
-}
+  }
 
 .hero-subtitle {
   font-size: 1.15rem;
@@ -1649,8 +1700,8 @@ body.loaded .loader-overlay {
   background: linear-gradient(180deg, #ffffff 30%, #a5e8ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 0.22em;
-  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .about-subtitle {
@@ -2200,7 +2251,8 @@ body.loaded .loader-overlay {
   background: linear-gradient(180deg, #ffffff 35%, #8fdcff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 .section-svc-left  { justify-content: flex-start; padding-left: 12rem; }
 .section-svc-right { justify-content: flex-end;   padding-right: 9rem; }
@@ -2677,8 +2729,12 @@ body.loaded .loader-overlay {
 }
 .ct-pill-sm { font-size: 0.64rem; padding: 0.35rem 0.9rem; }
 .ct-hero-title {
-  font-family: var(--font-heading); font-weight: 600;
-  font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.12; letter-spacing: 0.01em;
+  font-family: var(--font-hero-italic);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
   text-shadow: 0 6px 30px rgba(0, 0, 0, 0.55);
   margin-bottom: 1rem;
 }
@@ -2981,18 +3037,19 @@ body.loaded .loader-overlay {
 .about-footer-links a:hover { color: #34d399; }
 
 /* ==========================================================================
-   MOBILE SMOOTH SCROLL - ALL PAGES (phones only)
-   .m-strip / .m-strip-on are added by MobileSmoothScroll.js only on phones
+   SMOOTH CONTINUOUS STRIP SCROLL - ABOUT (Desktop & Mobile) & ALL PAGES (Mobile)
    ========================================================================== */
 body.m-strip-on #content-container {
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 60px, #000 125px, #000 100%);
-          mask-image: linear-gradient(180deg, transparent 0, transparent 60px, #000 125px, #000 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 80px, #000 135px, #000 100%);
+          mask-image: linear-gradient(180deg, transparent 0, transparent 80px, #000 135px, #000 100%);
 }
+
 .view-layer.m-strip {
   bottom: auto;
   height: auto;
   will-change: transform;
 }
+
 .view-layer.m-strip > .story-section {
   position: relative;
   inset: auto;
@@ -3004,48 +3061,94 @@ body.m-strip-on #content-container {
   max-height: none !important;
   overflow: visible !important;
   pointer-events: auto;
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2.5rem 1.2rem;
 }
-/* first section (hero) fills the screen */
-.view-layer.m-strip > .story-section:first-of-type {
-  min-height: 100vh;
-  min-height: 100svh;
-  padding-top: 5rem;
+
+/* Desktop continuous flow (About Us) */
+@media (min-width: 769px) {
+  .view-layer.m-strip > .story-section {
+    padding: 5.5rem 4rem 4.5rem;
+    min-height: 95vh;
+  }
+  .view-layer.m-strip > .story-section:first-of-type {
+    min-height: 100vh;
+    padding-top: 7rem;
+    padding-bottom: 2rem;
+  }
+  .view-layer.m-strip > .story-section:last-of-type {
+    padding-bottom: 6rem;
+  }
+
+  /* Refined layout so ship and water remain clearly visible */
+  #about-view.m-strip .about-split-grid,
+  #about-view.m-strip .about-feature-grid {
+    max-width: 1140px;
+    gap: 3rem;
+  }
+  #about-view.m-strip .about-split-grid > div,
+  #about-view.m-strip .about-feature-grid > div {
+    background: rgba(3, 20, 32, 0.58);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    border-radius: 10px;
+    padding: 2.2rem 2.6rem;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
 }
-.view-layer.m-strip > .story-section:last-of-type {
-  padding-bottom: 7rem;
+
+/* Mobile strip padding & GPU optimization */
+@media (max-width: 768px) {
+  .view-layer.m-strip > .story-section {
+    padding: 2.5rem 1.2rem;
+  }
+  .view-layer.m-strip > .story-section:first-of-type {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: 5rem;
+  }
+  .view-layer.m-strip > .story-section:last-of-type {
+    padding-bottom: 7rem;
+  }
+  .view-layer.m-strip .car-jobs {
+    max-height: none;
+    overflow: visible;
+  }
+  .view-layer.m-strip * {
+    -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+  }
 }
-/* Careers job list: no inner scroll box, the page itself scrolls */
-.view-layer.m-strip .car-jobs {
-  max-height: none;
-  overflow: visible;
-}
-/* blur behind many glass cards at once is heavy on phones - removing it keeps scrolling smooth */
-.view-layer.m-strip * {
-  -webkit-backdrop-filter: none !important;
-          backdrop-filter: none !important;
-}
+
 /* ==========================================================================
-   MOBILE - LARGER LOGO
+   MOBILE & RESPONSIVE - BRAND LOGO
    ========================================================================== */
 @media (max-width: 768px) {
-  .brand-img {
-    height: 64px;
-    max-width: 190px;
+  .brand-icon {
+    height: 42px;
+  }
+  .brand-company-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+  .brand-company-sub {
+    font-size: 0.54rem;
+    letter-spacing: 0.2em;
   }
 }
-@media (max-width: 560px) {
-  .brand-img {
-    height: 58px;
-    max-width: 170px;
+@media (max-width: 480px) {
+  .brand-icon {
+    height: 36px;
   }
-}
-@media (max-width: 400px) {
-  .brand-img {
-    height: 52px;
-    max-width: 145px;
+  .brand-company-name {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .brand-company-sub {
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
   }
 }
 
@@ -3117,4 +3220,32 @@ body.m-strip-on #content-container {
     width: 34px;
     height: 34px;
   }
+}
+
+/* =====================================================================
+   MOBILE LOGO NAME - keep "OLEOVISTA SOLUTIONS" fully visible on phones
+   (only affects screens 480px wide and smaller; desktop is unchanged)
+   ===================================================================== */
+@media (max-width: 480px) {
+  .brand-logo { gap: 0.45rem; }
+  .brand-icon { height: 30px; }
+  .brand-text-wrap { min-width: 0; }
+  .brand-company-name {
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+  .brand-company-sub {
+    font-size: 0.42rem;
+    letter-spacing: 0.12em;
+  }
+  .header-right { gap: 0.3rem; }
+  .header-dropdown-btn { padding: 0.28rem 0.45rem; gap: 0.3rem; }
+  .dropdown-active-pill { font-size: 0.58rem; padding: 1px 4px; }
+}
+@media (max-width: 380px) {
+  .brand-logo { gap: 0.35rem; }
+  .brand-icon { height: 26px; }
+  .brand-company-name { font-size: 0.52rem; letter-spacing: 0.02em; }
+  .brand-company-sub { font-size: 0.38rem; letter-spacing: 0.08em; }
+  .header-dropdown-btn .dropdown-chevron { display: none; }
 }
