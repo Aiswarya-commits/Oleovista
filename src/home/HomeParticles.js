@@ -347,7 +347,7 @@ export class HomeParticles {
     const blobLive = new Float32Array(N * 3); blobLive.set(blobs[0]);
 
     const STAGES = [
-      { shape: chart, op: 1, x: 0.2, y: 0.18, s: 0.8, flat: 0.45, warm: 1, rot: (t) => [0.32 + Math.sin(t * 0.3) * 0.03, -0.38 + Math.sin(t * 0.22) * 0.16] },
+      { shape: chart, op: 1, x: 0.2, y: 0.18, s: 0.8, flat: 0.45, rot: (t) => [0.32 + Math.sin(t * 0.3) * 0.03, -0.38 + Math.sin(t * 0.22) * 0.16] },
       { shape: cosmos, op: 1, x: 0, y: 0, s: 1, flat: 0.2, rot: (t) => [0, t * 0.015] },
       { shape: cosmos, op: 0.28, x: 0, y: 0, s: 1.25, flat: 0.2, rot: (t) => [0, t * 0.015] },
       { shape: ship, op: 1, x: 0, y: 0.02, s: 0.86, flat: 0.7, rot: (t) => [0.3 + Math.sin(t * 0.9) * 0.02, -0.32 + Math.sin(t * 0.3) * 0.16] },
