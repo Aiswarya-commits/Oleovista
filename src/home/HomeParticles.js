@@ -493,9 +493,10 @@ export class HomeParticles {
       posAttr.needsUpdate = true;
 
       const n = narrow(), fit = Math.min(1, (innerWidth / innerHeight) / 1.35);
-      const ox = n ? 0 : lerp(A.x, B.x, f), oy = lerp(n && k === 0 ? 0.55 : A.y, B.y, f);
-      const sc = lerp(A.s, B.s, f) * (0.55 + 0.45 * fit) * (k === 0 ? 1 + f * 0.6 : 1);
-      group.scale.setScalar(sc);
+      // phones: the chart sits below the hero text and is scaled to fit the screen width
+      const mobChart = n && k === 0;
+      const ox = n ? 0 : lerp(A.x, B.x, f), oy = lerp(mobChart ? -0.42 : A.y, B.y, f);
+      const sc = lerp(mobChart ? Math.min(0.8, innerWidth / innerHeight * 0.74) : A.s, B.s, f) * (mobChart ? 1 : 0.55 + 0.45 * fit) * (k === 0 ? 1 + f * 0.6 : 1);      group.scale.setScalar(sc);
       mouse.sx += (mouse.x - mouse.sx) * 0.04; mouse.sy += (mouse.y - mouse.sy) * 0.04;
       group.position.set(ox + mouse.sx * 0.06, oy - mouse.sy * 0.04, 0);
       const ra = A.rot(t), rb = B.rot(t);
