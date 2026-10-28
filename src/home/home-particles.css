@@ -265,3 +265,19 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 /* Home hero: dark background (same as the rest of the Home page) instead of the green glow */
 #home-view #hp-bgHero { background: radial-gradient(ellipse 40% 45% at 50% -10%, rgba(40,140,50,.25), transparent 70%), var(--bg); }
 #home-view #hp-bgHero::after { display: none; }
+
+/* ---- Content between the hero and "See every deal" (over the star network) ---- */
+#home-view #hp-network{display:flex;align-items:center;min-height:110vh}
+#home-view .net-in{width:100%;display:grid;gap:22px;padding:0 4%}
+#home-view .net-in .h2{max-width:18ch}
+#home-view .net-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px;max-width:980px}
+#home-view .net-item{padding:22px 22px 24px;border-radius:16px;border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(40,70,44,.30),rgba(8,16,10,.55) 65%);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#home-view .net-item h3{font-size:20px;line-height:1.1;letter-spacing:-.02em;font-weight:400;margin:10px 0 8px}
+#home-view .net-item p{font-size:12.5px;line-height:1.6;color:#a8b8ab;margin:0}
+@media (max-width:860px){
+  #home-view .net-in{padding:0}
+  #home-view .net-grid{grid-template-columns:1fr;gap:10px}
+  #home-view .net-item{padding:16px 18px}
+}
+#home-view #hp-network{padding-bottom:40vh}
