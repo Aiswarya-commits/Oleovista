@@ -201,16 +201,18 @@ export class HomeParticles {
     const chart = chartRaw;
 
     // --- cosmos: deep scatter + nebula filaments (the trading network)
-    const filaments = [...Array(7)].map(() => ({ x0: -6 + R() * 12, y0: 1.2 + R() * 2.4, len: 2 + R() * 4, ang: -0.6 + R() * 1.2, wob: R() * 3, z: -3 + R() * 2.5 }));
+    // phones show a much narrower slice of the scene, so the star field is packed tighter there
+    const CW = innerWidth < 760 ? 0.42 : 1;
+    const filaments = [...Array(7)].map(() => ({ x0: (-6 + R() * 12) * CW, y0: 1.2 + R() * 2.4, len: (2 + R() * 4) * CW, ang: -0.6 + R() * 1.2, wob: R() * 3, z: -3 + R() * 2.5 }));
     const cosmos = build((f) => {
-      if (f < 0.7) return [(R() * 2 - 1) * 7.5, (R() * 2 - 1) * 4.2, -6 + R() * 7.2];
+      if (f < 0.7) return [(R() * 2 - 1) * 7.5 * CW, (R() * 2 - 1) * 4.2, -6 + R() * 7.2];
       const fl = filaments[(R() * filaments.length) | 0];
       const s = R();
       const x = fl.x0 + Math.cos(fl.ang) * s * fl.len, y = fl.y0 + Math.sin(fl.ang) * s * fl.len + Math.sin(s * 6 + fl.wob) * 0.35;
       const sp = 0.05 + 0.18 * Math.pow(R(), 2);
       return [x + gauss() * sp * 3, y + gauss() * sp, fl.z + gauss() * sp * 2];
     });
-    const dust = build(() => [(R() * 2 - 1) * 8, (R() * 2 - 1) * 5, -7 + R() * 7]);
+    const dust = build(() => [(R() * 2 - 1) * 8 * CW, (R() * 2 - 1) * 5, -7 + R() * 7]);
 
     // --- cargo ship: hull, deck, bridge + funnel, stacked oil drums, water around it
     const HULL = { stern: -1.6, keelBow: 1.35, deckBow: 1.66, keel: -0.35, deck: 0.1, half: 0.38 };
@@ -496,7 +498,9 @@ export class HomeParticles {
       // phones: the chart sits below the hero text and is scaled to fit the screen width
       const mobChart = n && k === 0;
       const ox = n ? 0 : lerp(A.x, B.x, f), oy = lerp(mobChart ? -0.42 : A.y, B.y, f);
-      const sc = lerp(mobChart ? Math.min(0.8, innerWidth / innerHeight * 0.74) : A.s, B.s, f) * (mobChart ? 1 : 0.55 + 0.45 * fit) * (k === 0 ? 1 + f * 0.6 : 1);      group.scale.setScalar(sc);
+      const fitS = 0.55 + 0.45 * fit;
+      const sc = lerp(mobChart ? Math.min(0.8, innerWidth / innerHeight * 0.74) : A.s * fitS, B.s * fitS, f) * (k === 0 ? 1 + Math.sin(f * Math.PI) * 0.6 : 1);   // zoom in and back out: no jump when the hero ends
+      group.scale.setScalar(sc);
       mouse.sx += (mouse.x - mouse.sx) * 0.04; mouse.sy += (mouse.y - mouse.sy) * 0.04;
       group.position.set(ox + mouse.sx * 0.06, oy - mouse.sy * 0.04, 0);
       const ra = A.rot(t), rb = B.rot(t);

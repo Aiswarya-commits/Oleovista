@@ -14,7 +14,7 @@ import { TeamMeadow } from './scene/Teammeadow.js';
 import { ContactNetwork } from './scene/Contactnetwork.js';
 import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
 import { OliviaAssistant } from './ui/Olivia.js';
-import { HomeParticles } from './home/HomeParticles.js';
+import { HomeParticles } from './home/Homeparticles.js';
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
@@ -103,75 +103,115 @@ class App {
     this.water.update(1, 0);
     this.terrain.setGreenery(0);
     this.terrain.uniforms.uGreenery.value = 0;
-    // Load 3D Terrain & Trading 3D Assets concurrently
-    const [terrainMesh] = await Promise.all([
-      this.terrain.load(),
-      this.tradingObjects.load()
-    ]);
+    // FAST LOADING: the mountain, its 1500 trees and the floating barrels were only used by the old
+    // Home page. Home is now the particle animation and every other page has its own 3D world, so they
+    // are no longer loaded (this was the slow part of the loading screen and caused freezes).
+    // They are only loaded if the particle Home page cannot start (then Home shows the mountain as before).
+    if (this.homeParticles.disabled) {
+      const [terrainMesh] = await Promise.all([
+        this.terrain.load(),
+        this.tradingObjects.load()
+      ]);
+      this.forest = new Forest(this.scene, terrainMesh);
+      this.forest.generateForest(1500);
+    }
 
-    // Generate Pine Forest on mountain slopes (fast precomputed layout)
-    this.forest = new Forest(this.scene, terrainMesh);
-    this.forest.generateForest(1500);
+    // FAST START: Home (the particle animation) is shown right away. The other pages' 3D worlds are
+    // prepared afterwards in small steps, once the Home intro has played, so Home never stutters.
+    // If a visitor opens a page before that is finished, that page is built on the spot (no loading screen).
+    this.ready = false;
+    this.rush = false;
+    const fastStart = !this.homeParticles.disabled;
+    if (fastStart) {
+      this.uiManager.updateProgress(1, 1);
+      this.uiManager.onLoaded();
+      this.animate();
+      await this.homePause(4500);
+    }
+    const step = () => this.idleStep(fastStart);
 
-    this.aboutOcean = new AboutOcean({
-      scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
-      terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
-    });
+    for (const name of ['aboutOcean', 'servicesHolo', 'careersGlobe', 'teamMeadow', 'contactNetwork']) {
+      this.makeWorld(name);
+      if (name === 'careersGlobe') this.careersGlobe?.prepareTextures?.();   // paints the Earth on a background thread
+      await step();
+    }
 
-    this.servicesHolo = new ServicesHolo({
-      scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
-      terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
-    });
+    if (!fastStart && this.uiManager.loaderText) this.uiManager.loaderText.textContent = 'Preparing 3D scenes...';
+    await this.prewarmScenes(step);
+    this.ready = true;
 
-    this.careersGlobe = new CareersGlobe({
-      scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
-      terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
-    });
+    if (!fastStart) {
+      this.uiManager.updateProgress(1, 1);
+      this.uiManager.onLoaded();
+      this.animate();
+    }
+  }
 
-    this.teamMeadow = new TeamMeadow({
-      scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
-      terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
-    });
+  // Creates one page's 3D world (does nothing if it already exists)
+  makeWorld(name) {
+    if (this[name]) return;
+    const Cls = { aboutOcean: AboutOcean, servicesHolo: ServicesHolo, careersGlobe: CareersGlobe, teamMeadow: TeamMeadow, contactNetwork: ContactNetwork }[name];
+    try {
+      this[name] = new Cls({
+        scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
+        terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
+      });
+    } catch (e) { console.warn('[world] could not create', name, e); }
+  }
 
-    this.contactNetwork = new ContactNetwork({
-      scene: this.scene, camera: this.camera, cameraRig: this.cameraRig,
-      terrain: this.terrain, forest: this.forest, water: this.water, atmosphere: this.atmosphere
-    });
+  // Waits on the Home page so its intro plays smoothly; ends early if the visitor opens another page
+  async homePause(ms) {
+    const t0 = performance.now();
+    while (!this.rush && performance.now() - t0 < ms) await new Promise((r) => setTimeout(r, 100));
+  }
 
-    // Prepare every page's 3D world now, behind the loading screen, so switching pages never freezes
-    if (this.uiManager.loaderText) this.uiManager.loaderText.textContent = 'Preparing 3D scenes...';
-    await this.prewarmScenes();
-
-    // Complete loading
-    this.uiManager.updateProgress(1, 1);
-    this.uiManager.onLoaded();
-
-    // Start render loop
-    this.animate();
+  // A break between heavy steps: the next step only runs when the visitor has not scrolled, swiped or
+  // typed for a moment and the browser is idle, so a step never interrupts scrolling.
+  // (No break when a visitor is waiting for a page.)
+  async idleStep(fastStart) {
+    if (!fastStart || this.rush) return new Promise((r) => setTimeout(r, 0));
+    if (!this.inputWatch) {
+      this.inputWatch = true;
+      this.lastInput = performance.now();
+      const mark = () => { this.lastInput = performance.now(); };
+      ['wheel', 'touchstart', 'touchmove', 'keydown', 'pointerdown'].forEach((ev) => window.addEventListener(ev, mark, { passive: true, capture: true }));
+      window.addEventListener('scroll', mark, { passive: true, capture: true });
+    }
+    await new Promise((r) => setTimeout(r, 250));
+    while (!this.rush && performance.now() - this.lastInput < 1200) await new Promise((r) => setTimeout(r, 150));
+    if (this.rush) return;
+    await new Promise((r) => (window.requestIdleCallback ? requestIdleCallback(() => r(), { timeout: 1500 }) : setTimeout(r, 200)));
   }
 
   /*
-    PERFORMANCE: without this, the first visit to each page froze the screen for a few seconds
-    (About: the photo-sea shader being compiled for the GPU; Careers / Team / Contact: their 3D worlds
-    and textures being built). Doing it all once during the loading screen makes every page switch instant.
+    PERFORMANCE: builds the worlds that are normally created on first visit and prepares every page's
+    shaders and textures for the graphics card, so switching pages never freezes.
   */
-  async prewarmScenes() {
+  async prewarmScenes(step = () => Promise.resolve()) {
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     try {
-      // 1. let the About photo finish loading (max 3 s), so it can be uploaded to the GPU now
       for (let i = 0; i < 30 && !this.aboutOcean?.sea?.uniforms?.ready; i++) await wait(100);
 
-      // 2. build the worlds that are normally created on first visit
+      // the globe's Earth pictures are painted on a background thread; wait for them (max 8 s) so building is quick
+      if (!this.rush && this.careersGlobe?.prepareTextures) {
+        await Promise.race([this.careersGlobe.prepareTextures(), wait(8000)]);
+        await step();
+      }
       for (const c of [this.careersGlobe, this.teamMeadow, this.contactNetwork]) {
         try { if (c && !c.built && typeof c.build === 'function') c.build(); } catch (e) { console.warn('[prewarm] build failed', e); }
-        await wait(0);                                   // let the loading screen repaint between builds
+        await step();
       }
 
-      // 3. briefly show every hidden 3D object, compile all shaders and upload all textures, then hide again
+      // compile shaders and upload textures (only while Home is showing, so hidden objects never flash on another page)
+      if (this.rush) return;
+      this.prewarming = true;
       const hidden = [];
       this.scene.traverse((o) => { if (!o.visible) { hidden.push(o); o.visible = true; } });
-      if (typeof this.renderer.compileAsync === 'function') await this.renderer.compileAsync(this.scene, this.camera);
-      else this.renderer.compile(this.scene, this.camera);
+      try {
+        if (typeof this.renderer.compileAsync === 'function') await this.renderer.compileAsync(this.scene, this.camera);
+        else this.renderer.compile(this.scene, this.camera);
+      } finally { hidden.forEach((o) => { o.visible = false; }); this.prewarming = false; }
+      await step();
       const seen = new Set();
       this.scene.traverse((o) => {
         const mats = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
@@ -180,7 +220,6 @@ class App {
           texs.forEach((t) => { if (t && t.isTexture && !seen.has(t)) { seen.add(t); this.renderer.initTexture(t); } });
         });
       });
-      hidden.forEach((o) => { o.visible = false; });
     } catch (e) {
       console.warn('[prewarm] skipped:', e);   // never block the site; pages will just prepare on first visit
     }
@@ -209,10 +248,16 @@ class App {
     const elapsed = this.clock.getElapsedTime();
 
     // Home page shows the particle animation: the mountain world is hidden, so skip all its work
-    if (this.homeParticles?.active) {
+    const onHome = (this.uiManager?.currentMode || 'home') === 'home';
+    if ((onHome && !this.homeParticles?.disabled) || this.prewarming) {
       this.uiManager?.update(dt, elapsed);
       this.soundManager?.drawVisualizer(elapsed);
       return;
+    }
+    // a page was opened before its 3D world was prepared: create the worlds right now (no loading screen)
+    if (!this.ready) {
+      this.rush = true;
+      ['aboutOcean', 'servicesHolo', 'careersGlobe', 'teamMeadow', 'contactNetwork'].forEach((n) => this.makeWorld(n));
     }
 
     // Raycast mouse to terrain for interactive wireframe ripple

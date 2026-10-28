@@ -54,3 +54,5 @@
 @media (min-width: 769px) and (max-width: 1100px) {
   #careers-view.m-strip > .section-car-left { padding: 5rem 3rem 4rem; }
 }
+   /* loading screen shows again if another page is opened before its 3D is ready */
+   body.loaded.bg-loading .loader-overlay { opacity: 1; visibility: visible; pointer-events: auto; }
