@@ -14,6 +14,7 @@ import { TeamMeadow } from './scene/Teammeadow.js';
 import { ContactNetwork } from './scene/Contactnetwork.js';
 import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
 import { OliviaAssistant } from './ui/Olivia.js';
+import { HomeParticles } from './home/HomeParticles.js';
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
@@ -75,13 +76,11 @@ class App {
       this.uiManager?.updateProgress(loaded, total || totalEst);
     };
 
-       this.olivia = new OliviaAssistant({ uiManager: this.uiManager });
-
     // Subsystems
     this.atmosphere = new Atmosphere(this.scene);
     this.water = new Water(this.scene);
     this.cameraRig = new CameraRig(this.camera, this.renderer.domElement);
-    
+
     const soundCanvas = document.getElementById('sound-canvas');
     this.soundManager = new SoundManager(soundCanvas);
 
@@ -90,6 +89,13 @@ class App {
     this.tradingObjects = new TradingObjects(this.scene, loadingManager);
     this.uiManager = new UIManager(this.cameraRig, this.soundManager, this.atmosphere, this.terrain, this.water, this.tradingObjects);
     this.mobileSmoothScroll = new MobileSmoothScroll(this.cameraRig);
+
+    // Olivia AI assistant (created after UIManager, so she knows which page is open)
+    this.olivia = new OliviaAssistant({ uiManager: this.uiManager });
+
+    // Home page: particle animation (replaces the mountain on Home only)
+    this.homeParticles = new HomeParticles();
+
         // Default look: Dawn (applied instantly, so there is no fade from Greenery on load)
     this.atmosphere.setPreset('day');
     this.atmosphere.update(1, 0);
@@ -202,6 +208,13 @@ class App {
     const dt = Math.min(this.clock.getDelta(), 0.1);
     const elapsed = this.clock.getElapsedTime();
 
+    // Home page shows the particle animation: the mountain world is hidden, so skip all its work
+    if (this.homeParticles?.active) {
+      this.uiManager?.update(dt, elapsed);
+      this.soundManager?.drawVisualizer(elapsed);
+      return;
+    }
+
     // Raycast mouse to terrain for interactive wireframe ripple
     if (this.terrain?.mesh && this.aboutOcean?.current !== 'ocean' && this.servicesHolo?.current !== 'holo' && this.careersGlobe?.current !== 'globe' && this.teamMeadow?.current !== 'meadow' && this.contactNetwork?.current !== 'network') {
       this.raycaster.setFromCamera(this.mouseCoords, this.camera);
@@ -216,7 +229,7 @@ class App {
 
     // Update subsystems
     this.cameraRig?.update(dt);
-    this.mobileSmoothScroll?.update(dt);   // smooth continuous scroll on phones (all pages)   // About Us continuous scroll on phones only
+    this.mobileSmoothScroll?.update(dt);   // smooth continuous scroll on phones
     this.terrain?.update(dt, elapsed, this.hoverPos, this.hoverStrength);
     this.forest?.update(dt, elapsed);
     this.atmosphere?.update(dt, elapsed);

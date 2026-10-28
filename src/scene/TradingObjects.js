@@ -1,6 +1,48 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+
+// ---------------------------------------------------------------------
+// Shining gold for the oil barrels.
+// Real metal only looks golden when it has something bright to reflect,
+// so the barrels get their own small "studio light" reflection picture
+// (drawn on a canvas, no image file needed). Only the barrels use it;
+// the mountain, sky and other objects are not affected.
+// ---------------------------------------------------------------------
+function makeGoldReflections() {
+  const c = document.createElement('canvas');
+  c.width = 1024;
+  c.height = 512;
+  const g = c.getContext('2d');
+  const sky = g.createLinearGradient(0, 0, 0, 512);
+  sky.addColorStop(0, '#2a2a2a');
+  sky.addColorStop(0.42, '#9a9a96');
+  sky.addColorStop(0.5, '#ffffff');
+  sky.addColorStop(0.58, '#7a7a76');
+  sky.addColorStop(1, '#141414');
+  g.fillStyle = sky;
+  g.fillRect(0, 0, 1024, 512);
+  // soft bright "lamps" that make the shiny streaks on the barrels
+  const lamp = (x, y, w, h, a) => {
+    const m = Math.max(w, h);
+    const r = g.createRadialGradient(x, y, 0, x, y, m);
+    r.addColorStop(0, `rgba(255,250,235,${a})`);
+    r.addColorStop(1, 'rgba(255,250,235,0)');
+    g.save();
+    g.translate(x, y); g.scale(w / m, h / m); g.translate(-x, -y);
+    g.fillStyle = r;
+    g.fillRect(x - m, y - m, m * 2, m * 2);
+    g.restore();
+  };
+  lamp(250, 140, 160, 60, 1);
+  lamp(700, 170, 120, 50, 0.9);
+  lamp(480, 90, 60, 60, 0.8);
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 export class TradingObjects {
   constructor(scene, loadingManager) {
     this.scene = scene;
@@ -30,11 +72,13 @@ export class TradingObjects {
 
     // Create 4 floating oil barrels clustered at the Oil section
     if (barrelMesh) {
+      // shining gold barrels
       const barrelMat = new THREE.MeshStandardMaterial({
-        color: 0x1f3647,
-        metalness: 0.8,
-        roughness: 0.25,
-        wireframe: false
+        color: 0xffc85a,              // gold tint (change for a lighter/deeper gold)
+        metalness: 1.0,               // real metal
+        roughness: 0.14,              // lower = more mirror-like shine
+        envMap: makeGoldReflections(),
+        envMapIntensity: 1.45         // higher = brighter shine
       });
 
       for (let i = 0; i < 5; i++) {

@@ -692,7 +692,7 @@ body.loaded .loader-overlay {
 .hero-center {
   text-align: center;
   max-width: 1000px;
-  margin-bottom: 11rem;
+  margin-bottom: 25rem;
 }
 
 .hero-badge {
@@ -710,7 +710,7 @@ body.loaded .loader-overlay {
     font-size: 3.8rem;
   font-weight: 500;
   letter-spacing: 0.28em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   margin-bottom: 1rem;
   color: var(--color-white);
   text-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);

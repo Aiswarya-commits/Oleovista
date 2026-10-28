@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="/src/style.css" />
   <link rel="stylesheet" href="/src/company-content.css" />
   <link rel="stylesheet" href="/src/about-showcase.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/src/home/home-particles.css" />
+  <link rel="stylesheet" href="/src/hero-fix.css" />
   <style>
     /* LIGHT dropdown: 10 themes shown in two columns so the list stays short */
     #dropdown-light .header-dropdown-menu { display: grid; grid-template-columns: 1fr 1fr; min-width: 260px; }
@@ -70,9 +73,9 @@
         </ul>
       </nav>
 
-      <div class="header-right">
+      <!-- <div class="header-right"> -->
         <!-- Light Dropdown (in place of News) -->
-        <div class="header-dropdown" id="dropdown-light">
+        <!-- <div class="header-dropdown" id="dropdown-light">
           <button class="header-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Mountain & Atmosphere Lighting">
             <span class="dropdown-title"><img src="/assets/sunl.svg" alt=""></span>
             <span class="dropdown-active-pill" id="light-current">🌅 Dawn</span>
@@ -126,7 +129,7 @@
               <span class="dropdown-item-label">Spring</span>
             </button>
           </div>
-        </div>
+        </div> -->
 
         <!-- Mode Dropdown (in place of Menu) -->
         <div class="header-dropdown" id="dropdown-mode">
@@ -364,214 +367,181 @@
   <!-- Scrollable UI Experience Chapters Overlay -->
   <main id="content-container">
     
-    <!-- HOME EXPERIENCE VIEW LAYER -->
+    <!-- HOME EXPERIENCE VIEW LAYER  (particle animation: src/home/HomeParticles.js + src/home/home-particles.css) -->
     <div id="home-view" class="view-layer active">
+      <div class="bg" id="hp-bgHero"></div>
+      <div class="bg" id="hp-bgAmb"></div>
+      <canvas id="hp-gl" aria-hidden="true"></canvas>
+      <div class="grain" aria-hidden="true"></div>
 
-      <!-- CHAPTER 1: HERO -->
-      <section class="story-section section-hero" id="sec-hero">
-      <div class="hero-center">
-        <div class="hero-badge"></div>
-        <h1 class="hero-title">Oleovista Solutions</h1>
-        <p class="hero-subtitle">Every deal. Every position. Every risk. One system.</p>
-        
-        <div class="scroll-cta">
-          <div class="mouse-icon">
-            <div class="wheel-dot"></div>
+      <div class="hp-main">
+        <!-- HERO: growth chart -->
+        <section id="hp-hero" data-stage="0">
+          <div class="wrap">
+            <div class="hero-left">
+              <div class="tag hero-fade">Energy trading &amp; risk</div>
+              <h1 class="h-hero" data-split>Oleovista <span class="highlight">Solutions</span></h1>
+              <p class="hp-tagline hero-fade">Every deal. Every position. Every risk. One system.</p> <a class="btn hero-fade"
+  href="#" data-ct-nav="nav-contact">Contact us <span class="dot-btn"><svg viewBox="0 0 12 12" fill="none"
+      stroke="currentColor" stroke-width="1.6">
+      <path d="M3 9 9 3M4 3h5v5" />
+    </svg></span></a>
+            </div>
+            <!-- <div class="hero-right">
+              <div >Every Deal.Every Position.Every risk.One system.</div>
+            </div> -->
+            <!-- <div class="hero-desc"><p class="small hero-fade">Oleovista Solutions builds enterprise trading and risk platforms for energy and financial markets.</p></div> -->
+            <div class="scroll-hint"><span class="hero-fade sh-in"><i></i>Scroll to explore</span></div>
           </div>
-          <span class="cta-text">Scroll or drag to navigate 3D landscape</span>
-        </div>
+        </section>
+
+        <!-- NETWORK (particles only) -->
+        <section id="hp-network" data-stage="1" aria-label="Trading network"></section>
+
+        <!-- KNOW: ACERS -->
+        <section id="hp-know" data-stage="2">
+          <div class="sticky">
+            <div class="beam" id="hp-beam"></div>
+            <div class="splash" id="hp-splash"></div>
+            <div class="floor"></div>
+            <div class="wrap" style="height:100%">
+              <div class="know-txt">
+                <h2 class="h2" data-scrub>See every deal,<br>position and <span class="ico"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2"/><path d="M6 1v1.5M6 9.5V11M1 6h1.5M9.5 6H11"/></svg></span> risk.<br><span class="grey">From one system.</span></h2>
+                <a class="btn know-btn" href="#" data-ct-nav="nav-services">Explore ACERS <span class="dot-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a>
+              </div>
+              <div class="know-side">
+                <div class="tag">ACERS</div>
+                <p class="small">ACERS, our ETRM system, runs the full deal lifecycle (capture, valuation, risk, scheduling and settlement) in one place, with one audit trail.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCAN: oil cargo ship -->
+        <section id="hp-scan" data-stage="3">
+          <div class="sticky">
+            <div class="scan-card" id="hp-scanCard">
+              <div class="brackets">
+                <svg viewBox="0 0 100 112" aria-hidden="true">
+                  <path d="M4 30 V16 Q4 4 16 4 H30"/><path d="M70 4 H84 Q96 4 96 16 V30"/>
+                  <path d="M4 82 V96 Q4 108 16 108 H30"/><path d="M70 108 H84 Q96 108 96 96 V82"/>
+                </svg>
+                <div class="scanline"></div>
+              </div>
+              <div class="scan-status">
+                <span class="idx">RECONCILED <span id="hp-conf">0.0</span>%</span>
+                <span class="bar"><i id="hp-confBar"></i></span>
+              </div>
+              <div class="scan-meta"><div id="hp-typeA"></div><div id="hp-typeB"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SOLUTIONS: ACERS modules on a rotating ring -->
+        <section id="hp-solutions" data-stage="4">
+          <div class="sol-title">
+            <h2 class="h2" style="font-size:clamp(30px,3.4vw,52px)">Trading software shaped<br><span class="ico plain"><svg viewBox="0 0 16 16" fill="none" stroke="#62e23c" stroke-width="1.4"><path d="M8 1.5 13.5 4v4c0 3.2-2.4 5.6-5.5 6.5C4.9 13.6 2.5 11.2 2.5 8V4z"/><path d="m5.6 8 1.7 1.7L10.6 6.4"/></svg></span> around your desk</h2>
+          </div>
+          <div class="ring-stage">
+            <div class="ring" id="hp-ring">
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12h16M14 6l6 6-6 6"/></svg><span class="idx">[ 01 ]</span></header><h3>ICE trade capture,<br>no re-keying</h3><p>Trades booked on ICE flow straight into ACERS through the ICE trade-capture API. Manual entry for OTC swaps, options and spreads.</p></article>
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="idx">[ 02 ]</span></header><h3>Positions &amp; P&amp;L<br>in real time</h3><p>By product, book, trader, contract month and strategy, with mark-to-market and realised / unrealised P&amp;L.</p></article>
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 17l5-6 4 3 6-8 3 4"/></svg><span class="idx">[ 03 ]</span></header><h3>Market data<br>from Nasdaq</h3><p>Live and end-of-day prices, forward curves, volatilities and settlement prices for valuation.</p></article>
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="idx">[ 04 ]</span></header><h3>Initial margin,<br>calculated automatically</h3><p>Exchange margin per account and portfolio, with margin calls, excess / deficit and what-if margin on new trades.</p></article>
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/></svg><span class="idx">[ 05 ]</span></header><h3>Risk you can<br>trace and trust</h3><p>Value-at-Risk, stress and scenario testing, with exposure consolidated across books, portfolios and counterparties.</p></article>
+              <article class="hcard"><header><svg class="hico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12l4 4L19 6"/></svg><span class="idx">[ 06 ]</span></header><h3>Settlement &amp;<br>confirmations</h3><p>Trade confirmations, daily settlement, variation margin, fees and broker statement reconciliation.</p></article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABOUT: bento cards -->
+        <section id="hp-about" data-stage="5">
+          <div class="wrap">
+            <div class="about-head">
+              <h2 class="h2" data-split>We are <span class="ico plain"><svg viewBox="0 0 20 12" fill="none" stroke="#62e23c" stroke-width="1.4"><path d="M1 6h4l2-4 3 8 2-5 1.5 1H19"/></svg></span> a specialist<br>trading software company</h2>
+              <p class="fade-up">Oleovista Solutions Pvt Ltd is based in Kochi, India. We design, build and support trading and risk platforms for energy and financial markets. Our first product, ACERS, is a full ETRM system in use with our clients; our second, a treasury trading system, is in development.</p>
+            </div>
+            <div class="bento">
+              <article class="card c-a">
+                <svg class="tiles" viewBox="0 0 500 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <defs><linearGradient id="hp-lg" x1="0" x2="1"><stop offset="0" stop-color="#d6ffb0" stop-opacity="0"/><stop offset=".5" stop-color="#eaffd0"/><stop offset="1" stop-color="#d6ffb0" stop-opacity="0"/></linearGradient></defs>
+                  <path d="M-20 40 L270 130 L520 20" stroke="url(#hp-lg)" stroke-width="2" fill="none" opacity=".9"/>
+                  <path d="M270 130 L210 320" stroke="url(#hp-lg)" stroke-width="2" fill="none" opacity=".7"/>
+                  <path d="M270 130 L520 250" stroke="url(#hp-lg)" stroke-width="1.5" fill="none" opacity=".6"/>
+                  <path d="M-20 40 L270 130 L520 20 L520 -10 L-20 -10Z" fill="#000" opacity=".12"/>
+                  <path d="M270 130 L520 250 L520 320 L210 320Z" fill="#000" opacity=".18"/>
+                </svg>
+                <div class="cube" style="left:30%;top:16%"><svg viewBox="0 0 34 34"><path d="M17 2 31 9v16L17 32 3 25V9z" fill="#3ec22c"/><path d="M17 2 31 9 17 16 3 9z" fill="#b8ff7a"/><path d="M17 16v16L3 25V9z" fill="#228a1a"/></svg></div>
+                <div class="cube" style="left:62%;top:44%;animation-delay:-2s;width:26px;height:26px"><svg viewBox="0 0 34 34"><path d="M17 2 31 9v16L17 32 3 25V9z" fill="#3ec22c"/><path d="M17 2 31 9 17 16 3 9z" fill="#b8ff7a"/><path d="M17 16v16L3 25V9z" fill="#228a1a"/></svg></div>
+                <div class="cube" style="left:80%;top:12%;animation-delay:-3.4s;width:20px;height:20px"><svg viewBox="0 0 34 34"><path d="M17 2 31 9v16L17 32 3 25V9z" fill="#3ec22c"/><path d="M17 2 31 9 17 16 3 9z" fill="#b8ff7a"/><path d="M17 16v16L3 25V9z" fill="#228a1a"/></svg></div>
+                <span class="idx lbl" style="color:#cfe9cf">[ 1.0 ]</span>
+                <div class="cap"><div class="kicker" style="color:#cfe9cf">One system, one truth</div><h4>Front, middle and back office<br>work from the same data</h4></div>
+              </article>
+              <article class="card c-b">
+                <div class="sparks"></div>
+                <div class="cap"><div class="kicker">Configurable, not customised</div><h4>Contracts, workflows and reports<br>set up by configuration</h4></div>
+                <div class="device"></div>
+                <div class="orb"></div>
+                <span class="idx">[ 2.0 ]</span>
+              </article>
+              <article class="card c-c">
+                <svg class="glass" viewBox="0 0 200 260" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M20 0 C 30 120, 88 120, 88 150 C 88 190, 40 220, 30 260" stroke="#7fe060" stroke-width="1.5" fill="none" opacity=".8"/>
+                  <path d="M180 0 C 170 120, 112 120, 112 150 C 112 190, 160 220, 170 260" stroke="#7fe060" stroke-width="1.5" fill="none" opacity=".8"/>
+                </svg>
+                <div class="chip" style="--x:-40px;animation-delay:0s"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l3-4 3 2 4-5"/></svg></div>
+                <div class="chip r" style="--x:30px;animation-delay:-.8s"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5l3 4 3-2 4 5"/></svg></div>
+                <div class="chip" style="--x:52px;animation-delay:-1.6s"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5"/><path d="M8 5v3l2 1"/></svg></div>
+                <div class="chip" style="--x:-58px;animation-delay:-2.4s"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5 13.5 4v4c0 3.2-2.4 5.6-5.5 6.5C4.9 13.6 2.5 11.2 2.5 8V4z"/></svg></div>
+                <div class="chip r" style="--x:10px;animation-delay:-3.2s"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5l3 4 3-2 4 5"/></svg></div>
+                <span class="idx lbl">[ 3.0 ]</span>
+                <div class="cap"><div class="kicker">Domain first</div><p class="body" style="margin:0">Good trading software starts with understanding the trade, the contract and the risk. The code comes after.</p></div>
+              </article>
+              <article class="card c-d">
+                <div class="yrs"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 9 3M4 3h5v5"/></svg></span>Connected to ICE &amp; Nasdaq</div>
+                <div class="cone"></div>
+                <div class="lbl2"><span class="kicker" style="margin:0">No black boxes</span><span class="idx">[ 4.0 ]</span></div>
+                <div class="eye"><svg viewBox="0 0 150 70" fill="none" stroke="#62e23c" stroke-width="2.4" style="filter:drop-shadow(0 0 6px rgba(98,226,60,.7))"><path d="M5 35 C 35 0, 115 0, 145 35"/><path d="M30 30 C 50 12, 100 12, 120 30"/><circle cx="75" cy="25" r="9"/></svg></div>
+                <div class="orbit"><i style="left:-4px;top:10px"></i><i style="right:-4px;top:40px"></i><i style="left:40%;top:-8px;width:14px;height:14px"></i><i style="left:60%;bottom:-10px;width:14px;height:14px"></i></div>
+                <div class="lockb"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg></div>
+                <div class="cap"><h4>Every number traces back<br>to its inputs and rules</h4></div>
+              </article>
+              <article class="card c-e">
+                <div class="sparks"></div>
+                <div class="top-txt"><div class="kicker">We stay</div><p class="body">Implementation is the start of the relationship, not the end. Deploy your way: cloud, private cloud or on-premise.</p></div>
+                <div class="ball b1"></div>
+                <div class="loop"></div>
+                <div class="ball b2"></div>
+                <span class="idx">[ 5.0 ]</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="hp-contact" data-stage="6">
+          <div class="sticky">
+            <div class="contact-in">
+              <h2 class="h-contact" data-split>Get in touch<br>today <span class="ico plain"><svg viewBox="0 0 16 16" fill="none" stroke="#62e23c" stroke-width="1.3"><path d="M10.5 2.5 13.5 5.5 6 13H3v-3z"/><path d="M9 4l3 3"/></svg></span></h2>
+              <p class="small fade-up">Tell us about your trading desk and we will show you how ACERS fits. Write to corporate@oleovista.com and our team replies within one business day.</p>
+              <a class="btn fade-up" href="#" id="hp-copyMail"><span class="lbl-txt">Copy email</span> <span class="dot-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="hp-footer" data-stage="7">
+          <div class="fbeam"></div>
+          <div class="wrap" style="width:100%">
+            <div class="fgrid">
+              <h2 class="h2" data-scrub>OLEOVISTA —<br><span class="grey">every deal, every position,</span><br><span class="grey"><span class="ico plain"><svg viewBox="0 0 16 16" fill="none" stroke="#62e23c" stroke-width="1.4"><path d="M8 1.5 13.5 4v4c0 3.2-2.4 5.6-5.5 6.5C4.9 13.6 2.5 11.2 2.5 8V4z"/><path d="m5.6 8 1.7 1.7L10.6 6.4"/></svg></span> one system</span></h2>
+              <div class="fcol fade-up"><div class="tag">ACERS</div><a href="#" data-ct-nav="nav-services">ICE trade capture</a><a href="#" data-ct-nav="nav-services">Positions &amp; P&amp;L</a><a href="#" data-ct-nav="nav-services">Initial margin</a><a href="#" data-ct-nav="nav-services">Risk management</a><a href="#" data-ct-nav="nav-services">Settlement</a></div>
+              <div class="fcol fade-up"><div class="tag">Explore</div><a href="#" data-ct-nav="nav-about">About us</a><a href="#" data-ct-nav="nav-services">Services</a><a href="#" data-ct-nav="nav-team">Team</a><a href="#" data-ct-nav="nav-careers">Careers</a><a href="#" data-ct-nav="nav-contact">Contact</a><div class="tag" style="margin-top:18px">Connect</div><a href="https://www.linkedin.com/company/oleovista-solutions-private-limited/" target="_blank" rel="noopener">LinkedIn</a></div>
+            </div>
+            <div class="fbase"><span>© 2026 Oleovista Solutions Private Limited · Kochi, India</span><span>All rights reserved</span></div>
+          </div>
+        </footer>
       </div>
-    </section>
-
-    <!-- CHAPTER 2: STRATEGY & OVERVIEW -->
-    <section class="story-section section-strategy" id="sec-strategy">
-      <div class="content-card glass-panel">
-        <div class="card-eyebrow">About Oleovista Solutions</div>
-        <h2 class="card-title">Our Core Competency</h2>
-        <div class="card-text">
-          <p>
-            Oleovista Solutions builds enterprise trading and risk platforms for energy and financial markets. ACERS, our ETRM system, runs the full deal lifecycle — capture, valuation, risk, scheduling and settlement — in one place, with one audit trail.
-          </p>
-          <p>
-            We combine deep domain understanding with robust software engineering practices, ensuring our clients benefit from systems that are both technologically advanced and operationally practical.
-          </p>
-        </div>
-        <!-- <div class="card-stats">
-          <div class="stat-box">
-            <span class="stat-num">+1M</span>
-            <span class="stat-label">Metric Tons Delivered</span>
-          </div>
-          <div class="stat-box">
-            <span class="stat-num">#3</span>
-            <span class="stat-label">Bunkering Hub Fujairah</span>
-          </div>
-          <div class="stat-box">
-            <span class="stat-num">360°</span>
-            <span class="stat-label">Integrated Value Chain</span>
-          </div>
-        </div> -->
-      </div>
-    </section>
-
-    <!-- CHAPTER 3: OIL DIVISION -->
-    <!-- <section class="story-section section-oil" id="sec-oil">
-      <div class="division-header"> -->
-        <!-- <div class="division-pill">ENERGY SECTOR</div>
-        <h2 class="division-title">OIL & REFINED PRODUCTS</h2>
-        <p class="division-desc">Leveraging extensive logistics hubs, blending terminals, and global bunkering networks.</p> -->
-      <!-- </div> -->
-
-      <!-- <div class="products-grid">
-        <div class="product-card glass-panel" data-prod="crude">
-          <div class="prod-num">01</div>
-          <h3 class="prod-title">Crude Oil</h3>
-          <p class="prod-snippet">Ensuring seamless and efficient movement of crude oil from producing countries to international refiners and our proprietary refinery network.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
-
-                <div class="product-card glass-panel" data-prod="gasoline">
-          <div class="prod-num">02</div>
-          <h3 class="prod-title">Gasoline</h3>
-          <p class="prod-snippet">Comprehensive range of gasoline and blending components supported by our Fujairah storage facilities and relationships with international majors.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div>
-
-
-        <div class="product-card glass-panel" data-prod="marine">
-          <div class="prod-num">03</div>
-          <h3 class="prod-title">Marine Fuels</h3>
-          <p class="prod-snippet">Bunkering operations in Fujairah, UAE—the third largest bunkering market globally—delivering high-grade fuel directly to vessels with green transition protocols.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-
-
-        <!-- <div class="product-card glass-panel" data-prod="lpg">
-          <div class="prod-num">04</div>
-          <h3 class="prod-title">LPG (Liquefied Gas)</h3>
-          <p class="prod-snippet">Global trade via Very Large Gas Carriers (VLGCs) from the US and Arabian Gulf to Asia, plus pressurized LPG cargoes for regional infrastructure.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-
-        <!-- <div class="product-card glass-panel" data-prod="gas-power">
-          <div class="prod-num">05</div>
-          <h3 class="prod-title">Gas & Power</h3>
-          <p class="prod-snippet">Power and gas trading licenses in Turkey and European interconnected grids, enabling active participation in evolving regional energy dynamics.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-
-        <!-- <div class="product-card glass-panel" data-prod="fuel-oil">
-          <div class="prod-num">06</div>
-          <h3 class="prod-title">Fuel Oil</h3>
-          <p class="prod-snippet">Specialized blending operations for marine fuel and utility-grade power generation, producing low-sulfur and high-sulfur compliant fuels.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-
-        <!-- <div class="product-card glass-panel" data-prod="distillates">
-          <div class="prod-num">07</div>
-          <h3 class="prod-title">Distillates</h3>
-          <p class="prod-snippet">Efficient value chain connecting East & Southern Africa with vessel and overland pipeline/truck supply routes exceeding 1M+ metric tons.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-
-        <!-- <div class="product-card glass-panel" data-prod="naphtha">
-          <div class="prod-num">08</div>
-          <h3 class="prod-title">Naphtha & Low Carbon</h3>
-          <p class="prod-snippet">Petrochemical cracker feedstocks and emerging renewable biofuels, driving lower carbon intensity across global logistics.</p>
-          <button class="expand-btn">Explore Details &rarr;</button>
-        </div> -->
-      <!-- </div>
-    </section> -->
-
-    <!-- CHAPTER 4: METALS DIVISION -->
-    <section class="story-section section-metals" id="sec-metals">
-      <div class="division-header">
-        <div class="division-pill">MINERALS & RAW COMMODITIES</div>
-        <h2 class="division-title">PRODUCTS</h2>
-        <p class="division-desc">Transportation, storage, and supply of ferrous, non-ferrous, and industrial minerals from mine to smelter.</p>
-      </div>
-
-      <div class="metals-grid">
-        <div class="metal-card glass-panel">
-          <div class="card-icon"></div>
-          <h3>ACERS — Energy Trading &amp; Risk Management</h3>
-          <p>A complete ETRM platform for oil and refined products — crude, gasoline, diesel, jet and fuel oil — covering paper trades from deal capture to settlement.</p>
-        </div>
-
-        <div class="metal-card glass-panel">
-          <div class="card-icon"></div>
-          <h3>Risk Analytics & Compliance</h3>
-          <p>Get real-time profit/loss insights, Value-at-Risk (VaR) analysis, and stress testing — ensuring accuracy and compliance across all business units.</p>
-        </div>
-
-        <div class="metal-card glass-panel">
-          <div class="card-icon"></div>
-          <h3>Enterprise Workflow Automation</h3>
-          <p>Streamline settlements, invoicing, document control, and audit tracking for transparent and efficient operations.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 5: GLOBAL HUBS & FOOTPRINT -->
-    <!-- <section class="story-section section-global" id="sec-global">
-      <div class="global-header">
-        <div class="division-pill">GLOBAL TRADING HUBS</div>
-        <h2 class="division-title">STRATEGIC REACH</h2>
-      </div>
-
-      <div class="hubs-grid">
-        <div class="hub-card glass-panel">
-          <div class="hub-city">Infopark, Kochi</div>
-          <div class="hub-address">
-            Carnival Infopark Phase I<br>
-            Kakkanad, Kochi, Ernakulam,<br>
-            Kerala, India, 682042 <br>
-            Phone: +91 95394 94809
-          </div>
-          <div class="hub-badge">European Headquarters</div>
-        </div>
-
-        <div class="hub-card glass-panel">
-          <div class="hub-city">DUBAI, UAE</div>
-          <div class="hub-address">
-            1104 ICD Brookfield Place<br>
-            DIFC, Dubai, UAE<br>
-            Phone: +971 4 591 4032
-          </div>
-          <div class="hub-badge">Middle East Hub</div>
-        </div>
-
-        <div class="hub-card glass-panel">
-          <div class="hub-city">SINGAPORE</div>
-          <div class="hub-address">
-            0804 Marina One East Tower<br>
-            7 Straits View, Singapore<br>
-            Phone: +65 3105 1583
-          </div>
-          <div class="hub-badge">Asia-Pacific Hub</div>
-        </div>
-      </div>
-
-      <footer class="experience-footer">
-        <div class="footer-top">
-          <div class="footer-links">
-            <a href="#">Oleovista Group</a>
-            <a href="#">Trading</a>
-            <a href="#">Capital</a>
-            <a href="#">Maritime</a>
-            <a href="#">Fort Energy</a>
-          </div>
-          <div class="footer-legals">
-            <a href="#">Contact</a>
-            <a href="#">ESG Sustainability</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>© 2026 Oleovista Group. All rights reserved. 3D WebGL Alpine Experience.</p>
-        </div>
-      </footer>
-    </section> -->
     </div><!-- End #home-view -->
 
     <!-- ABOUT EXPERIENCE VIEW LAYER -->
@@ -778,7 +748,7 @@
         <div class="ab-wrap ab-split">
           <div class="ab-split-left">
             <div class="ab-eyebrow">SOLUTIONS</div>
-            <h2 class="ab-h2">Built for every oil &amp; products trading desk.</h2>
+            <h2 class="ab-h2">Built for Every Oil &amp; Products Trading Desk.</h2>
             <p class="ab-lead">ACERS is a complete ETRM platform for financial oil and refined-products trading: crude, gasoline, diesel, jet fuel, fuel oil, naphtha and natural gas futures and swaps. Physical trading, scheduling and inventory can be added as a client-specific build.</p>
           </div>
           <div class="ab-stack">
@@ -877,15 +847,15 @@
           <div class="card-eyebrow">ACERS MODULES</div>
           <h2 class="svc-heading">Everything from deal capture to settlement</h2>
           <div class="svc-modules">
-            <div><h4>ICE trade capture</h4><p>Trades booked on ICE flow in automatically through the ICE trade-capture API — no re-keying. Manual entry for OTC swaps, options and spreads.</p></div>
+            <div><h4>ICE Trade Capture</h4><p>Trades booked on ICE flow in automatically through the ICE trade-capture API — no re-keying. Manual entry for OTC swaps, options and spreads.</p></div>
             <div><h4>Position &amp; P&amp;L</h4><p>Real-time positions by product, book, trader, contract month and strategy; mark-to-market and realised/unrealised P&amp;L.</p></div>
-            <div><h4>Market data (Nasdaq)</h4><p>Live and end-of-day prices from Nasdaq; forward curves, volatilities and settlement prices for valuation.</p></div>
-            <div><h4>Initial margin</h4><p>Exchange initial margin per account and portfolio, with margin calls, excess/deficit and what-if margin on new trades.</p></div>
-            <div><h4>Risk management</h4><p>Value-at-Risk, stress and scenario testing, with exposure consolidated across books, portfolios and counterparties.</p></div>
+            <div><h4>Market Data (Nasdaq)</h4><p>Live and end-of-day prices from Nasdaq; forward curves, volatilities and settlement prices for valuation.</p></div>
+            <div><h4>Initial Margin</h4><p>Exchange initial margin per account and portfolio, with margin calls, excess/deficit and what-if margin on new trades.</p></div>
+            <div><h4>Risk Management</h4><p>Value-at-Risk, stress and scenario testing, with exposure consolidated across books, portfolios and counterparties.</p></div>
             <div><h4>Settlement &amp; confirmations</h4><p>Trade confirmations, daily settlement, variation margin, fees and broker statement reconciliation.</p></div>
             <div><h4>Reporting &amp; dashboards</h4><p>Configurable reports, dashboards and data exports for traders, risk, finance and management.</p></div>
             <div><h4>Integration</h4><p>REST APIs and connectors to ICE, Nasdaq, brokers, ERP and treasury systems.</p></div>
-            <div><h4>Physical trading <small>on request</small></h4><p>Physical deal capture, scheduling, inventory and quality adjustments, built to your requirements.</p></div>
+            <div><h4>Physical Trading <small>on request</small></h4><p>Physical deal capture, scheduling, inventory and quality adjustments, built to your requirements.</p></div>
           </div>
         </div>
       </section>
@@ -1364,11 +1334,12 @@
     <div class="drawer-section drawer-chapters-section">
       <span class="drawer-section-title">CHAPTERS</span>
       <ul class="drawer-nav" id="drawer-home-nav">
-        <li><a href="#" class="drawer-link" data-target="0.0">01 Hero &amp; Overview</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.18">02 Strategic Vision</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.42">03 Oil &amp; Refined Products</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.68">04 Metals &amp; Minerals</a></li>
-        <li><a href="#" class="drawer-link" data-target="0.92">05 Global Trading Hubs</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-hero">01 Every Deal, One System</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-know">02 ACERS</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-scan">03 Oil Cargo</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-solutions">04 Modules</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-about">05 About Oleovista</a></li>
+        <li><a href="#" class="drawer-link" data-hp-go="#hp-contact">06 Get in Touch</a></li>
       </ul>
       <ul class="drawer-nav" id="drawer-about-nav" style="display: none;">
         <li><a href="#" class="drawer-link" data-target="0.0">01 About Us</a></li>

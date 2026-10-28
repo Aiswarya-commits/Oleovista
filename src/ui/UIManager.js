@@ -60,8 +60,8 @@ export class UIManager {
     this.homeSections = [
       { id: 'sec-hero', range: [0.0, 0.14] },
       { id: 'sec-strategy', range: [0.14, 0.34] },
-      { id: 'sec-oil', range: [0.34, 0.62] },
-      { id: 'sec-metals', range: [0.62, 0.85] },
+      { id: 'sec-metals', range: [0.34, 0.85] },
+      { id: 'sec-oil', range: [0.62, 0.62] },
       { id: 'sec-global', range: [0.85, 1.01] }
     ];
 

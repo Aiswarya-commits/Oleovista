@@ -17,7 +17,8 @@
 */
 
 const MOBILE_QUERY = '(max-width: 768px)';
-const STRIP_VIEWS = ['home', 'about', 'services', 'careers'];
+const STRIP_VIEWS = ['about', 'services', 'careers'];
+const DESKTOP_STRIP = ['about', 'careers'];   // pages that also scroll continuously on laptops (not only on phones). Home scrolls on its own (HomeParticles.js)
 const MOMENTUM_VIEWS = ['team', 'contact'];
 const EXCLUDE = 'input, textarea, select, .ct-chat-msgs, .menu-drawer, .modal-card, .job-panel, .header-dropdown-menu';
 const HEADER_GAP = 72;      // a section that a chapter jumps to stops this far below the top (under the logo)
@@ -186,9 +187,9 @@ export class MobileSmoothScroll {
     if (this.rig.mode === 'scroll') {
       if (this.mq.matches) {
         want = active;
-      } else if (active === 'about') {
-        // Desktop: About Us runs as a smooth continuous flowing strip
-        want = 'about';
+      } else if (DESKTOP_STRIP.includes(active)) {
+        // Desktop / laptop: these pages also run as one smooth continuous flowing strip
+        want = active;
       }
     }
     if (want !== this.current) {

@@ -1,0 +1,56 @@
+/* =====================================================================
+   hero-fix.css  -  laptop / desktop fix for the Services, Careers and Team
+   opening screens: the title always starts BELOW the logo + navbar, and
+   sizes scale with the screen height, so nothing overlaps on shorter
+   laptop screens or with Windows display scaling (125% / 150%).
+   Phones (768px and narrower) are not touched.
+   ===================================================================== */
+@media (min-width: 769px) {
+  #sec-svc-hero,
+  #sec-car-hero,
+  #sec-team-hero {
+    align-items: flex-start;
+    padding-top: clamp(7.5rem, 17vh, 11rem);
+    padding-bottom: 2rem;
+    margin-bottom: 0;
+  }
+  #sec-svc-hero .hero-center,
+  #sec-car-hero .hero-center,
+  #sec-team-hero .hero-center {
+    margin-bottom: 0;
+  }
+  #sec-svc-hero .hero-title,
+  #sec-car-hero .hero-title,
+  #sec-team-hero .hero-title {
+    font-size: clamp(2.2rem, 7.5vh, 3.8rem);
+    margin-bottom: clamp(0.5rem, 1.6vh, 1rem);
+  }
+  #sec-svc-hero .hero-subtitle,
+  #sec-car-hero .hero-subtitle,
+  #sec-team-hero .hero-subtitle {
+    font-size: clamp(0.92rem, 2.2vh, 1.15rem);
+    margin-bottom: clamp(1.2rem, 5vh, 3.5rem);
+  }
+  #sec-car-hero .car-hero-actions {
+    margin: 0 0 clamp(1.2rem, 4vh, 2.6rem);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Careers on laptops: one continuous smooth-scrolling page (like About),
+   content on the left, the globe stays on the right.
+   --------------------------------------------------------------------- */
+@media (min-width: 769px) {
+  #careers-view.m-strip > .section-car-left {
+    justify-content: flex-start;
+    padding: 5rem 46vw 4rem 9rem;
+    min-height: 85vh;
+  }
+  #careers-view.m-strip .car-jobs {
+    max-height: none;          /* show every role; the page itself scrolls */
+    overflow: visible;
+  }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  #careers-view.m-strip > .section-car-left { padding: 5rem 3rem 4rem; }
+}

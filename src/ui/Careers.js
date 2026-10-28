@@ -7,7 +7,7 @@
   (subject + all the form details filled in). They attach their CV and press Send. No server needed.
 */
 
-export const CAREERS_EMAIL = 'corporate@oleovista.com';
+export const CAREERS_EMAIL = 'hr@oleovista.com';
 
 const BENEFITS = [
   'Hybrid working and flexible hours',
