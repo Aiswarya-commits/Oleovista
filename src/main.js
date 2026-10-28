@@ -14,7 +14,7 @@ import { TeamMeadow } from './scene/Teammeadow.js';
 import { ContactNetwork } from './scene/Contactnetwork.js';
 import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
 import { OliviaAssistant } from './ui/Olivia.js';
-import { HomeParticles } from './home/Homeparticles.js';
+import { HomeParticles } from './home/HomeParticles.js';
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
