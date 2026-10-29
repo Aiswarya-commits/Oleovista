@@ -558,7 +558,7 @@ export class HomeParticles {
     const typeOut = () => {
       clearInterval(typeTimer);
       const a = $('#hp-typeA'), b = $('#hp-typeB');
-      const s1 = ds + '  ·  MV OLEOVISTA  ·  ICE TRADE CAPTURED', s2 = `CARGO CHECK: ${DRUMS.length} OIL DRUMS · POSITION & P&L UPDATED`; let i = 0;
+      const s1 = ds + '  ·  OLEOVISTA  ·  ICE TRADE CAPTURED', s2 = `CARGO CHECK: ${DRUMS.length} OIL DRUMS · POSITION & P&L UPDATED`; let i = 0;
       a.textContent = ''; b.textContent = '';
       typeTimer = setInterval(() => {
         i++;
