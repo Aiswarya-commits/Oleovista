@@ -26,8 +26,8 @@ export const LEADERSHIP = [
 ];
 
 export const TEAM = [
-  { name: 'Shemeem', role: 'Frontend Developer', photo: SHAM },
-  { name: 'Aiswarya', role: 'Frontend Developer', photo: AISH },
+  { name: 'Shemeem', role: 'Frontend Engineer', photo: SHAM },
+  { name: 'Aiswarya', role: 'Frontend Engineer', photo: AISH },
   { name: 'Razik', role: 'QA Engineer', photo: RAZ },
   { name: 'Praveena', role: 'QA Engineer', photo: PRAV },
   // { name: 'Member Name', role: 'QA Engineer', photo: '' },
