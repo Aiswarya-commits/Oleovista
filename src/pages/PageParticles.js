@@ -7,7 +7,7 @@
     About     oil tanker on a moving particle ocean  -> gold oil barrel -> chart -> oil drop
     Services  storage tank farm -> refinery -> trading network -> tanker -> oil drop
     Careers   dotted Earth (real continents) with glowing gold trade routes
-    Team      a team of particle people linked together -> network -> DNA helix
+    Team      a team of particle people linked together -> network -> soft drifting dust
     Contact   location pin with signal ripples over a city map -> network
 
   Every object is made clearly readable with three things:
@@ -649,7 +649,7 @@ const PAGE_STAGES = {
     { at: 0.0, shape: 'people', op: 1, x: 0, y: -0.55, s: 1.0, flat: 0.5, rot: (t) => [0.16, Math.sin(t * 0.25) * 0.3] },
     { at: 0.13, shape: 'people', op: 0.55, x: 0, y: -0.2, s: 1.1, flat: 0.5, rot: (t) => [0.28, Math.sin(t * 0.2) * 0.4] },
     { at: 0.55, shape: 'cosmos', op: 0.3, x: 0, y: 0, s: 1.1, flat: 0.2, rot: cosmosRot },
-    { at: 0.95, shape: 'helix', op: 0.6, x: 0, y: -0.05, s: 0.7, flat: 0.55, rot: (t) => [0.08, t * 0.45] }
+    { at: 0.95, shape: 'dust', op: 0.25, x: 0, y: 0, s: 1.3, flat: 0.3, rot: (t) => [0, t * 0.01] }   // quiet drifting dust behind the closing text
   ],
   contact: [
     { at: 0.0, shape: 'pin', op: 0.95, x: 0, y: -0.55, s: 0.85, flat: 0.5, rot: (t) => [0.3, Math.sin(t * 0.3) * 0.7] },
