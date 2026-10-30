@@ -15,6 +15,7 @@ import { ContactNetwork } from './scene/Contactnetwork.js';
 import { MobileSmoothScroll } from './ui/Mobilesmoothscroll.js';
 import { OliviaAssistant } from './ui/Olivia.js';
 import { HomeParticles } from './home/HomeParticles.js';
+import { PageParticles } from './pages/PageParticles.js';   // NEW: Home-style particle background for the other pages
 class App {
   constructor() {
     this.canvas = document.getElementById('webgl-canvas');
@@ -95,6 +96,10 @@ class App {
 
     // Home page: particle animation (replaces the mountain on Home only)
     this.homeParticles = new HomeParticles();
+
+    // About / Services / Careers / Team / Contact: the same particle + grain look as Home.
+    // It follows the normal page scroll, so chapters, menus and content work exactly as before.
+    this.pageParticles = new PageParticles({ cameraRig: this.cameraRig });
 
         // Default look: Dawn (applied instantly, so there is no fade from Greenery on load)
     this.atmosphere.setPreset('day');
@@ -289,6 +294,11 @@ class App {
     this.careersGlobe?.update(dt, elapsed); // Careers Earth globe (does nothing on other pages)
     this.teamMeadow?.update(dt, elapsed);   // Team meadow surface (does nothing on other pages)
     this.contactNetwork?.update(dt, elapsed); // Contact 3D connectivity network (does nothing on other pages)
+
+    // The particle background (PageParticles.js) covers the old 3D worlds on these pages,
+    // so the old scene is not drawn at all (saves the graphics card). If the particle layer
+    // could not start, the old worlds are drawn as before.
+    if (document.body.classList.contains('pp-on') && !this.pageParticles?.disabled) return;
 
     // PERFORMANCE: the Team meadow is drawn as 16 full-screen grass layers, so on high-DPI /
     // scaled laptop screens render it at a slightly lower resolution (invisible on grass).
