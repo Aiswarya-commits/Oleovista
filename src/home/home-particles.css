@@ -291,3 +291,8 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
   #home-view #hp-about .hp-about-title{font-size:clamp(24px,6.4vw,34px)}
   #home-view #hp-about .hp-about-title .t-line{display:inline;white-space:normal}
 }
+/* "Every Trade, Position and Risk" heading: exactly two lines on laptops */
+#home-view .net-in .h2{max-width:none}
+@media (min-width:861px){
+  #home-view .net-in .h2{white-space:nowrap}
+}
