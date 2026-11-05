@@ -316,3 +316,8 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 #home-view #hp-network{min-height:auto;padding-top:6vh;padding-bottom:22vh;align-items:flex-start}
 /* ship section: shorter, so the ship changes to the next shape sooner */
 #home-view #hp-scan{height:135vh}
+
+/* solutions: title stays at the top, cards just below it */
+#home-view .sol-title{top:15%}
+#home-view #hp-solutions .ring-stage{padding-top:10vh}
+@media (max-width:860px){ #home-view .sol-title{top:13%} }

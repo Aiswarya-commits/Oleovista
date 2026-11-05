@@ -101,7 +101,7 @@ export class HomeParticles {
         });
       };
       const frag = document.createElement('div'); walk(el, frag);
-      el.innerHTML = ''; [...frag.childNodes].forEach((c) => el.appendChild(c));
+      el.innerHTML = '';[...frag.childNodes].forEach((c) => el.appendChild(c));
       return out;
     }
     $$('[data-split],[data-scrub]').forEach((el) => { el._w = split(el); });
@@ -180,19 +180,23 @@ export class HomeParticles {
         const PZ = -1.0, g = R();
         if (g < 0.5) p = [-2.05 + R() * 3.95, -0.7 + ((R() * 5) | 0) * 0.5, PZ];
         else if (g < 0.66) p = [-2.05 + ((R() * 4) | 0) * 1.3, -0.7 + R() * 2.0, PZ];
-        else { const L = LABELS[(R() * LABELS.length) | 0], w = 0.2, h = 0.09, e = R();
-          p = e < 0.6 ? [L[0] + R() * w, L[1] + (R() < 0.5 ? 0 : h), PZ + 0.02] : [L[0] + (R() < 0.5 ? 0 : w), L[1] + R() * h, PZ + 0.02]; }
+        else {
+          const L = LABELS[(R() * LABELS.length) | 0], w = 0.2, h = 0.09, e = R();
+          p = e < 0.6 ? [L[0] + R() * w, L[1] + (R() < 0.5 ? 0 : h), PZ + 0.02] : [L[0] + (R() < 0.5 ? 0 : w), L[1] + R() * h, PZ + 0.02];
+        }
       } else {
         const c = catmull(ARROW, R());
         p = [c[0] + gauss() * 0.45, c[1] + 0.12 + Math.abs(gauss()) * 0.7, AZ - 0.2 + gauss() * 0.45]; aWarm[i] = 0.9;
       }
       chartRaw[i * 3] = p[0]; chartRaw[i * 3 + 1] = p[1] + YS; chartRaw[i * 3 + 2] = p[2];
     }
-    for (let i = N - 1; i > 0; i--) { const j = (R() * (i + 1)) | 0;
+    for (let i = N - 1; i > 0; i--) {
+      const j = (R() * (i + 1)) | 0;
       for (let k = 0; k < 3; k++) { const t = chartRaw[i * 3 + k]; chartRaw[i * 3 + k] = chartRaw[j * 3 + k]; chartRaw[j * 3 + k] = t; }
       let t = aWarm[i]; aWarm[i] = aWarm[j]; aWarm[j] = t;
       t = barId[i]; barId[i] = barId[j]; barId[j] = t;
-      t = arrowS[i]; arrowS[i] = arrowS[j]; arrowS[j] = t; }
+      t = arrowS[i]; arrowS[i] = arrowS[j]; arrowS[j] = t;
+    }
     const barGrow = BARS.map(() => 0), arrowDraw = { v: 0 };
     this.playChartIntro = () => {
       BARS.forEach((_, b) => gsap.to(barGrow, { [b]: 1, duration: 1.3, ease: 'expo.out', delay: 0.5 + b * 0.12 }));
@@ -325,8 +329,10 @@ export class HomeParticles {
     const shapeChart = build(() => {
       const g = R(), X0 = -0.85, DX = 1.7 / (CANDLES.length - 1);
       let p;
-      if (g < 0.5) { const i = (R() * CANDLES.length) | 0, [o, c] = CANDLES[i], y0 = Math.min(o, c) - 0.2, y1 = Math.max(o, c) - 0.2;
-        p = R() < 0.65 ? edgeBox(X0 + i * DX, (y0 + y1) / 2, 0, 0.055, Math.max(0.03, (y1 - y0) / 2), 0.055) : [X0 + i * DX + (R() * 2 - 1) * 0.055, y0 + R() * (y1 - y0), 0.055]; }
+      if (g < 0.5) {
+        const i = (R() * CANDLES.length) | 0, [o, c] = CANDLES[i], y0 = Math.min(o, c) - 0.2, y1 = Math.max(o, c) - 0.2;
+        p = R() < 0.65 ? edgeBox(X0 + i * DX, (y0 + y1) / 2, 0, 0.055, Math.max(0.03, (y1 - y0) / 2), 0.055) : [X0 + i * DX + (R() * 2 - 1) * 0.055, y0 + R() * (y1 - y0), 0.055];
+      }
       else if (g < 0.62) { const i = (R() * CANDLES.length) | 0, [o, c] = CANDLES[i]; p = [X0 + i * DX, Math.min(o, c) - 0.32 + R() * (Math.abs(c - o) + 0.24), 0]; }
       else if (g < 0.8) { const s = R(); p = [-0.9 + s * 1.85, -0.45 + s * 1.15 + Math.sin(s * 9) * 0.06, 0.12]; }
       else if (g < 0.86) { let a = R(), b = R(); if (a + b > 1) { a = 1 - a; b = 1 - b; } p = [0.95 + a * 0.12 - b * 0.1, 0.7 + a * 0.1 + b * 0.12, 0.12]; }
@@ -379,7 +385,7 @@ export class HomeParticles {
       const rot = (x, y) => { const c = Math.cos(tilt), s = Math.sin(tilt); return [x * c - (y + 0.75) * s, x * s + (y + 0.75) * c - 0.75]; };
       const stalk = (t) => [0.06 * Math.sin(t * 2.2), -0.75 + t * 1.35];          // t: 0 (base) .. 1 (tip)
       let x, y, z = 0;
-      if (g < 0.2) { const t = R() * 0.62; [x, y] = stalk(t); }                                    // stalk
+      if (g < 0.2) { const t = R() * 0.62;[x, y] = stalk(t); }                                    // stalk
       else if (g < 0.8) {                                                                          // grains in two staggered rows
         const k = (R() * 9) | 0, side = k % 2 ? 1 : -1, t = 0.52 + k * 0.055;
         const [sx, sy] = stalk(t), a = R() * Math.PI * 2, u = R() * 2 - 1;
@@ -392,14 +398,64 @@ export class HomeParticles {
       return jit([rx, ry, z], 0.004);
     });
 
+// --- trading screen: a price board with real digits (+0.29%, -1.63% ...) next to a rising
+    //     candlestick chart with a price line and volume bars (layered, so it reads as 3D)
+    const SCR_W = 1.6, SCR_H = 0.95;
+    // 7-segment digits: segments a b c d e f g
+    const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abdeg', 3: 'abcdg', 4: 'bcfg', 5: 'acdfg', 6: 'acdefg', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg', '-': 'g', '+': 'g|', '%': '%', '.': '.' };
+    const segPt = (ch, x, y, cw, chh) => {                     // a point on character ch drawn at (x,y), size cw x chh
+      const s = SEG[ch], t = R(), hw = cw / 2, hh = chh / 2;
+      if (ch === '.') { const a = R() * Math.PI * 2, r = cw * 0.16 * Math.sqrt(R()); return [x + Math.cos(a) * r, y - hh + cw * 0.16 + Math.sin(a) * r, 0]; }
+      if (ch === '%') { const k = R(); if (k < 0.5) return [x - hw + t * cw, y - hh + t * chh, 0]; const a = R() * Math.PI * 2, o = k < 0.75 ? [-hw * 0.6, hh * 0.6] : [hw * 0.6, -hh * 0.6]; return [x + o[0] + Math.cos(a) * cw * 0.15, y + o[1] + Math.sin(a) * cw * 0.15, 0]; }
+      if (ch === '+' && R() < 0.5) return [x, y - hh * 0.6 + t * chh * 0.6, 0];
+      const seg = (s.replace('|', ''))[(R() * s.replace('|', '').length) | 0];
+      switch (seg) {
+        case 'a': return [x - hw + t * cw, y + hh, 0];
+        case 'd': return [x - hw + t * cw, y - hh, 0];
+        case 'g': return [x - hw + t * cw, y, 0];
+        case 'b': return [x + hw, y + t * hh, 0];
+        case 'c': return [x + hw, y - t * hh, 0];
+        case 'e': return [x - hw, y - t * hh, 0];
+        default: return [x - hw, y + t * hh, 0];             // f
+      }
+    };
+    const BOARD = ['+0.79%', '-1.63%', '+2.44%', '-0.60%', '+1.12%'].map((txt, r) => ({ txt, x: -1.38, y: 0.68 - r * 0.33 }));   // 5 big rows
+    const CN = 11, CX0 = -0.05, CX1 = 1.42;
+    const cMid = (i) => -0.48 + (i / (CN - 1)) * 1.05 + Math.sin(i * 1.9) * 0.1;      // rising prices
+    const shapeScreen = build(() => {
+      const g = R();
+      let p;
+      if (g < 0.1) {                                           // screen frame + divider
+        const e = (R() * 5) | 0, t = R() * 2 - 1;
+        p = e < 2 ? [t * SCR_W, (e ? 1 : -1) * SCR_H, 0] : e < 4 ? [(e === 2 ? -1 : 1) * SCR_W, t * SCR_H, 0] : [-0.16, t * SCR_H * 0.9, 0];
+      } else if (g < 0.5) {                                    // price board: big, clear digits
+        const b = BOARD[(R() * BOARD.length) | 0], i = (R() * b.txt.length) | 0, cw = 0.12, gap = 0.19;
+        const q = segPt(b.txt[i], b.x + i * gap, b.y, cw, 0.2);
+        p = [q[0], q[1], -0.1];
+      } else if (g < 0.74) {                                   // candlesticks (bodies + wicks)
+        const i = (R() * CN) | 0, x = CX0 + (i / (CN - 1)) * (CX1 - CX0), up = Math.sin(i * 2.3) > -0.4;
+        const o = cMid(i) + (up ? -0.09 : 0.09), c = cMid(i) + (up ? 0.09 : -0.09), y0 = Math.min(o, c), y1 = Math.max(o, c);
+        if (R() < 0.75) { const e = (R() * 4) | 0, t = R(); p = e < 2 ? [x + (e ? 1 : -1) * 0.045, y0 + t * (y1 - y0), 0.08] : [x - 0.045 + t * 0.09, e === 2 ? y0 : y1, 0.08]; }
+        else p = [x, y0 - 0.07 + R() * (y1 - y0 + 0.14), 0.08];
+      } else if (g < 0.86) {                                   // price line with an arrow at the end
+        if (R() < 0.85) { const s = R(), x = CX0 + s * (CX1 - CX0), i = s * (CN - 1); p = [x, -0.46 + s * 1.05 + Math.sin(i * 1.9) * 0.1 * (1 - s * 0.3), 0.14]; }
+        else { const t = R(), side = R() < 0.5 ? 1 : -1; p = [CX1 + 0.02 - t * 0.12, 0.62 + 0.04 - t * 0.04 + side * t * 0.07, 0.14]; }
+      } else if (g < 0.96) {                                   // volume bars
+        const i = (R() * 20) | 0, x = CX0 + (i / 19) * (CX1 - CX0), h = 0.06 + (Math.sin(i * 2.1) * 0.5 + 0.5) * 0.16;
+        p = [x + (R() * 2 - 1) * 0.022, -SCR_H + 0.07 + R() * h, 0.03];
+      } else {                                                 // faint chart grid
+        p = [CX0 + R() * (CX1 - CX0), -0.6 + ((R() * 4) | 0) * 0.42, -0.05];
+      }
+      return jit(p, 0.003);
+    });
+
     const blobs = [shapeBarrel, shapeShip, shapeChart, shapeCoin, shapeGold, shapeWheat, shapeDrop];
     const blobLive = new Float32Array(N * 3); blobLive.set(blobs[0]);
 
     const STAGES = [
       { shape: chart, op: 1, x: 0.2, y: 0.18, s: 0.8, flat: 0.45, rot: (t) => [0.32 + Math.sin(t * 0.3) * 0.03, -0.38 + Math.sin(t * 0.22) * 0.16] },
       { shape: cosmos, op: 1, x: 0, y: 0, s: 1, flat: 0.2, rot: (t) => [0, t * 0.015] },
-      { shape: ship, op: 1, x: 0, y: 0.02, s: 0.86, fitCard: true, flat: 0.7, rot: (t) => [0.3 + Math.sin(t * 0.9) * 0.02, -0.32 + Math.sin(t * 0.3) * 0.16] },
-      { shape: helix, op: 1, x: 0, y: -0.05, s: 0.78, flat: 0.55, rot: (t) => [0.08, t * 0.45] },
+      { shape: shapeScreen, op: 1, x: 0, y: 0.02, s: 0.86, fitCard: true, flat: 0.55, rot: (t) => [0.12 + Math.sin(t * 0.5) * 0.02, -0.25 + Math.sin(t * 0.3) * 0.12] },      { shape: helix, op: 1, x: 0, y: -0.05, s: 0.78, flat: 0.55, rot: (t) => [0.08, t * 0.45] },
       { shape: dust, op: 0, x: 0, y: 0, s: 1.3, flat: 0.3, rot: (t) => [0, t * 0.01] },
       { shape: blobLive, op: 1, x: 0, y: 0.62, s: 0.56, flat: 0.35, rot: (t) => [0.14, -0.25 + Math.sin(t * 0.45) * 0.45] },   // gentle swing (not a full spin) so the chart always reads left-to-right
       { shape: dust, op: 0.22, x: 0, y: 0, s: 1.3, flat: 0.3, rot: (t) => [0, t * 0.01] }
@@ -469,7 +525,7 @@ export class HomeParticles {
       holds = $$('[data-stage]').map((el) => {
         const id = '#' + el.id;
         if (id === '#hp-hero') return [0, 0];
-        if (pins[id]) { const st = pins[id]; return [Math.max(0, st.start - vh * 0.55), st.end - (st.end - st.start) * 0.08]; }        const top = el.getBoundingClientRect().top - top0 + sc, h = el.offsetHeight;
+        if (pins[id]) { const st = pins[id]; return [Math.max(0, st.start - vh * 0.55), st.end - (st.end - st.start) * 0.08]; } const top = el.getBoundingClientRect().top - top0 + sc, h = el.offsetHeight;
         const c = top + h / 2 - vh / 2, ex = Math.max(0, (h - vh) / 2) * 0.6;
         return [Math.min(max, Math.max(0, c - ex)), Math.min(max, Math.max(0, c + ex))];
       });
@@ -483,7 +539,7 @@ export class HomeParticles {
       const sk = c.closest('.sticky')?.getBoundingClientRect() || { top: 0 };   // the section sticks to the top of the screen
       st.x = (r.left + r.width / 2 - innerWidth / 2) * wpp;
       st.y = 0.02 - (r.top - sk.top + r.height / 2 - innerHeight / 2) * wpp;
-      st.s = Math.min(0.86, (c.offsetWidth * wpp * 0.6) / 3.3 / fitS);
+            st.s = Math.min(0.86, (c.offsetWidth * wpp * 0.8) / 3.3 / fitS);
     };
     function stageAt(s) {
       if (s <= holds[0][1]) return 0;
@@ -575,6 +631,7 @@ export class HomeParticles {
         for (let p = 0; p < nodes.length; p++) { const i = nodes[p]; npos[p * 3] = cur[i * 3]; npos[p * 3 + 1] = cur[i * 3 + 1]; npos[p * 3 + 2] = cur[i * 3 + 2]; }
         lAttr.needsUpdate = true; nAttr.needsUpdate = true;
       }
+      applyRing();                      // solution cards: fade in / out follows the scroll every frame
       renderer.render(scene, camera);
     };
 
@@ -622,8 +679,10 @@ export class HomeParticles {
         else clearInterval(typeTimer);
       }, 45);
       const o = { v: 0 };
-      gsap.to(o, { v: 100, duration: 2.4, delay: 0.6, ease: 'power2.out', onUpdate() { $('#hp-conf').textContent = o.v >= 99.95 ? '100' : o.v.toFixed(1); $('#hp-confBar').style.width = o.v + '%'; } });    };
-    ScrollTrigger.create({ trigger: '#hp-scan', start: 'top 15%', end: 'bottom 60%',
+      gsap.to(o, { v: 100, duration: 2.4, delay: 0.6, ease: 'power2.out', onUpdate() { $('#hp-conf').textContent = o.v >= 99.95 ? '100' : o.v.toFixed(1); $('#hp-confBar').style.width = o.v + '%'; } });
+    };
+    ScrollTrigger.create({
+      trigger: '#hp-scan', start: 'top 15%', end: 'bottom 60%',
       onEnter: () => { card.classList.add('scan-on'); gsap.to(bpaths, { strokeDashoffset: 0, duration: 1, stagger: 0.08, ease: 'power3.out' }); typeOut(); },
       onEnterBack: () => card.classList.add('scan-on'),
       onLeaveBack: () => { card.classList.remove('scan-on'); bpaths.forEach((p) => { p.style.strokeDashoffset = p.style.strokeDasharray; }); }
@@ -632,31 +691,46 @@ export class HomeParticles {
     const ring = $('#hp-ring');
     const hcards = [...ring.children];
     const step = 360 / hcards.length;
-    const ringState = { rot: 20, fade: 0 };
+    const ringState = { rot: 0 };
+    const solSec = $('#hp-solutions'), solTitle = $('.sol-title');
+    let ringR = '470px', solTl = null;
+    const readR = () => { ringR = getComputedStyle(ring).getPropertyValue('--R').trim() || '470px'; };
+    readR();
     const applyRing = () => {
-      const Rr = getComputedStyle(ring).getPropertyValue('--R').trim() || '470px';
+      // fade in while the section slides up, fade out at the end - works the same scrolling down and up
+      const top = solSec.getBoundingClientRect().top;
+            const kE = Math.min(1, Math.max(0, (innerHeight - top) / innerHeight));   // 0 = section just appearing, 1 = settled at the top
+      const enter = 60 * (1 - kE * kE * (3 - 2 * kE));                           // the ring turns 60° into place as the section arrives
+      // slow fade in: starts when the section appears at the bottom, finishes a little after it settles at the top
+      const pIn = solTl ? solTl.scrollTrigger.progress : 0;
+      const xIn = Math.max(0, (innerHeight - top) / innerHeight) + pIn / 0.12;
+      const kIn = Math.min(1, xIn / 1.6);
+      const fin = kIn * kIn * (3 - 2 * kIn);
+      const p = solTl ? solTl.scrollTrigger.progress : 0;
+      const fout = 1 - Math.min(1, Math.max(0, (p - 0.84) / 0.14));
+      const fade = fin * fout;
+      solTitle.style.opacity = fade.toFixed(3);
+      solTitle.style.filter = `blur(${((1 - fade) * 8).toFixed(1)}px)`;
       hcards.forEach((c, i) => {
-        const a = i * step + ringState.rot;
+        const a = i * step + ringState.rot + enter;
         const cos = Math.cos(a * Math.PI / 180);
-        c.style.transform = `rotateY(${a}deg) translateZ(${Rr}) translateY(${(i % 2 ? 46 : -34)}px)`;
+        c.style.transform = `rotateY(${a}deg) translateZ(${ringR}) translateY(${(i % 2 ? 46 : -34)}px)`;
         // each card fades on its own (fading the whole ring would flatten the 3D and make the cards look small)
-        c.style.opacity = ((0.12 + 0.88 * Math.pow(Math.max(0, cos), 1.6)) * ringState.fade).toFixed(3);
+        c.style.opacity = ((0.12 + 0.88 * Math.pow(Math.max(0, cos), 1.6)) * fade).toFixed(3);
       });
     };
-    applyRing();
     gsap.set(ring, { scale: 1, rotateX: -6, opacity: 1 });   // the ring itself always stays full size and fully opaque
-    // the title fades in while the section slides up (no waiting after the ship)
-    gsap.fromTo($('.sol-title'), { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', scrollTrigger: { trigger: '#hp-solutions', start: 'top 80%', end: 'top 25%', scrub: true } });
-    const solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=360%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
-    solTl.fromTo($('.sol-title'), { opacity: 1, y: 0, filter: 'blur(0px)' }, { opacity: 0, y: -40, filter: 'blur(8px)', duration: 0.1, immediateRender: false }, 0.1)      .fromTo(ringState, { fade: 0 }, { fade: 1, duration: 0.12, ease: 'none', onUpdate: applyRing }, 0.16)
-      .to(ringState, { rot: -305, ease: 'none', duration: 0.62, onUpdate: applyRing }, 0.28)
-      .to(ringState, { fade: 0, duration: 0.06, ease: 'none', onUpdate: applyRing }, 0.95);
-    pins['#hp-solutions'] = solTl.scrollTrigger;
+    solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=320%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
+    solTl.to(ringState, { rot: -300, ease: 'none', duration: 0.86, onUpdate: applyRing }, 0.02);    pins['#hp-solutions'] = solTl.scrollTrigger;
+    ScrollTrigger.create({ trigger: '#hp-solutions', start: 'top bottom', end: 'bottom top', onUpdate: applyRing, onRefresh: applyRing });
+    applyRing();
     const aboutH = $('#hp-about h2');
     gsap.from(aboutH._w, { yPercent: 115, duration: 1.2, stagger: 0.06, ease: 'expo.out', scrollTrigger: { trigger: aboutH, start: 'top 82%', once: true } });
     $$('.fade-up').forEach((el) => gsap.from(el, { opacity: 0, y: 24, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } }));
-    $$('.card').forEach((c, i) => gsap.from(c, { opacity: 0, y: 60, scale: 0.96, duration: 1.1, ease: 'expo.out', delay: (i % 3) * 0.08,
-      scrollTrigger: { trigger: c, start: 'top 92%', once: true } }));
+    $$('.card').forEach((c, i) => gsap.from(c, {
+      opacity: 0, y: 60, scale: 0.96, duration: 1.1, ease: 'expo.out', delay: (i % 3) * 0.08,
+      scrollTrigger: { trigger: c, start: 'top 92%', once: true }
+    }));
 
     const contactH = $('#hp-contact h2');
     gsap.from(contactH._w, { yPercent: 115, duration: 1.2, stagger: 0.08, ease: 'expo.out', scrollTrigger: { trigger: '#hp-contact', start: 'top 30%', once: true } });
