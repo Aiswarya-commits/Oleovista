@@ -20,10 +20,10 @@ const MOBILE_QUERY = '(max-width: 768px)';
 const STRIP_VIEWS = ['about', 'services', 'careers'];
 const DESKTOP_STRIP = ['about', 'careers'];   // pages that also scroll continuously on laptops (not only on phones). Home scrolls on its own (HomeParticles.js)
 const MOMENTUM_VIEWS = ['team', 'contact'];
-const EXCLUDE = '.ct-chat-msgs, .menu-drawer, .modal-card, .job-panel, .header-dropdown-menu';   // form fields no longer block scrollingconst HEADER_GAP = 72;      // a section that a chapter jumps to stops this far below the top (under the logo)
+const EXCLUDE = '.ct-chat-msgs, .menu-drawer, .modal-card, .job-panel, .header-dropdown-menu';   // form fields no longer block scrolling
+const HEADER_GAP = 72;      // a section that a chapter jumps to stops this far below the top (under the logo)
 const MIN_SLOPE = 300;      // safety for very short sections
 const FADE_MS = 900;        // matches the .view-layer fade, so the old page does not jump while fading out
-
 export class MobileSmoothScroll {
   constructor(cameraRig) {
     this.rig = cameraRig;
