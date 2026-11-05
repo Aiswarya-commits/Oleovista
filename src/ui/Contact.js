@@ -256,8 +256,8 @@ export class ContactBoard {
     const L = this.links();
     const wa = `<a href="${L.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>`;
     const has = (...w) => w.some((x) => s.includes(x));
-    if (has('acers', 'platform', 'etrm', 'erp', 'ice', 'nasdaq', 'margin')) {
-      return 'ACERS is our complete ETRM platform for oil and refined-products trading: crude, gasoline, diesel, jet fuel, fuel oil, naphtha and natural gas futures and swaps. Trades flow in from ICE automatically, prices come from Nasdaq and initial margin is calculated automatically, so positions, P&amp;L, risk and settlement are always current and fully auditable.';
+    if (has('acers', 'platform', 'etrm', 'erp', 'ice', 'globalexchanges', 'margin')) {
+      return 'ACERS is our complete ETRM platform for oil and refined-products trading: crude, gasoline, diesel, jet fuel, fuel oil, naphtha and natural gas futures and swaps. Trades flow in from ICE automatically, prices come from Global Exchanges and initial margin is calculated automatically, so positions, P&amp;L, risk and settlement are always current and fully auditable.';
     }
     if (has('treasury')) {
       return 'Our second product, a treasury trading system, is in development. Message the team if you would like early access.';
@@ -266,7 +266,7 @@ export class ContactBoard {
       return 'Deploy your way: cloud, private cloud or on-premise. ACERS is configured, not customised, so upgrades stay simple.';
     }
     if (has('service', 'offer', 'what do you do', 'build')) {
-      return 'We build trading and risk platforms for energy and financial markets:<ul><li>ACERS – ETRM, from deal capture to settlement</li><li>A treasury trading system (in development)</li><li>Integrations with ICE, Nasdaq, brokers, ERP and treasury systems</li></ul>Want to tell us about your project? Use the form above.';
+      return 'We build trading and risk platforms for energy and financial markets:<ul><li>ACERS – ETRM, from deal capture to settlement</li><li>A treasury trading system (in development)</li><li>Integrations with ICE, Global Exchanges, brokers, ERP and treasury systems</li></ul>Want to tell us about your project? Use the form above.';
     }
     if (has('cost', 'price', 'pricing', 'budget', 'quote')) {
       return 'Pricing depends on scope. We offer fixed-scope quotes and dedicated-team engagements. Share a short brief (form above) and we\'ll come back with options.';
