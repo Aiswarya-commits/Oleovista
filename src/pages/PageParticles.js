@@ -710,8 +710,7 @@ const WIDTH = { ship: 3.4, tanks: 3.9, chart: 2.2, people: 3.7, refinery: 3.0, g
 
 const PAGE_STAGES = {
   about: [
-    { at: 0.0, shape: 'logo', op: 1, x: 0, y: -0.5, s: 0.8, flat: 0.45, rot: (t) => [0.08, Math.sin(t * 0.35) * 0.45] },
-    { at: 0.16, shape: 'logo', op: 0.6, x: 0, y: -0.1, s: 1.1, flat: 0.45, rot: (t) => [0.12, Math.sin(t * 0.3) * 0.6] },
+    { at: 0.0, shape: 'logo', op: 1, x: 0, y: -1.0, s: 0.65, flat: 0.45, rot: (t) => [0.08, Math.sin(t * 0.35) * 0.45] },    { at: 0.16, shape: 'logo', op: 0.6, x: 0, y: -0.1, s: 1.1, flat: 0.45, rot: (t) => [0.12, Math.sin(t * 0.3) * 0.6] },
     { at: 0.32, shape: 'barrel', op: 0.7, x: 0, y: 0, s: 1.2, flat: 0.4, rot: (t) => [0.32, Math.sin(t * 0.35) * 0.9] },
     { at: 0.48, shape: 'chart', op: 0.65, x: 0, y: 0, s: 1.5, flat: 0.35, rot: (t) => [0.12, -0.2 + Math.sin(t * 0.4) * 0.35] },
     { at: 0.64, shape: 'globe', op: 0.6, x: 0, y: 0, s: 1.0, flat: 0.45, rot: globeRot },
@@ -721,9 +720,11 @@ const PAGE_STAGES = {
   services: [
     { at: 0.0, shape: 'tanks', op: 1, x: 0, y: -0.5, s: 0.9, flat: 0.55, rot: (t) => [0.42, -0.3 + Math.sin(t * 0.2) * 0.2] },
     { at: 0.24, shape: 'refinery', op: 0.85, x: 1.4, y: -0.1, s: 0.9, flat: 0.5, rot: (t) => [0.25, t * 0.12] },
+        { at: 0.36, shape: 'cosmos', op: 0.32, x: 0, y: 0, s: 1.1, flat: 0.2, rot: cosmosRot },   // spread out before the module cards arrive
+
     { at: 0.48, shape: 'cosmos', op: 0.32, x: 0, y: 0, s: 1.1, flat: 0.2, rot: cosmosRot },
-    { at: 0.74, shape: 'ship', op: 0.65, x: 1.0, y: -0.3, s: 0.8, flat: 0.55, rot: shipRot },
-    { at: 0.93, shape: 'drop', op: 0.75, x: 0, y: -0.1, s: 1.0, flat: 0.4, rot: spin(0.3, 0.2) }
+    { at: 0.74, shape: 'ship', op: 0.65, x: -1.5, y: -0.65, s: 0.55, flat: 0.55, rot: shipRot },
+        { at: 0.93, shape: 'drop', op: 0.75, x: 0, y: -0.1, s: 1.0, flat: 0.4, rot: spin(0.3, 0.2) }
   ],
   careers: [
     { at: 0.0, shape: 'globe', op: 1, x: 0, y: -1.1, s: 1.2, flat: 0.45, rot: globeRot },

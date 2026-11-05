@@ -398,8 +398,7 @@ export class HomeParticles {
     const STAGES = [
       { shape: chart, op: 1, x: 0.2, y: 0.18, s: 0.8, flat: 0.45, rot: (t) => [0.32 + Math.sin(t * 0.3) * 0.03, -0.38 + Math.sin(t * 0.22) * 0.16] },
       { shape: cosmos, op: 1, x: 0, y: 0, s: 1, flat: 0.2, rot: (t) => [0, t * 0.015] },
-      { shape: cosmos, op: 0.28, x: 0, y: 0, s: 1.25, flat: 0.2, rot: (t) => [0, t * 0.015] },
-      { shape: ship, op: 1, x: 0, y: 0.02, s: 0.86, flat: 0.7, rot: (t) => [0.3 + Math.sin(t * 0.9) * 0.02, -0.32 + Math.sin(t * 0.3) * 0.16] },
+      { shape: ship, op: 1, x: 0, y: 0.02, s: 0.86, fitCard: true, flat: 0.7, rot: (t) => [0.3 + Math.sin(t * 0.9) * 0.02, -0.32 + Math.sin(t * 0.3) * 0.16] },
       { shape: helix, op: 1, x: 0, y: -0.05, s: 0.78, flat: 0.55, rot: (t) => [0.08, t * 0.45] },
       { shape: dust, op: 0, x: 0, y: 0, s: 1.3, flat: 0.3, rot: (t) => [0, t * 0.01] },
       { shape: blobLive, op: 1, x: 0, y: 0.62, s: 0.56, flat: 0.35, rot: (t) => [0.14, -0.25 + Math.sin(t * 0.45) * 0.45] },   // gentle swing (not a full spin) so the chart always reads left-to-right
@@ -470,11 +469,21 @@ export class HomeParticles {
       holds = $$('[data-stage]').map((el) => {
         const id = '#' + el.id;
         if (id === '#hp-hero') return [0, 0];
-        if (pins[id]) { const st = pins[id]; return [st.start + (st.end - st.start) * 0.12, st.end - (st.end - st.start) * 0.08]; }
-        const top = el.getBoundingClientRect().top - top0 + sc, h = el.offsetHeight;
+        if (pins[id]) { const st = pins[id]; return [Math.max(0, st.start - vh * 0.55), st.end - (st.end - st.start) * 0.08]; }        const top = el.getBoundingClientRect().top - top0 + sc, h = el.offsetHeight;
         const c = top + h / 2 - vh / 2, ex = Math.max(0, (h - vh) / 2) * 0.6;
         return [Math.min(max, Math.max(0, c - ex)), Math.min(max, Math.max(0, c + ex))];
       });
+    };
+    // the ship sits inside the scan card: work out where the card is on screen and how big it is
+    const fitShipToCard = () => {
+      const st = STAGES.find((x) => x.fitCard), c = $('#hp-scanCard');
+      if (!st || !c) return;
+      const r = c.getBoundingClientRect(), wpp = 2 * 6 * Math.tan(17.5 * Math.PI / 180) / innerHeight;   // world units per pixel at the particles' depth
+      const fit = Math.min(1, (innerWidth / innerHeight) / 1.35), fitS = 0.55 + 0.45 * fit;
+      const sk = c.closest('.sticky')?.getBoundingClientRect() || { top: 0 };   // the section sticks to the top of the screen
+      st.x = (r.left + r.width / 2 - innerWidth / 2) * wpp;
+      st.y = 0.02 - (r.top - sk.top + r.height / 2 - innerHeight / 2) * wpp;
+      st.s = Math.min(0.86, (c.offsetWidth * wpp * 0.6) / 3.3 / fitS);
     };
     function stageAt(s) {
       if (s <= holds[0][1]) return 0;
@@ -512,7 +521,7 @@ export class HomeParticles {
       const k = Math.min(STAGES.length - 2, Math.floor(stage)), f = stage - k;
       const A = STAGES[k], B = STAGES[k + 1];
 
-      if (stage > 5.2 && stage < 7) {
+      if (stage > 4.2 && stage < 6) {
         blobClock += dt;
         const cyc = 3.6, idx = Math.floor(blobClock / cyc) % blobs.length, p = (blobClock % cyc) / cyc;
         const m = sm(Math.min(1, Math.max(0, (p - 0.55) / 0.45)));
@@ -546,7 +555,7 @@ export class HomeParticles {
       const n = narrow(), fit = Math.min(1, (innerWidth / innerHeight) / 1.35);
       // phones: the chart sits below the hero text and is scaled to fit the screen width
       const mobChart = n && k === 0;
-      const ox = n ? 0 : lerp(A.x, B.x, f), oy = lerp(mobChart ? -0.42 : A.y, B.y, f);
+      const ox = n ? lerp(A.fitCard ? A.x : 0, B.fitCard ? B.x : 0, f) : lerp(A.x, B.x, f), oy = lerp(mobChart ? -0.42 : A.y, B.y, f);
       const fitS = 0.55 + 0.45 * fit;
       const sc = lerp(mobChart ? Math.min(0.8, innerWidth / innerHeight * 0.74) : A.s * fitS, B.s * fitS, f) * (k === 0 ? 1 + Math.sin(f * Math.PI) * 0.6 : 1);   // zoom in and back out: no jump when the hero ends
       group.scale.setScalar(sc);
@@ -578,7 +587,7 @@ export class HomeParticles {
       gsap.to($$('.hero-fade'), { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.9 });
     };
 
-    const heroTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-hero', start: 'top top', end: '+=100%', scrub: true, pin: true, pinType: 'fixed', anticipatePin: 1, invalidateOnRefresh: true } });
+    const heroTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-hero', start: 'top top', end: '+=10%', scrub: true, pin: true, pinType: 'fixed', anticipatePin: 1, invalidateOnRefresh: true } });
     heroTl.to($('.hero-left'), { x: () => -innerWidth * 0.7, ease: 'power2.in' }, 0)
       .to($('.hero-right'), { x: () => innerWidth * 0.7, ease: 'power2.in' }, 0)
       .to($('.hero-desc'), { x: () => innerWidth * 0.5, opacity: 0, ease: 'power2.in' }, 0)
@@ -586,19 +595,16 @@ export class HomeParticles {
       .to($('#hp-bgHero'), { opacity: 0, ease: 'none' }, 0.1);
     pins['#hp-hero'] = heroTl.scrollTrigger;
 
-    gsap.fromTo('#hp-beam', { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '#hp-know', start: 'top 85%', end: 'top 10%', scrub: true } });
-    gsap.fromTo('#hp-splash', { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: '#hp-know', start: 'top 30%', end: 'top -5%', scrub: true } });
     const scrubWords = (el, trigger, start, end) => {
       if (!el || !el._w) return;
       gsap.fromTo(el._w, { opacity: 0.08, filter: 'blur(8px)', y: 10 }, { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.08, ease: 'none', scrollTrigger: { trigger, start, end, scrub: true } });
     };
-    scrubWords($('#hp-know h2'), '#hp-know', 'top 55%', 'top -10%');
-    gsap.from([$('.know-btn'), $('.know-side')], { opacity: 0, y: 20, duration: 1, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '#hp-know', start: 'top -5%', once: true } });
-    gsap.to($$('#hp-know .sticky > *:not(.floor)'), { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hp-know', start: 'bottom 95%', end: 'bottom 40%', scrub: true } });
+    scrubWords($('#hp-scan h2'), '#hp-scan', 'top 80%', 'top 15%');
+    gsap.from([$('.know-btn'), $('.know-side')], { opacity: 0, y: 20, duration: 1, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '#hp-scan', start: 'top 30%', once: true } });
 
     const card = $('#hp-scanCard');
     gsap.fromTo(card, { scale: 0.86, opacity: 0 }, { scale: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: '#hp-scan', start: 'top 90%', end: 'top 20%', scrub: true } });
-    gsap.to(card, { opacity: 0, scale: 0.94, ease: 'none', scrollTrigger: { trigger: '#hp-scan', start: 'bottom 110%', end: 'bottom 70%', scrub: true } });
+    gsap.to([card, $('.scan-txt')], { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hp-scan', start: 'bottom 110%', end: 'bottom 70%', scrub: true } });
     const bpaths = card.querySelectorAll('.brackets path');
     bpaths.forEach((p) => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
     let typeTimer = null;
@@ -639,10 +645,10 @@ export class HomeParticles {
     };
     applyRing();
     gsap.set(ring, { scale: 1, rotateX: -6, opacity: 1 });   // the ring itself always stays full size and fully opaque
+    // the title fades in while the section slides up (no waiting after the ship)
+    gsap.fromTo($('.sol-title'), { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', scrollTrigger: { trigger: '#hp-solutions', start: 'top 80%', end: 'top 25%', scrub: true } });
     const solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=360%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
-    solTl.fromTo($('.sol-title'), { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.12 }, 0)
-      .to($('.sol-title'), { opacity: 0, y: -40, filter: 'blur(8px)', duration: 0.1 }, 0.2)
-      .fromTo(ringState, { fade: 0 }, { fade: 1, duration: 0.12, ease: 'none', onUpdate: applyRing }, 0.16)
+    solTl.fromTo($('.sol-title'), { opacity: 1, y: 0, filter: 'blur(0px)' }, { opacity: 0, y: -40, filter: 'blur(8px)', duration: 0.1, immediateRender: false }, 0.1)      .fromTo(ringState, { fade: 0 }, { fade: 1, duration: 0.12, ease: 'none', onUpdate: applyRing }, 0.16)
       .to(ringState, { rot: -305, ease: 'none', duration: 0.62, onUpdate: applyRing }, 0.28)
       .to(ringState, { fade: 0, duration: 0.06, ease: 'none', onUpdate: applyRing }, 0.95);
     pins['#hp-solutions'] = solTl.scrollTrigger;
@@ -670,8 +676,9 @@ export class HomeParticles {
       renderer.setSize(innerWidth, innerHeight, false);
       camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
       applyRing();
+      fitShipToCard();
     });
-    this.refresh = () => { ScrollTrigger.refresh(); computeHolds(); };
+    this.refresh = () => { ScrollTrigger.refresh(); computeHolds(); fitShipToCard(); };
     this.refresh();
     requestAnimationFrame(frame);
   }

@@ -296,3 +296,23 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 @media (min-width:861px){
   #home-view .net-in .h2{white-space:nowrap}
 }
+/* ---- "See every deal" text + the ship scan card in one section ---- */
+#home-view #hp-scan .sticky{place-items:center}
+#home-view .scan-wrap{width:min(1320px,94vw);display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.35fr);gap:clamp(24px,3.5vw,56px);align-items:center}
+#home-view .scan-txt{display:grid;gap:22px;justify-items:start}
+#home-view .scan-txt .h2{font-size:clamp(28px,2.9vw,46px)}
+#home-view .scan-txt .know-side{position:static;display:grid;gap:10px;margin-top:8px}
+#home-view .scan-txt .know-side .small{max-width:44ch}
+#home-view .scan-wrap .scan-card{width:100%;height:min(64vh,560px)}
+#home-view .scan-wrap .scan-meta{font-size:clamp(11px,0.95vw,14px)}
+@media (max-width:860px){
+  #home-view .scan-wrap{grid-template-columns:1fr;gap:18px;width:100%}
+  #home-view .scan-txt{gap:14px}
+  #home-view .scan-txt .h2{font-size:clamp(26px,7.5vw,34px)}
+  #home-view .scan-txt .know-side{display:none}
+  #home-view .scan-wrap .scan-card{height:min(44vh,360px)}
+}
+/* less empty space between the hero and "Every Trade, Position and Risk" */
+#home-view #hp-network{min-height:auto;padding-top:6vh;padding-bottom:22vh;align-items:flex-start}
+/* ship section: shorter, so the ship changes to the next shape sooner */
+#home-view #hp-scan{height:135vh}
