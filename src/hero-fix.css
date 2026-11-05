@@ -56,3 +56,15 @@
 }
    /* loading screen shows again if another page is opened before its 3D is ready */
    body.loaded.bg-loading .loader-overlay { opacity: 1; visibility: visible; pointer-events: auto; }
+
+   /* Contact page footer on phones: everything centred */
+@media (max-width:768px){
+  #contact-view .ct-footer,
+  #contact-view .ct-footer .ct-foot-grid{text-align:center}
+  #contact-view .ct-footer .ct-foot-grid{justify-items:center}
+  #contact-view .ct-footer .ct-foot-grid > div{width:100%;display:flex;flex-direction:column;align-items:center}
+  #contact-view .ct-footer ul{padding:0;margin-left:0;list-style:none;display:flex;flex-direction:column;align-items:center}
+  #contact-view .ct-footer .ct-foot-logo{text-align:center}
+  #contact-view .ct-footer .ct-foot-brand p{margin-left:auto;margin-right:auto;max-width:34ch}
+  #contact-view .ct-footer{padding-bottom:140px}
+}

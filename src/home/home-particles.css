@@ -325,3 +325,21 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 /* shorter gaps: trading screen -> cards, and cards -> "Oleovista – A specialist provider..." */
 #home-view #hp-solutions{margin-top:-30vh}
 #home-view #hp-about{margin-top:-55vh;padding-top:8vh}
+
+/* phones: solution cards fit the screen (narrower cards, smaller ring, less 3D enlargement) */
+@media (max-width:860px){
+  #home-view .ring-stage{perspective:2400px}
+  #home-view .ring{--cw:min(290px,72vw);--ch:228px;--R:210px}
+  #home-view .hcard{padding:18px 18px 16px;gap:8px}
+  #home-view .hcard h3{font-size:19px}
+  #home-view .hcard p{font-size:11px;line-height:1.5}
+}
+
+/* footer on phones: everything centred */
+@media (max-width:860px){
+  #home-view .fgrid{grid-template-columns:1fr;gap:28px;justify-items:center;text-align:center}
+  #home-view .fgrid > *{grid-column:auto}
+  #home-view .fcol{justify-items:center;gap:12px}
+  #home-view .fbase{justify-content:center;text-align:center;padding-inline:56px;font-size:10px;line-height:1.7}
+  #home-view footer{padding-block:12vh 140px;min-height:auto}
+}
