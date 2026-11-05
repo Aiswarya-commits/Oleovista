@@ -713,9 +713,11 @@ export class HomeParticles {
       const leave = -60 * kO;                                                        // the ring turns away as it leaves...
       ring.parentElement.style.transform = `translateY(${(kO * innerHeight * 0.4).toFixed(1)}px)`;   // ...and slides down
       const fade = fin * fout;
-      solTitle.style.opacity = fade.toFixed(3);
-      solTitle.style.filter = `blur(${((1 - fade) * 8).toFixed(1)}px)`;
-      hcards.forEach((c, i) => {
+      // the title gets sharp quickly: fully clear before the section reaches the top
+      const tIn = Math.min(1, Math.max(0, (innerHeight * 0.9 - top) / (innerHeight * 0.6)));
+      const tFade = tIn * fout;
+      solTitle.style.opacity = tFade.toFixed(3);
+      solTitle.style.filter = tFade > 0.98 ? 'none' : `blur(${((1 - tFade) * 6).toFixed(1)}px)`;      hcards.forEach((c, i) => {
         const a = i * step + ringState.rot + enter + leave;
         const cos = Math.cos(a * Math.PI / 180);
         c.style.transform = `rotateY(${a}deg) translateZ(${ringR}) translateY(${(i % 2 ? 46 : -34)}px)`;
