@@ -699,7 +699,7 @@ export class HomeParticles {
     const applyRing = () => {
       // fade in while the section slides up, fade out at the end - works the same scrolling down and up
       const top = solSec.getBoundingClientRect().top;
-            const kE = Math.min(1, Math.max(0, (innerHeight - top) / innerHeight));   // 0 = section just appearing, 1 = settled at the top
+      const kE = Math.min(1, Math.max(0, (innerHeight - top) / innerHeight));   // 0 = section just appearing, 1 = settled at the top
       const enter = 60 * (1 - kE * kE * (3 - 2 * kE));                           // the ring turns 60° into place as the section arrives
       // slow fade in: starts when the section appears at the bottom, finishes a little after it settles at the top
       const pIn = solTl ? solTl.scrollTrigger.progress : 0;
@@ -707,12 +707,16 @@ export class HomeParticles {
       const kIn = Math.min(1, xIn / 1.6);
       const fin = kIn * kIn * (3 - 2 * kIn);
       const p = solTl ? solTl.scrollTrigger.progress : 0;
-      const fout = 1 - Math.min(1, Math.max(0, (p - 0.84) / 0.14));
+      const tt = solTl ? solTl.time() : 0;   // starts only after card 06 has rested in the centre
+      const kO0 = Math.min(1, Math.max(0, (tt - 1.0) / 0.16)), kO = kO0 * kO0 * (3 - 2 * kO0);
+      const fout = 1 - kO;
+      const leave = -60 * kO;                                                        // the ring turns away as it leaves...
+      ring.parentElement.style.transform = `translateY(${(kO * innerHeight * 0.4).toFixed(1)}px)`;   // ...and slides down
       const fade = fin * fout;
       solTitle.style.opacity = fade.toFixed(3);
       solTitle.style.filter = `blur(${((1 - fade) * 8).toFixed(1)}px)`;
       hcards.forEach((c, i) => {
-        const a = i * step + ringState.rot + enter;
+        const a = i * step + ringState.rot + enter + leave;
         const cos = Math.cos(a * Math.PI / 180);
         c.style.transform = `rotateY(${a}deg) translateZ(${ringR}) translateY(${(i % 2 ? 46 : -34)}px)`;
         // each card fades on its own (fading the whole ring would flatten the 3D and make the cards look small)
@@ -720,8 +724,10 @@ export class HomeParticles {
       });
     };
     gsap.set(ring, { scale: 1, rotateX: -6, opacity: 1 });   // the ring itself always stays full size and fully opaque
-    solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=320%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
-    solTl.to(ringState, { rot: -300, ease: 'none', duration: 0.86, onUpdate: applyRing }, 0.02);    pins['#hp-solutions'] = solTl.scrollTrigger;
+    solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=380%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
+    solTl.to(ringState, { rot: -300, ease: 'none', duration: 0.86, onUpdate: applyRing }, 0.02)
+      .to({}, { duration: 0.3 }, 0.88);   // card 06 rests in the centre for a moment before the fade
+    pins['#hp-solutions'] = solTl.scrollTrigger;
     ScrollTrigger.create({ trigger: '#hp-solutions', start: 'top bottom', end: 'bottom top', onUpdate: applyRing, onRefresh: applyRing });
     applyRing();
     const aboutH = $('#hp-about h2');
