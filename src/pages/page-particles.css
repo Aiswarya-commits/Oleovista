@@ -128,3 +128,17 @@ body.pp-on #about-view.m-strip .about-feature-grid > div { background: rgba(8, 1
     margin-bottom: 0;
   }
 }
+/* Network section: 2 cards per row */
+#hp-network .net-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: 1000px; /* keeps the cards from stretching too wide; adjust or remove */
+}
+
+/* Stack to one column on small screens */
+@media (max-width: 700px) {
+  #hp-network .net-grid {
+    grid-template-columns: 1fr;
+  }
+}

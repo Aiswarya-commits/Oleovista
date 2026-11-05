@@ -343,7 +343,56 @@ export class HomeParticles {
       return jit([Math.cos(a) * r, y, Math.sin(a) * r], 0.006);
     });
 
-    const blobs = [shapeBarrel, shapeShip, shapeChart, shapeDrop];
+    // 5. dollar coin: thick rim, raised inner ring, embossed "$" on both faces
+    const sCurve = () => {                                   // smooth "S": upper arc, mirrored through the centre for the lower arc
+      const th = 0.45 + R() * (1.5 * Math.PI - 0.45), x = 0.21 * Math.cos(th), y = 0.17 + 0.17 * Math.sin(th);
+      return R() < 0.5 ? [x, y] : [-x, -y];
+    };
+    const shapeCoin = build(() => {
+      const RC = 0.62, TH = 0.05, g = R(), a = R() * Math.PI * 2;
+      let p;
+      if (g < 0.28) p = [Math.cos(a) * RC, Math.sin(a) * RC, (R() * 2 - 1) * TH];                                      // rim (edge band)
+      else if (g < 0.4) { const r = RC * (R() < 0.5 ? 1 : 0.8); p = [Math.cos(a) * r, Math.sin(a) * r, (R() < 0.5 ? -1 : 1) * TH]; }   // face rings
+      else if (g < 0.76) { const q = sCurve(); p = [q[0], q[1], (R() < 0.5 ? -1 : 1) * (TH + 0.01)]; }          // "$" curve
+      else if (g < 0.9) p = [0, -0.48 + R() * 0.96, (R() < 0.5 ? -1 : 1) * (TH + 0.01)];                               // "$" bar
+      else { const r = RC * 0.8 * Math.sqrt(R()); p = [Math.cos(a) * r, Math.sin(a) * r, (R() < 0.5 ? -1 : 1) * TH]; } // faint face
+      return jit(p, 0.006);
+    });
+
+    // 6. gold bars: a small stack of ingots (3 below, 2 on top)
+    const INGOTS = [[-0.56, -0.22], [0, -0.22], [0.56, -0.22], [-0.28, -0.04], [0.28, -0.04]];
+    const ingotPt = (cx, by) => {
+      const W = 0.25, D = 0.13, w = 0.19, d = 0.085, H = 0.17, g = R(), t = R() * 2 - 1;
+      const top = by + H;
+      if (g < 0.32) { const e = (R() * 4) | 0, s = [[-1, -1], [1, -1], [1, 1], [-1, 1]][e], h = R(); return [cx + s[0] * (W + (w - W) * h), by + H * h, s[1] * (D + (d - D) * h)]; }   // slanted corner edges
+      if (g < 0.56) { const e = (R() * 4) | 0; return e < 2 ? [cx + t * W, by, (e ? 1 : -1) * D] : [cx + (e === 2 ? -1 : 1) * W, by, t * D]; }                                    // bottom rim
+      if (g < 0.8) { const e = (R() * 4) | 0; return e < 2 ? [cx + t * w, top, (e ? 1 : -1) * d] : [cx + (e === 2 ? -1 : 1) * w, top, t * d]; }                                   // top rim
+      if (g < 0.92) return [cx + t * w, top, (R() * 2 - 1) * d];                                                                                                               // top face
+      const h = R(); return [cx + t * (W + (w - W) * h), by + H * h, D + (d - D) * h];                                                                                         // front face
+    };
+    const shapeGold = build(() => { const b = INGOTS[(R() * INGOTS.length) | 0]; return jit(ingotPt(b[0], b[1]), 0.004); });
+
+    // 7. wheat (agri): three ears on curved stalks, tied at the base
+    const EARS = [-0.32, 0, 0.3];
+    const shapeWheat = build(() => {
+      const tilt = EARS[(R() * EARS.length) | 0], g = R();
+      const rot = (x, y) => { const c = Math.cos(tilt), s = Math.sin(tilt); return [x * c - (y + 0.75) * s, x * s + (y + 0.75) * c - 0.75]; };
+      const stalk = (t) => [0.06 * Math.sin(t * 2.2), -0.75 + t * 1.35];          // t: 0 (base) .. 1 (tip)
+      let x, y, z = 0;
+      if (g < 0.2) { const t = R() * 0.62; [x, y] = stalk(t); }                                    // stalk
+      else if (g < 0.8) {                                                                          // grains in two staggered rows
+        const k = (R() * 9) | 0, side = k % 2 ? 1 : -1, t = 0.52 + k * 0.055;
+        const [sx, sy] = stalk(t), a = R() * Math.PI * 2, u = R() * 2 - 1;
+        x = sx + side * 0.06 + Math.cos(a) * 0.045 * Math.sqrt(1 - u * u); y = sy + u * 0.075; z = Math.sin(a) * 0.045 * Math.sqrt(1 - u * u);
+      } else if (g < 0.94) {                                                                       // awns (bristles)
+        const k = (R() * 9) | 0, side = k % 2 ? 1 : -1, t = 0.52 + k * 0.055, s = R();
+        const [sx, sy] = stalk(t); x = sx + side * (0.08 + s * 0.12); y = sy + 0.07 + s * 0.26;
+      } else { const a = R() * Math.PI * 2; x = Math.cos(a) * 0.09; y = -0.5 + (R() - 0.5) * 0.05; z = Math.sin(a) * 0.05; return jit([x, y, z], 0.004); }   // tie
+      const [rx, ry] = rot(x, y);
+      return jit([rx, ry, z], 0.004);
+    });
+
+    const blobs = [shapeBarrel, shapeShip, shapeChart, shapeCoin, shapeGold, shapeWheat, shapeDrop];
     const blobLive = new Float32Array(N * 3); blobLive.set(blobs[0]);
 
     const STAGES = [
@@ -465,9 +514,9 @@ export class HomeParticles {
 
       if (stage > 5.2 && stage < 7) {
         blobClock += dt;
-        const cyc = 3.6, idx = Math.floor(blobClock / cyc) % 4, p = (blobClock % cyc) / cyc;
+        const cyc = 3.6, idx = Math.floor(blobClock / cyc) % blobs.length, p = (blobClock % cyc) / cyc;
         const m = sm(Math.min(1, Math.max(0, (p - 0.55) / 0.45)));
-        const S0 = blobs[idx], S1 = blobs[(idx + 1) % 4];
+        const S0 = blobs[idx], S1 = blobs[(idx + 1) % blobs.length];
         for (let i = 0; i < N; i++) {
           const fi = sm(Math.min(1, Math.max(0, m * 1.6 - rnd[i] * 0.6)));
           const b = Math.sin(fi * Math.PI) * 0.25;
@@ -558,7 +607,7 @@ export class HomeParticles {
     const typeOut = () => {
       clearInterval(typeTimer);
       const a = $('#hp-typeA'), b = $('#hp-typeB');
-      const s1 = ds + '  ·  OLEOVISTA  ·  ICE TRADE CAPTURED', s2 = `CARGO CHECK: ${DRUMS.length} OIL DRUMS · POSITION & P&L UPDATED`; let i = 0;
+      const s1 = ds + '  ·  OLEOVISTA  ·  ICE TRADES CAPTURED, RECOUNCILED,', s2 = ` POSITION AND PROFIT AND LOSS UPDATED`; let i = 0;
       a.textContent = ''; b.textContent = '';
       typeTimer = setInterval(() => {
         i++;
@@ -567,8 +616,7 @@ export class HomeParticles {
         else clearInterval(typeTimer);
       }, 45);
       const o = { v: 0 };
-      gsap.to(o, { v: 99.8, duration: 2.4, delay: 0.6, ease: 'power2.out', onUpdate() { $('#hp-conf').textContent = o.v.toFixed(1); $('#hp-confBar').style.width = o.v + '%'; } });
-    };
+      gsap.to(o, { v: 100, duration: 2.4, delay: 0.6, ease: 'power2.out', onUpdate() { $('#hp-conf').textContent = o.v >= 99.95 ? '100' : o.v.toFixed(1); $('#hp-confBar').style.width = o.v + '%'; } });    };
     ScrollTrigger.create({ trigger: '#hp-scan', start: 'top 15%', end: 'bottom 60%',
       onEnter: () => { card.classList.add('scan-on'); gsap.to(bpaths, { strokeDashoffset: 0, duration: 1, stagger: 0.08, ease: 'power3.out' }); typeOut(); },
       onEnterBack: () => card.classList.add('scan-on'),
@@ -578,25 +626,26 @@ export class HomeParticles {
     const ring = $('#hp-ring');
     const hcards = [...ring.children];
     const step = 360 / hcards.length;
-    const ringState = { rot: 50 };
+    const ringState = { rot: 20, fade: 0 };
     const applyRing = () => {
       const Rr = getComputedStyle(ring).getPropertyValue('--R').trim() || '470px';
       hcards.forEach((c, i) => {
         const a = i * step + ringState.rot;
         const cos = Math.cos(a * Math.PI / 180);
         c.style.transform = `rotateY(${a}deg) translateZ(${Rr}) translateY(${(i % 2 ? 46 : -34)}px)`;
-        c.style.opacity = (0.12 + 0.88 * Math.pow(Math.max(0, cos), 1.6)).toFixed(3);
+        // each card fades on its own (fading the whole ring would flatten the 3D and make the cards look small)
+        c.style.opacity = ((0.12 + 0.88 * Math.pow(Math.max(0, cos), 1.6)) * ringState.fade).toFixed(3);
       });
     };
     applyRing();
-    const solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=360%', scrub: 0.6, pin: true, pinType: 'fixed', anticipatePin: 1 } });
+    gsap.set(ring, { scale: 1, rotateX: -6, opacity: 1 });   // the ring itself always stays full size and fully opaque
+    const solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=360%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
     solTl.fromTo($('.sol-title'), { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.12 }, 0)
       .to($('.sol-title'), { opacity: 0, y: -40, filter: 'blur(8px)', duration: 0.1 }, 0.2)
-      .fromTo(ring, { opacity: 0, scale: 0.75, rotateX: 14 }, { opacity: 1, scale: 1, rotateX: -6, duration: 0.15 }, 0.2)
-      .to(ringState, { rot: 50 - 360 + step, ease: 'none', duration: 0.68, onUpdate: applyRing }, 0.28)
-      .to(ring, { opacity: 0, scale: 0.85, duration: 0.06 }, 0.95);
+      .fromTo(ringState, { fade: 0 }, { fade: 1, duration: 0.12, ease: 'none', onUpdate: applyRing }, 0.16)
+      .to(ringState, { rot: -305, ease: 'none', duration: 0.62, onUpdate: applyRing }, 0.28)
+      .to(ringState, { fade: 0, duration: 0.06, ease: 'none', onUpdate: applyRing }, 0.95);
     pins['#hp-solutions'] = solTl.scrollTrigger;
-
     const aboutH = $('#hp-about h2');
     gsap.from(aboutH._w, { yPercent: 115, duration: 1.2, stagger: 0.06, ease: 'expo.out', scrollTrigger: { trigger: aboutH, start: 'top 82%', once: true } });
     $$('.fade-up').forEach((el) => gsap.from(el, { opacity: 0, y: 24, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } }));

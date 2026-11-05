@@ -558,21 +558,54 @@ function peopleShape(N) {
   return s;
 }
 
-// location pin with signal ripples over a city map (the Kochi office)
+// India outline (longitude, latitude), simplified. The pin's tip stands on Kochi.
+const INDIA = [[68.4, 23.6], [69.5, 22.4], [70.4, 21.0], [72.6, 21.3], [72.8, 19.0], [73.4, 16.0], [74.4, 14.0], [74.9, 12.8], [75.7, 11.2],
+  [76.15, 10.0], [76.6, 8.9], [77.1, 8.3], [77.6, 8.1], [78.2, 8.9], [79.3, 10.3], [79.9, 10.4], [79.8, 11.8], [80.3, 13.3], [80.2, 15.2],
+  [81.3, 16.4], [82.3, 16.6], [83.4, 17.8], [84.8, 19.2], [86.4, 19.9], [86.9, 21.3], [88.1, 21.6], [88.9, 21.7], [88.7, 24.2], [88.1, 25.0],
+  [89.0, 26.0], [92.2, 25.2], [92.7, 23.0], [93.4, 23.7], [94.1, 24.0], [94.6, 25.3], [95.2, 26.6], [96.1, 27.3], [97.2, 28.2], [96.6, 28.9],
+  [95.4, 29.2], [94.0, 28.9], [92.5, 27.8], [91.6, 27.9], [89.8, 26.9], [88.9, 27.3], [88.8, 28.0], [88.1, 27.9], [88.0, 26.4], [86.0, 26.6],
+  [84.1, 27.5], [82.0, 27.9], [80.6, 28.9], [80.1, 30.3], [78.9, 31.1], [78.7, 32.5], [79.5, 34.0], [78.0, 35.5], [76.5, 35.8], [75.0, 36.5],
+  [73.9, 34.7], [74.2, 33.3], [74.6, 32.5], [75.3, 32.2], [74.6, 31.0], [73.9, 30.4], [73.3, 29.4], [72.4, 28.2], [71.0, 27.9], [69.9, 27.2],
+  [70.2, 26.4], [70.6, 25.7], [69.5, 24.3]];
+const KOCHI = [76.27, 9.93];
+const inPoly = (x, y, poly) => {
+  let c = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+};
+
+// location pin with signal ripples over a dotted map of India (the pin stands on Kochi)
 function pinShape(N) {
-  const prof = [[0, 0], [0.9, 1.6], [2.4, 5.2], [4.1, 8.8], [5.4, 11.8], [6.1, 14.4], [6.2, 16.2], [5.8, 18.2], [4.7, 19.9], [2.8, 21.1], [0, 21.5]].map(([x, y]) => [x * 0.075, y * 0.075]);
+  const PS = 0.65;                      // pin size (1 = original size)
+  const prof = [[0, 0], [0.9, 1.6], [2.4, 5.2], [4.1, 8.8], [5.4, 11.8], [6.1, 14.4], [6.2, 16.2], [5.8, 18.2], [4.7, 19.9], [2.8, 21.1], [0, 21.5]].map(([x, y]) => [x * 0.075 * PS, y * 0.075 * PS]);
   const segs = []; let tot = 0;
   for (let i = 0; i < prof.length - 1; i++) { const l = Math.hypot(prof[i + 1][0] - prof[i][0], prof[i + 1][1] - prof[i][1]); segs.push(l); tot += l; }
   const onProf = () => { let r = R() * tot, i = 0; while (i < segs.length - 1 && r > segs[i]) { r -= segs[i]; i++; } const t = r / segs[i]; return [lerp(prof[i][0], prof[i + 1][0], t), lerp(prof[i][1], prof[i + 1][1], t)]; };
   const rAt = (y) => { for (let i = 0; i < prof.length - 1; i++) if (y >= prof[i][1] && y <= prof[i + 1][1]) return lerp(prof[i][0], prof[i + 1][0], (y - prof[i][1]) / (prof[i + 1][1] - prof[i][1])); return 0; };
-  const B = -0.55, G = -0.95, EY = 1.2, ER = 0.17;
+  const B = -0.55, G = -0.95, EY = 1.2 * PS, ER = 0.17 * PS;
+  // India on the ground: 1 degree = IK units, north points away from the viewer, Kochi at the pin's tip
+  const IK = 0.12;
+  const toMap = (lo, la) => [(lo - KOCHI[0]) * IK, G, -(la - KOCHI[1]) * IK];
+  const IN_DOTS = [];
+  for (let la = 6; la < 37.5; la += 0.45) for (let lo = 67.5; lo < 98; lo += 0.45) if (inPoly(lo, la, INDIA)) IN_DOTS.push([lo, la]);
+  const eLen = []; let eTot = 0;
+  for (let i = 0; i < INDIA.length; i++) { const a = INDIA[i], b = INDIA[(i + 1) % INDIA.length], l = Math.hypot(b[0] - a[0], b[1] - a[1]); eLen.push(l); eTot += l; }
+  const onEdge = () => {
+    let r = R() * eTot, i = 0;
+    while (i < eLen.length - 1 && r > eLen[i]) { r -= eLen[i]; i++; }
+    const a = INDIA[i], b = INDIA[(i + 1) % INDIA.length], t = r / eLen[i];
+    return [lerp(a[0], b[0], t), lerp(a[1], b[1], t)];
+  };
   const emb = (a, rr = ER, side = 1) => { const x = Math.cos(a) * rr, y = EY + Math.sin(a) * rr, r = rAt(y); return [x, B + y, side * Math.sqrt(Math.max(0, r * r - x * x)) * 1.01]; };
   const s = build(N, (f) => {
     let p, water = 0, warm = 0, hi = 0;
     if (f < 0.44) {
       const [r, y] = onProf(), a = R() * TAU;
       p = [Math.cos(a) * r, B + y, Math.sin(a) * r]; hi = -0.05;
-      if (R() < 0.3) { const yy = pick([0.35, 0.6, 0.85, 1.05, 1.4]), rr = rAt(yy); p = [Math.cos(a) * rr, B + yy, Math.sin(a) * rr]; hi = 0.5; }
+      if (R() < 0.3) { const yy = pick([0.35, 0.6, 0.85, 1.05, 1.4]) * PS, rr = rAt(yy); p = [Math.cos(a) * rr, B + yy, Math.sin(a) * rr]; hi = 0.5; }
     } else if (f < 0.54) {
       const a = R() * TAU; p = R() < 0.75 ? emb(a, ER, sgn()) : emb(a, ER * Math.sqrt(R()), sgn()); warm = 1; hi = 1;
     } else if (f < 0.6) {
@@ -580,33 +613,87 @@ function pinShape(N) {
       else { const r = 0.26 * Math.sqrt(R()), a = R() * TAU; p = [Math.cos(a) * r, G + 0.005, Math.sin(a) * r]; warm = 0.7; hi = 0.4 - r; }   // glowing spot
     } else if (f < 0.8) {
       water = 1; const r = pick([0.35, 0.7, 1.05, 1.45, 1.9, 2.4]), a = R() * TAU; p = [Math.cos(a) * r, G, Math.sin(a) * r]; hi = 0.3 - r * 0.15;
-    } else if (f < 0.95) {
-      water = 1;
-      let x = (R() * 2 - 1) * 2.6, z = (R() * 2 - 1) * 2.6;
-      const h = Math.hypot(x, z); if (h > 2.6) { const k = 2.6 / h * R(); x *= k; z *= k; }
-      if (R() < 0.5) x = Math.round(x / 0.3) * 0.3; else z = Math.round(z / 0.3) * 0.3;
-      p = [x, G - 0.01, z]; hi = -0.5;
+    } else if (f < 0.93) {
+      water = 1;                                                   // India: dotted land (the signal ripples run through it)
+      const c = pick(IN_DOTS), m = toMap(c[0] + gauss() * 0.05, c[1] + gauss() * 0.05);
+      p = [m[0], G - 0.01, m[2]]; hi = 0.05;
     } else {
-      const a = R() * TAU, r = 0.5 + R() * 1.8, h = 0.05 + R() * 0.3;
-      p = edgeBox(Math.cos(a) * r, G + h / 2, Math.sin(a) * r, 0.05, h / 2, 0.05); hi = -0.2;
+      const c = onEdge(), m = toMap(c[0], c[1]);                   // India: bright coastline and border
+      p = [m[0], G + 0.004, m[2]]; hi = 0.6;
     }
     return [...jit(p, 0.002), water, warm, hi];
   });
   s.wave = 'radial';
   s.deco = () => {
-    const g = new LB(), y = new LB();
-    for (const yy of [0.35, 0.6, 0.85, 1.05, 1.4]) g.circle(0, B + yy, 0, rAt(yy) * 1.004, 40);
+    const g = new LB(), y = new LB(), ind = new LB();
+    for (const y0 of [0.35, 0.6, 0.85, 1.05, 1.4]) { const yy = y0 * PS; g.circle(0, B + yy, 0, rAt(yy) * 1.004, 40); }
+    ind.poly(INDIA.map(([lo, la]) => { const m = toMap(lo, la); return [m[0], G + 0.006, m[2]]; }), true);
     for (const sd of [-1, 1]) { const pts = []; for (let i = 0; i <= 32; i++) pts.push(emb(i / 32 * TAU, ER, sd)); y.poly(pts); }
     const pts = prof.map(([x, yy]) => new THREE.Vector2(x * 0.95, yy));
     const geo = new THREE.LatheGeometry(pts, 40);
-    return { lines: [{ pos: g.get(), color: GREEN, k: 0.35 }, { pos: y.get(), color: GOLD, k: 0.6 }], occ: [occ(geo, 0, B, 0)] };
+    return { lines: [{ pos: g.get(), color: GREEN, k: 0.35 }, { pos: y.get(), color: GOLD, k: 0.6 }, { pos: ind.get(), color: GREEN, k: 0.45 }], occ: [occ(geo, 0, B, 0)] };
+  };
+  return s;
+}
+
+
+// the Oleovista logo: three leaves on a stem, with circuit-board "roots" ending in small rings
+function logoShape(N) {
+  // drawn in a 420 x 600 grid (the logo artwork), converted to scene units
+  const P = (x, y) => [(x - 200) / 210, -(y - 300) / 210];
+  const LEAVES = [ // base, tip, half-width, bend
+    { b: P(196, 192), t: P(160, 68), w: 0.2, bend: 0.12 },
+    { b: P(188, 214), t: P(84, 212), w: 0.13, bend: -0.06 },
+    { b: P(206, 216), t: P(306, 236), w: 0.13, bend: 0.06 }
+  ];
+  const LINES = [ // circuit traces (polylines), white in the artwork
+    [P(197, 192), P(197, 452)],
+    [P(197, 282), P(128, 346), P(128, 392)],
+    [P(197, 262), P(295, 350), P(295, 398)],
+    [P(197, 368), P(258, 416), P(258, 463)],
+    [P(196, 394), P(106, 472), P(106, 518)]
+  ];
+  const DOTS = [P(126, 405), P(295, 411), P(259, 476), P(104, 531), P(196, 464)];
+  const DR = 12 / 210;
+  const leafPt = (L, t, side) => {
+    const ax = L.t[0] - L.b[0], ay = L.t[1] - L.b[1], len = Math.hypot(ax, ay), nx = -ay / len, ny = ax / len;
+    const hw = L.w * Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.05)), 0.75) * (1 - 0.25 * t), bow = L.bend * Math.sin(Math.PI * t);
+    return [L.b[0] + ax * t + nx * (side * hw + bow), L.b[1] + ay * t + ny * (side * hw + bow), 0.06 * Math.sin(Math.PI * t) * (1 - side * side)];
+  };
+  const segs = []; let tot = 0;
+  LINES.forEach((pl) => { for (let i = 0; i < pl.length - 1; i++) { const l = Math.hypot(pl[i + 1][0] - pl[i][0], pl[i + 1][1] - pl[i][1]); segs.push([pl[i], pl[i + 1], l]); tot += l; } });
+  const onLines = () => { let r = R() * tot, i = 0; while (i < segs.length - 1 && r > segs[i][2]) { r -= segs[i][2]; i++; } const [a, b, l] = segs[i], t = r / l; return [lerp(a[0], b[0], t), lerp(a[1], b[1], t)]; };
+  const s = build(N, (f) => {
+    let p, hi = 0;
+    if (f < 0.34) {                                   // leaves: filled
+      const L = pick(LEAVES), t = Math.sqrt(R()), side = R() * 2 - 1;
+      p = leafPt(L, t, side); hi = 0.15;
+    } else if (f < 0.5) {                             // leaves: bright outline and centre vein
+      const L = pick(LEAVES), t = R();
+      p = R() < 0.75 ? leafPt(L, t, sgn()) : leafPt(L, 0.1 + t * 0.75, 0); hi = 0.7;
+      p[2] += R() < 0.5 ? 0.01 : -0.01;
+    } else if (f < 0.82) {                            // circuit traces
+      const q = onLines(); p = [q[0], q[1], (R() * 2 - 1) * 0.012]; hi = 0.85;
+    } else if (f < 0.92) {                            // rings at the ends of the traces
+      const d = pick(DOTS), a = R() * TAU; p = [d[0] + Math.cos(a) * DR, d[1] + Math.sin(a) * DR, (R() * 2 - 1) * 0.01]; hi = 1;
+    } else {                                          // soft glow around the logo
+      const d = unit(), r = 0.6 + R() * 1.4; p = [d[0] * r * 0.8, d[1] * r * 1.1, d[2] * r * 0.4]; hi = -0.6;
+    }
+    return [...jit(p, 0.003), 0, 0, hi];
+  });
+  s.deco = () => {
+    const g = new LB(), w = new LB();
+    LEAVES.forEach((L) => { for (const sd of [-1, 1]) { const pts = []; for (let i = 0; i <= 24; i++) pts.push(leafPt(L, i / 24, sd)); g.poly(pts); } });
+    LINES.forEach((pl) => w.poly(pl.map((q) => [q[0], q[1], 0])));
+    DOTS.forEach((d) => { const pts = []; for (let i = 0; i < 20; i++) { const a = i / 20 * TAU; pts.push([d[0] + Math.cos(a) * DR, d[1] + Math.sin(a) * DR, 0]); } w.poly(pts, true); });
+    return { lines: [{ pos: g.get(), color: GREEN, k: 0.45 }, { pos: w.get(), color: 0xe8ffe0, k: 0.4 }] };
   };
   return s;
 }
 
 const SHAPES = {
   ship: shipShape, barrel: barrelShape, chart: chartShape, drop: dropShape, cosmos: cosmosShape, dust: dustShape,
-  helix: helixShape, tanks: tanksShape, refinery: refineryShape, globe: globeShape, people: peopleShape, pin: pinShape
+  helix: helixShape, tanks: tanksShape, refinery: refineryShape, globe: globeShape, people: peopleShape, pin: pinShape, logo: logoShape
 };
 
 /* ============================ PAGE STORYBOARDS ============================
@@ -619,17 +706,17 @@ const globeRot = (t, p) => [0.3, 2.75 + Math.sin(t * 0.05) * 0.6 + p * 2.2];   /
 const cosmosRot = (t) => [0, t * 0.015];
 
 // how wide each object is (used to keep it on screen on narrow phones)
-const WIDTH = { ship: 3.4, tanks: 3.9, chart: 2.2, people: 3.7, refinery: 3.0, globe: 2.6, barrel: 1.0, drop: 1.1, pin: 1.2 };
+const WIDTH = { ship: 3.4, tanks: 3.9, chart: 2.2, people: 3.7, refinery: 3.0, globe: 2.6, barrel: 1.0, drop: 1.1, pin: 1.2, logo: 1.3 };
 
 const PAGE_STAGES = {
   about: [
-    { at: 0.0, shape: 'ship', op: 1, x: 0.15, y: -0.45, s: 1.05, flat: 0.55, rot: shipRot },
-    { at: 0.16, shape: 'ship', op: 0.6, x: 0, y: -0.2, s: 1.25, flat: 0.55, rot: (t) => [0.5, 0.38 + Math.sin(t * 0.18) * 0.12] },
+    { at: 0.0, shape: 'logo', op: 1, x: 0, y: -0.5, s: 0.8, flat: 0.45, rot: (t) => [0.08, Math.sin(t * 0.35) * 0.45] },
+    { at: 0.16, shape: 'logo', op: 0.6, x: 0, y: -0.1, s: 1.1, flat: 0.45, rot: (t) => [0.12, Math.sin(t * 0.3) * 0.6] },
     { at: 0.32, shape: 'barrel', op: 0.7, x: 0, y: 0, s: 1.2, flat: 0.4, rot: (t) => [0.32, Math.sin(t * 0.35) * 0.9] },
     { at: 0.48, shape: 'chart', op: 0.65, x: 0, y: 0, s: 1.5, flat: 0.35, rot: (t) => [0.12, -0.2 + Math.sin(t * 0.4) * 0.35] },
-    { at: 0.64, shape: 'ship', op: 0.6, x: 0, y: -0.3, s: 1.1, flat: 0.55, rot: (t) => [0.3, -1.3 + Math.sin(t * 0.2) * 0.15] },
+    { at: 0.64, shape: 'globe', op: 0.6, x: 0, y: 0, s: 1.0, flat: 0.45, rot: globeRot },
     { at: 0.8, shape: 'drop', op: 0.7, x: 0, y: 0.1, s: 1.2, flat: 0.4, rot: spin(0.3, 0.2) },
-    { at: 0.93, shape: 'ship', op: 0.65, x: 0, y: -0.5, s: 0.9, flat: 0.55, rot: shipRot }
+    { at: 0.93, shape: 'logo', op: 0.65, x: 0, y: -0.2, s: 0.9, flat: 0.45, rot: (t) => [0.08, Math.sin(t * 0.35) * 0.45] }
   ],
   services: [
     { at: 0.0, shape: 'tanks', op: 1, x: 0, y: -0.5, s: 0.9, flat: 0.55, rot: (t) => [0.42, -0.3 + Math.sin(t * 0.2) * 0.2] },
