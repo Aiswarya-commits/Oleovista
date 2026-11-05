@@ -321,3 +321,7 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 #home-view .sol-title{top:15%}
 #home-view #hp-solutions .ring-stage{padding-top:10vh}
 @media (max-width:860px){ #home-view .sol-title{top:13%} }
+
+/* shorter gaps: trading screen -> cards, and cards -> "Oleovista – A specialist provider..." */
+#home-view #hp-solutions{margin-top:-30vh}
+#home-view #hp-about{margin-top:-55vh;padding-top:8vh}
