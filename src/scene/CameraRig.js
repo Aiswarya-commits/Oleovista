@@ -73,8 +73,7 @@ export class CameraRig {
     window.addEventListener('touchmove', (e) => {
       if (!isTouchActive || this.mode !== 'scroll' || e.touches.length === 0) return;
       // Do not hijack touch if user is interacting with form controls, chat, menu, or modal panels
-      if (e.target.closest('input, textarea, select, .ct-chat-msgs, .menu-drawer, .modal-card, .job-panel, .header-dropdown-menu')) {
-        return;
+      if (e.target.closest('.ct-chat-msgs, .menu-drawer, .modal-card, .job-panel, .header-dropdown-menu') || (e.target.tagName === 'TEXTAREA' && document.activeElement === e.target)) {        return;
       }
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
