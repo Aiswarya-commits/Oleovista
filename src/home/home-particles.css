@@ -366,3 +366,9 @@ body.home-p #content-container{touch-action:pan-y pinch-zoom !important}
   #home-view #hp-solutions .hcard h3{font-size:22px !important}
   #home-view #hp-solutions .hcard p{font-size:11.5px !important;line-height:1.55 !important}
 }
+
+/* phones only: sections never overlap each other */
+@media (max-width:860px){
+  #home-view #hp-network{height:auto;min-height:100vh;padding-top:12vh;padding-bottom:16vh}
+  #home-view #hp-solutions{margin-top:0}
+}
