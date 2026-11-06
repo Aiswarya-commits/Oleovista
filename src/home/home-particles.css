@@ -357,3 +357,12 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
 body.home-p,
 body.home-p #content-container{touch-action:pan-y pinch-zoom !important}
 #home-view{-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+
+/* solution cards on laptops / desktops: always the original wide ring (wins over any leftover phone rule) */
+@media (min-width:861px){
+  #home-view #hp-solutions .ring-stage{perspective:1500px !important}
+  #home-view #hp-solutions .ring{--cw:min(360px,78vw) !important;--ch:240px !important;--R:470px !important}
+  #home-view #hp-solutions .hcard{padding:22px 22px 20px !important;gap:12px !important}
+  #home-view #hp-solutions .hcard h3{font-size:22px !important}
+  #home-view #hp-solutions .hcard p{font-size:11.5px !important;line-height:1.55 !important}
+}

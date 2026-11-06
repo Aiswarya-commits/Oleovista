@@ -37,7 +37,7 @@ export class HomeParticles {
     ScrollTrigger.defaults({ scroller: root });
         // phones/tablets scroll Home with the finger: a 'fixed' pinned section would catch the swipe and
     // Android would not scroll the page, so touch screens pin by 'transform' (laptops keep 'fixed', no jitter)
-    const PIN_TYPE = matchMedia('(pointer: coarse)').matches ? 'transform' : 'fixed';
+    const PIN_TYPE = 'fixed';
 
     /* ================= smooth wheel scrolling inside #home-view ================= */
     const sm = (t) => t * t * (3 - 2 * t);
@@ -62,6 +62,38 @@ export class HomeParticles {
     };
     this.scrollToY = scrollToY;
     const getScroll = () => root.scrollTop;
+
+        // touch screens: the finger moves Home directly (with a smooth glide after you let go), the same way the
+    // mouse wheel does. Native touch scrolling cannot start on a pinned section on Android, and it jitters.
+    if (matchMedia('(pointer: coarse)').matches) {
+      let ty = 0, tt = 0, v = 0, tracking = false;
+      root.addEventListener('touchstart', (e) => {
+        tracking = this.active && e.touches.length === 1 && !skipWheel(e.target);
+        if (!tracking) return;
+        ty = e.touches[0].clientY; tt = performance.now(); v = 0;
+        S.animating = false; S.target = root.scrollTop;
+      }, { passive: true });
+      root.addEventListener('touchmove', (e) => {
+        if (!tracking || e.touches.length !== 1) return;
+        e.preventDefault();
+        const y = e.touches[0].clientY, now = performance.now(), d = ty - y;
+        v = 0.8 * (d / Math.max(1, now - tt)) + 0.2 * v;
+        ty = y; tt = now;
+        S.target = Math.min(maxScroll(), Math.max(0, S.target + d));
+        root.scrollTop = S.target;
+        ScrollTrigger.update();
+      }, { passive: false });
+      const end = () => {
+        if (!tracking) return;
+        tracking = false;
+        if (performance.now() - tt < 90 && Math.abs(v) > 0.1) {         // flick: keep gliding
+          S.target = Math.min(maxScroll(), Math.max(0, root.scrollTop + Math.max(-4, Math.min(4, v)) * 380));
+          S.animating = !reduce;
+        }
+      };
+      root.addEventListener('touchend', end, { passive: true });
+      root.addEventListener('touchcancel', end, { passive: true });
+    }
 
     const pins = {};
     const goTo = (sel) => {
