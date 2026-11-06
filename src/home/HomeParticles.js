@@ -35,6 +35,9 @@ export class HomeParticles {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const narrow = () => innerWidth < 860;
     ScrollTrigger.defaults({ scroller: root });
+        // phones/tablets scroll Home with the finger: a 'fixed' pinned section would catch the swipe and
+    // Android would not scroll the page, so touch screens pin by 'transform' (laptops keep 'fixed', no jitter)
+    const PIN_TYPE = matchMedia('(pointer: coarse)').matches ? 'transform' : 'fixed';
 
     /* ================= smooth wheel scrolling inside #home-view ================= */
     const sm = (t) => t * t * (3 - 2 * t);
@@ -644,7 +647,7 @@ export class HomeParticles {
       gsap.to($$('.hero-fade'), { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.9 });
     };
 
-    const heroTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-hero', start: 'top top', end: '+=10%', scrub: true, pin: true, pinType: 'fixed', anticipatePin: 1, invalidateOnRefresh: true } });
+    const heroTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-hero', start: 'top top', end: '+=10%', scrub: true, pin: true, pinType: PIN_TYPE, anticipatePin: 1, invalidateOnRefresh: true } });
     heroTl.to($('.hero-left'), { x: () => -innerWidth * 0.7, ease: 'power2.in' }, 0)
       .to($('.hero-right'), { x: () => innerWidth * 0.7, ease: 'power2.in' }, 0)
       .to($('.hero-desc'), { x: () => innerWidth * 0.5, opacity: 0, ease: 'power2.in' }, 0)
@@ -726,7 +729,7 @@ export class HomeParticles {
       });
     };
     gsap.set(ring, { scale: 1, rotateX: -6, opacity: 1 });   // the ring itself always stays full size and fully opaque
-    solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=380%', scrub: 1, pin: true, pinType: 'fixed', anticipatePin: 1 } });
+    solTl = gsap.timeline({ scrollTrigger: { trigger: '#hp-solutions', start: 'top top', end: '+=380%', scrub: 1, pin: true, pinType: PIN_TYPE, anticipatePin: 1 } });
     solTl.to(ringState, { rot: -300, ease: 'none', duration: 0.86, onUpdate: applyRing }, 0.02)
       .to({}, { duration: 0.3 }, 0.88);   // card 06 rests in the centre for a moment before the fade
     pins['#hp-solutions'] = solTl.scrollTrigger;

@@ -350,3 +350,10 @@ body.home-p #content-container{-webkit-mask-image:none;mask-image:none}
   #home-view .fbase{justify-content:center;text-align:center;padding-inline:56px;font-size:10px;line-height:1.7}
   #home-view footer{padding-block:12vh 140px;min-height:auto}
 }
+
+/* Android: always allow normal finger scrolling on the Home page */
+#home-view,
+#home-view *{touch-action:pan-y pinch-zoom !important}
+body.home-p,
+body.home-p #content-container{touch-action:pan-y pinch-zoom !important}
+#home-view{-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
